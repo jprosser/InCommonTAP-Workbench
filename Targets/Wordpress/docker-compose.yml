@@ -1,0 +1,53 @@
+version: "3.3"
+
+services:
+
+  wordpress_server:
+    #build: ./wordpress_server/
+    image: wordpress
+    container_name: wordpress_server
+    networks:
+    -  net
+    depends_on:
+      - wordpress_data
+    ports:
+      - "80:80"
+    devices:
+      - "/dev/tty:/dev/tty"
+    links:
+      - "wordpress_data:wordpress_data"
+    volumes:
+     - wordpress_server:/var/www/html
+
+  wordpress_data:
+    build: ./wordpress_data/
+    container_name: wordpress_data
+    networks:
+    - net
+    volumes:
+     - wordpress_data:/var/lib/mysql  
+
+  wordpress_cli:
+    #image: wordpress:cli
+    build: ./wordpress_cli/
+    links:
+      - "wordpress_server:wordpress_server"
+    user: xfs
+    command: bash -c 'if [ ! -s /var/www/html/wp-config.php ];  then sleep 10; wp config create --dbname=wordpress --dbuser=wordpress --dbpass=54y6RxN7GfC7aes3 --dbhost=wordpress_data; sleep 3; wp core install --url="http://localhost/" --title="wordpress" --admin_user="admin" --admin_password="54y6RxN7GfC7aes3" --admin_email="sentrifugo.container@gmail.com"; sed -i "s/<\/IfModule>/RewriteCond \%{HTTP:Authorization} \^\(\.\*\)\nRewriteRule \^\(\.\*\) - [E=HTTP_AUTHORIZATION:\%1]\n<\/IfModule>\nSetEnvIf Authorization "\(\.\*\)" HTTP_AUTHORIZATION=\$$1/" /var/www/html/.htaccess; /tmp/sed.sh; wp plugin install jwt-authentication-for-wp-rest-api  --activate; fi'
+    container_name: wordpress_cli
+    networks:
+    - net
+    depends_on:
+      - wordpress_data
+      - wordpress_server
+    volumes:
+     - wordpress_server:/var/www/html
+
+networks:
+  net:    
+    driver: bridge
+    
+volumes:
+  wordpress_data:
+  wordpress_server:
+
