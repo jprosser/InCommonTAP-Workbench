@@ -1,0 +1,19 @@
+version: '3'
+services:
+  sis-db:
+    image: mysql:5.6
+    container_name: tier-demo-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  sis-web:
+    build: .
+    image: sis-web
+    container_name: tier-sis-web
+    command: /bin/bash /usr/local/bin/run-rails.sh
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - sis-db
