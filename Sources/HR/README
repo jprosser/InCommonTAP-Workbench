@@ -1,0 +1,8 @@
+# A preconfigured Sentrifugo container set
+#
+# After building with docker-compose up
+# Sentrifugo should be available at localhost:8080
+# You can login with banderson/password or
+# empp0001/59887e9a7cb85 to be a super
+# user in Sentrifugo
+
