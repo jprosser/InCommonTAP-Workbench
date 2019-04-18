@@ -1,4 +1,4 @@
-FROM ruby:2.3.3
+FROM ruby:2.5.5
 
 MAINTAINER "TIER API & EntReg Working Group <tier-api@internet2.edu>"
 
