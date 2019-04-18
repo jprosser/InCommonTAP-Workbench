@@ -8,6 +8,7 @@ services:
       - MYSQL_ROOT_PASSWORD=
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
   sis-web:
+    build: .
     image: sis-web
     container_name: tier-sis-web
     command: /bin/bash /usr/local/bin/run-rails.sh
