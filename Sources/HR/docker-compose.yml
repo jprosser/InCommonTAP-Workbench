@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+  sentrifugo_server:
+    build: ./sentrifugo_server/
+    container_name: sentrifugo_server
+    networks:
+    -  net
+    depends_on:
+      - sentrifugo_data
+    ports:
+      - "8080:80"
+    devices:
+      - "/dev/tty:/dev/tty"
+    links:
+      - "sentrifugo_data:sentrifugo_data"
+
+  sentrifugo_data:
+    build: ./sentrifugo_data/
+    container_name: sentrifugo_data
+    networks:
+    - net
+    volumes:
+     - sentrifugo_data:/var/lib/mysql  
+networks:
+  net:    
+    driver: bridge
+    
+volumes:
+  sentrifugo_data:

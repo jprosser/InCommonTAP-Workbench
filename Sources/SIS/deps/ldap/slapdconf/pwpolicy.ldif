@@ -1,0 +1,9 @@
+dn: cn=pwpolicy,dc=example,dc=com
+objectclass: pwdPolicy
+objectClass: person
+cn: pwpolicy
+sn: pwpolicy
+pwdAttribute: userPassword
+pwdMaxFailure: 3
+pwdLockout: TRUE
+pwdLockoutDuration: 60

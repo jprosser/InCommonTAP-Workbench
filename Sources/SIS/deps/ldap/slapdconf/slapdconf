@@ -1,0 +1,1929 @@
+#!/usr/bin/perl
+#
+# Copyright (c) 2014-2016 Evolveum
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author: Radovan Semancik
+#
+# Required packages:
+#	Ubuntu: libnet-ldap-perl libauthen-sasl-perl perl-doc
+
+use strict;
+use warnings;
+
+use Net::LDAP;
+use Net::LDAP::LDIF;
+use Authen::SASL;
+use Digest::SHA qw(sha1);
+use MIME::Base64;
+use Getopt::Long qw(:config bundling no_auto_abbrev pass_through);
+use Pod::Usage;
+use File::Basename;
+use File::Temp;
+use IPC::Open3;
+use Data::Dumper;
+
+my ($verbose,$optHelp);
+my $hostname;
+my $port;
+my $uri;
+my ($bindDn,$bindPassword,$bindSaslMechanism);
+my ($filename);
+
+my $debug = 0;
+
+my $defaultIndexes = [ 'objectClass eq', 'uid eq,sub', 'cn eq,sub', 'sn eq,sub', 'givenName eq,sub', 'mail eq,sub', 
+                        'member eq', ];
+# my $defaultTLSCipherSuite = "TLSv1+RSA:!EXPORT:!NULL"; # OpenSSL
+my $defaultTLSCipherSuite = "NORMAL"; # GnuTLS
+my %defaultOlcSuffix = (
+    'olcAccess' => [
+      'to attrs=userPassword,shadowLastChange '.
+        'by dn="%%%ROOT_DN%%%" write '.
+        'by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth write '.
+        'by anonymous auth '.
+        'by self write '.
+        'by * none',
+      'to dn.base="" by * read',
+      'to * '.
+        'by dn="%%%ROOT_DN%%%" write '.
+        'by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth write '.
+        'by * read',
+    ],
+  );
+my $defaultReplicationManagerNamingAttribute = "cn";
+my $defaultReplicationManagerName="replication manager";
+my $defaultReplicationManagerPassword="rsecret";
+my @replicationProviderIndexes = ('entryUUID eq', 'entryCSN eq');
+my @replicationConsumerIndexes = ('entryUUID eq', 'entryCSN eq');
+my %defaultSyncprovOlcConfig = (
+  'olcSpCheckpoint' => '100 10',
+  'olcSpSessionlog' => '100',
+);
+
+my $databases = {
+  hdb => {
+    objectClass => "olcHdbConfig",
+    initialConfig => {
+      'olcDbConfig' => [
+        "set_cachesize 0 2097152 0",
+        "set_lk_max_objects 1500",
+        "set_lk_max_locks 1500",
+        "set_lk_max_lockers 1500",
+      ],
+      'olcDbIndex' => $defaultIndexes,
+      'olcDbCheckpoint' => '512 30',    
+    },
+  },
+  mdb => {
+    objectClass => "olcMdbConfig",
+    initialConfig => {
+      'olcDbIndex' => $defaultIndexes,
+    },
+  },
+};
+
+my @olcServerProps = qw(olcIdleTimeout olcLogLevel olcReferral olcTLSCACertificateFile olcTLSCertificateFile olcTLSCertificateKeyFile olcTLSCipherSuite);
+my @olcSuffixProps = qw(olcDatabase olcDbDirectory olcRootDN olcRootPW olcAccess olcLimits olcDb.*);
+my @syncreplConfOrder = qw(rid provider type searchbase bindmethod binddn credentials);
+my @saltChars = ('.','/',0..9,'A'..'Z','a'..'z');
+
+my %overlayObjectClasses = (
+  sssvlv => 'olcSssVlvConfig',
+  ppolicy => 'olcPPolicyConfig',
+  memberof => 'olcMemberOf',
+);
+$SIG{__DIE__} = sub { Carp::confess(@_) };
+
+my $command;
+if (defined $ARGV[0] && $ARGV[0] !~ /^-/) {
+  $command = shift;
+}
+
+GetOptions (
+  "hostname|h=s" => \$hostname,
+  "port|p=i" => \$port,
+  "uri|H=s" => \$uri,
+  "bindDn|D=s" => \$bindDn,
+  "bindPassword|w=s" => \$bindPassword,
+  "saslMechanism|Y=s" => \$bindSaslMechanism,
+  "file|f=s" => \$filename,
+  "verbose|v" => \$verbose,
+  "debug|d" => \$debug,
+  "help" => \$optHelp,
+  ) or usage();
+usage() if $optHelp;
+
+if (!defined($command)) {
+  $command = shift;
+}
+
+if (!$command) { usage(); }
+if ($command eq "--help") { usage(); }
+
+
+if (!$hostname && !$port && !$uri) {
+  $uri = "ldapi:///";
+} elsif ($hostname && !$port) {
+  $port = 389;
+} elsif (!$hostname && $port) {
+  $hostname = "localhost";
+}
+
+if (!$bindDn && !$bindPassword && !$bindSaslMechanism) {
+  $bindSaslMechanism = "EXTERNAL";
+}
+
+print("DEBUG: $command: hostname: $hostname, port: $port\n") if $debug;
+
+if ($command eq "root-dse") { rootDse() }
+elsif ($command eq "test") { testConnection() }
+elsif ($command eq "get-server-prop") { getServerProp() }
+elsif ($command eq "set-server-prop") { setServerProp() }
+elsif ($command eq "get-log-level") { getLogLevel() }
+elsif ($command eq "set-log-level") { setLogLevel() }
+elsif ($command eq "dump-configuration") { dumpConfiguration() }
+elsif ($command eq "list-databases") { listDatabases() }
+elsif ($command eq "list-suffixes") { listSuffixes() }
+elsif ($command eq "create-suffix") { createSuffix() }
+elsif ($command eq "delete-suffix") { deleteSuffix() }
+elsif ($command eq "get-suffix-prop") { getSuffixProp() }
+elsif ($command eq "set-suffix-prop") { setSuffixProp() }
+elsif ($command eq "get-suffix-acis") { getSuffixAcis() }
+elsif ($command eq "set-suffix-acis") { setSuffixAcis() }
+elsif ($command eq "edit-suffix-acis") { editSuffixAcis() }
+elsif ($command eq "set-tls") { setTls() }
+elsif ($command eq "list-schemas") { listSchemas() }
+elsif ($command eq "add-schema") { addSchema() }
+elsif ($command eq "delete-schema") { deleteSchema() }
+elsif ($command eq "list-modules") { listModules() }
+elsif ($command eq "add-module") { addModule() }
+elsif ($command eq "delete-module") { deleteModule() }
+elsif ($command eq "list-suffix-overlays") { listSuffixOverlays() }
+elsif ($command eq "add-overlay") { addOverlay() }
+elsif ($command eq "get-overlay-prop") { getOverlayProp() }
+elsif ($command eq "set-overlay-prop") { setOverlayProp() }
+elsif ($command eq "enable-repl-provider") { enableReplProvider() }
+elsif ($command eq "disable-repl-provider") { disableReplProvider() }
+elsif ($command eq "get-repl-provider") { getReplProvider() }
+elsif ($command eq "enable-repl-consumer") { enableReplConsumer() }
+elsif ($command eq "disable-repl-consumer") { disableReplConsumer() }
+elsif ($command eq "get-repl-consumer") { getReplConsumer() }
+elsif ($command eq "help") { usage() }
+else { usage() }
+
+########## PROPERTY GETTERS AND SETTERS
+
+sub getServerProp {  
+  my $conn = ldapConnectBind();
+  
+  my ($entry) = getConfigEntriesByDn($conn,"cn=config","base");
+  $entry->dump if $verbose;
+  foreach my $prop (@olcServerProps) {
+    displayProp($entry,$prop);
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub setServerProp {  
+  my @propvals = @ARGV;
+  my $conn = ldapConnectBind();
+  
+  my %replace = ();
+  my %add = ();
+  parsePropVals(\@propvals, \%replace, \%add, \@olcServerProps);
+  
+  ldapModify($conn,"cn=config",
+    replace => \%replace,
+    add => \%add);
+  
+  ldapDisconnect($conn);  
+}
+
+sub parsePropVals {
+  my ($propvals, $replace, $add, $allowedValues) = @_;
+
+  foreach my $propval (@$propvals) {
+    my ($prop,$val) = ($propval =~ /^\s*(\+?[^:]+)\s*:\s*(.*)\s*$/);
+    if (!$prop) { die("No property name specified\n"); }
+#    print "$prop -> $val\n";
+    my ($propName,$hash);
+    if ($prop =~ /^\+/) {
+      $propName = substr($prop,1);
+      $hash = $add;
+    } else {
+      $propName = $prop;
+      $hash = $replace;
+    }
+    if ($propName !~ /^olc/) {
+      $propName = olcizeName($propName);
+    }
+    if ($propName eq 'olcRootPW') {
+      $val = hashPassword($val);
+    }
+    collectPropToHash($hash,$propName,$val,$allowedValues);
+  }
+#  print Dumper(\%add);
+  
+}
+
+sub olcizeName {
+  my ($origName) = @_;
+  return "olc" . join('', map {ucfirst($_)} split('-',$origName));
+}
+
+sub collectPropToHash {
+  my ($mods,$prop,$val,$allowedValues) = @_;
+  if ($allowedValues) {
+    if (!grep {$prop =~ /^$_$/} @$allowedValues) { die("Unknown property $prop\n"); }
+  }
+  if (ref $mods->{$prop}) {
+    push @{$mods->{$prop}},$val;
+  } elsif ($mods->{$prop}) {
+    $mods->{$prop} = [ $mods->{$prop}, $val ];
+  } else {
+    $mods->{$prop} = $val;
+  }
+}
+
+sub displayProp {
+  my ($entry,$propName) = @_;
+  
+  my @values = $entry->get_value($propName);
+  if (@values) {
+    if (scalar(@values) == 1) {
+      print "$propName : @values\n";
+    } else {
+      print "$propName :\n  ".join("\n  ",@values)."\n";
+    }
+  }
+}
+
+sub getSuffixProp {  
+  my $conn = ldapConnectBind();
+  my $suffix = getSuffixArg($conn);
+  
+  my $entry = getConfigObjectBySuffix($conn,$suffix,1);
+  $entry->dump if $verbose;
+  foreach my $prop ($entry->attributes) {
+    if (grep {$prop =~ /^$_$/} @olcSuffixProps) {
+      displayProp($entry,$prop);
+    }
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub setSuffixProp {  
+  my $conn = ldapConnectBind();
+  my $suffix = getSuffixArg($conn);
+  my @propvals = @ARGV;
+  
+  my $entry = getConfigObjectBySuffix($conn,$suffix,1);
+  
+  my %replace = ();
+  my %add = ();
+  parsePropVals(\@propvals, \%replace, \%add, \@olcSuffixProps);
+  
+  ldapModify($conn,$entry->dn,
+    replace => \%replace,
+    add => \%add);
+  
+  ldapDisconnect($conn);  
+}
+
+sub getSuffixAcis {  
+  my $conn = ldapConnectBind();
+  my $suffix = getSuffixArg($conn);
+  
+  print join("\n", getSuffixAcisToList($conn, $suffix));
+  
+  ldapDisconnect($conn);  
+}
+
+sub getSuffixAcisToList {
+  my ($conn, $suffix) = @_;
+  
+  my $entry = getConfigObjectBySuffix($conn,$suffix,1);
+  $entry->dump if $verbose;
+  my @acis = $entry->get_value('olcAccess');
+  @acis = sort { getOrdinal($a) <=> getOrdinal($b) } @acis;
+  map { s/^{\d+}// } @acis;
+  return @acis;
+}
+
+sub getOrdinal {
+  if ($_[0] =~ /^{(\d+)}/) {
+    return $1;
+  } else {
+    return 0;
+  }
+}
+
+sub setSuffixAcis {  
+  my $conn = ldapConnectBind();
+  my $suffix = getSuffixArg($conn);
+  my @propvals = @ARGV;
+  
+  my @acis;
+  while (<>) {
+    chomp;
+    push @acis,$_;
+  }
+  
+  setSuffixAcisFromList($conn, $suffix, @acis);
+  
+  ldapDisconnect($conn);  
+}
+
+sub setSuffixAcisFromList {
+  my ($conn, $suffix, @acis) = @_;
+
+  my $entry = getConfigObjectBySuffix($conn,$suffix,1);
+  ldapModify($conn,$entry->dn,
+    replace => {
+      olcAccess => \@acis
+    },
+  );
+  
+}
+
+sub editSuffixAcis {
+  my $conn = ldapConnectBind();
+  my $suffix = getSuffixArg($conn);
+  
+  my @acis = getSuffixAcisToList($conn, $suffix);
+  my @newAcis = editLines(@acis);
+
+  if (@newAcis) {
+
+    @newAcis = grep { $_ !~ /^\s*$/ } @newAcis;
+    
+    if ($verbose) {  
+      print "Setting ACIs:\n";
+      print join("\n", @newAcis);
+    }
+
+    setSuffixAcisFromList($conn, $suffix, @newAcis);
+    
+  } else {
+    print "The editor output was empty. Not changing any ACIs\n";
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+
+sub getSuffixArg {
+  my ($conn) = @_;
+
+  my $suffix = shift @ARGV;
+  if (!$suffix) {
+    my @suffixes = getSuffixDns($conn);
+    if (!@suffixes) {
+      die("No suffixes configures\n");
+    }
+    if (scalar(@suffixes) > 1) {
+      die("More than one suffix configured. Please specify suffix name.\nAvailable Suffixes:\n".join("\n",@suffixes));
+    }
+    $suffix = shift @suffixes;
+  }
+  return $suffix;
+}
+
+sub listSuffixOverlays {  
+  my $conn = ldapConnectBind();
+  my $suffix = getSuffixArg($conn);
+  my $sentry = getConfigObjectBySuffix($conn,$suffix,1);
+  
+  my (@entries) = getConfigEntriesByDn($conn,$sentry->dn,"sub","(objectclass=olcOverlayConfig)");
+
+  foreach my $entry (@entries) {
+    my $olcOverlay = $entry->get_value('olcOverlay');
+    my ($objectClass) = grep { $_ ne "olcOverlayConfig" } $entry->get_value('objectClass');
+    print "$olcOverlay ($objectClass)\n";
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub getOverlayProp {
+  my $conn = ldapConnectBind();
+  my $suffix = getSuffixArg($conn);
+  my $overlayName = shift @ARGV;
+  if (!$overlayName) {
+    die("No overlay name specified\n");
+  }  
+  my $sentry = getConfigObjectBySuffix($conn,$suffix,1);
+  my $oentry = getOverlayEntry($conn,$overlayName,$suffix,$sentry,1);
+  
+  $oentry->dump if $verbose;
+  # Guesswork. TODO: work with schema here
+  
+  foreach my $attr ($oentry->attributes) {
+    if ($attr !~ /^olc/) { next; }
+    if ($attr eq "olcOverlay") { next; }
+    displayProp($oentry,$attr);
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub setOverlayProp {  
+  my $conn = ldapConnectBind();
+  my $suffix = getSuffixArg($conn);
+  my $overlayName = shift @ARGV;
+  if (!$overlayName) {
+    die("No overlay name specified\n");
+  }
+  my @propvals = @ARGV;
+  
+  my $sentry = getConfigObjectBySuffix($conn,$suffix,1);
+  my $oentry = getOverlayEntry($conn,$overlayName,$suffix,$sentry,1);
+  
+  my %replace = ();
+  my %add = ();
+  parsePropVals(\@propvals, \%replace, \%add);
+  
+  ldapModify($conn,$oentry->dn,
+    replace => \%replace,
+    add => \%add);
+  
+  ldapDisconnect($conn);  
+}
+
+sub addOverlay {  
+  my $conn = ldapConnectBind();
+  my $suffix = getSuffixArg($conn);
+  my $overlayName = shift @ARGV;
+  if (!$overlayName) {
+    die("No overlay name specified\n");
+  }
+  my $overlayClass = shift @ARGV;
+  if (!$overlayClass) {
+    $overlayClass = $overlayObjectClasses{$overlayName};
+  }
+  if (!$overlayClass) {
+    die("No overlay objectClass specified\n");
+  }
+  my @propvals = @ARGV;
+  
+  my $sentry = getConfigObjectBySuffix($conn,$suffix,1);
+  my $oentry = getOverlayEntry($conn,$overlayName,$suffix,$sentry,0);
+  if ($oentry) {
+    die("Overlay $overlayName already exists in suffix $suffix\n");
+  }
+  
+  my %replace = ();
+  my %add = ();
+  parsePropVals(\@propvals, \%replace, \%add);
+  
+  ldapAdd($conn, "olcOverlay=$overlayName,".$sentry->dn,
+    'objectClass' => [ 'olcOverlayConfig', $overlayClass ],
+    'olcOverlay' => $overlayName,
+    %replace,
+    %add);
+  
+  ldapDisconnect($conn);  
+}
+
+
+######### SUFFIX CREATE AND DELETE
+
+sub createSuffix {
+
+  my $suffix;
+  if ($ARGV[0] !~ /^-/) {
+    $suffix = shift @ARGV;
+  }
+  
+  my ($dbDirectory,$dbType,$rootDn,$rootPassword);
+  GetOptions (
+    "dbDir|B=s" => \$dbDirectory,
+    "dbType=s" => \$dbType,
+    "rootDn=s" => \$rootDn,
+    "rootPassword=s" => \$rootPassword,
+    ) or usage();
+
+  if (!defined($suffix)) {
+    $suffix = shift @ARGV;
+  }
+  if (!$suffix) {
+    die("No suffix name specified\n");
+  }
+  $dbDirectory = "/var/lib/ldap" unless $dbDirectory;
+  $rootDn = "cn=admin,".$suffix unless $rootDn;
+  $rootPassword = "secret" unless $rootPassword;
+  $dbType = "mdb" unless $dbType;
+  
+  my $dbconf = $databases->{$dbType};
+  if (!$dbconf) {
+    die("Unknown database type $dbType\n");
+  }
+  
+  my $conn = ldapConnectBind();
+  
+  my $entry = getConfigObjectBySuffix($conn,$suffix,0);
+  if ($entry) {
+    die("Suffix $suffix already exists\n");
+  }
+  
+  my $resp = $conn->search(
+    base => "cn=config",
+    filter => "(&(objectclass=olcDatabaseConfig)(olcDbDirectory=$dbDirectory))",
+    scope => "sub",
+    attrs => ['*','+'],
+  );
+  if ($resp->code) {
+    die("Error searching configuration object for database $dbDirectory: ".$resp->error." (".$resp->code.")\n");
+  }
+  if ($resp->count > 0) {
+    die("The database directory $dbDirectory is already used by database ".$resp->entry(0)->get_value('olcDatabase').
+            ", suffix ".$resp->entry(0)->get_value('olcSuffix')."\n");
+  }
+  
+  $entry = Net::LDAP::Entry->new("olcDatabase=$dbType,cn=config",
+    'objectClass' => ['olcDatabaseConfig', $dbconf->{objectClass}],
+    'olcDatabase' => $dbType,
+    'olcSuffix' => $suffix,
+    'olcDbDirectory' => $dbDirectory,
+    'olcRootDN' => $rootDn,
+    'olcRootPW' => hashPassword($rootPassword),
+    %{$dbconf->{initialConfig}},
+    'olcAccess' => replaceAdmin($rootDn, $defaultOlcSuffix{olcAccess}),
+  );
+  
+  $entry->dump if $verbose;
+
+  $resp = $conn->add($entry);
+  if ($resp->code) {
+    die("Error creating configuration object for suffix $suffix: ".$resp->error." (".$resp->code.")\n");
+  }
+  
+  ldapDisconnect($conn);
+}
+
+sub deleteSuffix {
+  my $suffix = shift @ARGV;
+  if (!$suffix) {
+    die("No suffix name specified\n");
+  }
+    
+  my $conn = ldapConnectBind();
+  
+  my $entry = getConfigObjectBySuffix($conn,$suffix,0);
+  if (!$entry) {
+    die("Suffix $suffix not found\n");
+  }
+  
+  ldapDelete($conn,$entry->dn);
+  
+  ldapDisconnect($conn);
+}
+
+
+sub replaceAdmin {
+  my ($rootDn, $valuesRef) = @_;  
+   my @res = map {my $x = $_; $x =~ s/%%%ROOT_DN%%%/$rootDn/g; $x} @$valuesRef;
+   return \@res;
+}
+
+sub listDatabases {  
+  my $conn = ldapConnectBind();
+  
+  my @entries = getConfigEntriesByObjectclass($conn,"cn=config","sub","olcDatabaseConfig");
+  print "DATABASE                  SUFFIX\n";
+  print "------------------------------------------------------\n";
+  foreach my $entry (@entries) {
+    my $database = $entry->get_value("olcDatabase");
+    my $suffix = $entry->get_value("olcSuffix") || "";
+    printf("%-25s %-40s\n",$database,$suffix);
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub listSuffixes {  
+  my $conn = ldapConnectBind();
+  
+  foreach my $suffix (getSuffixDns($conn)) {
+    print("$suffix\n");
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub getSuffixDns {
+  my ($conn) = @_;
+  
+  my @entries = getConfigEntriesByObjectclass($conn,"cn=config","sub","olcDatabaseConfig");
+  my @suffixes;
+  foreach my $entry (@entries) {
+    my $suffix = $entry->get_value("olcSuffix");
+    if ($suffix) {
+      push @suffixes,$suffix;
+    }
+  }
+  return @suffixes;
+}
+
+
+##### Schema
+
+sub listSchemas {  
+  my $conn = ldapConnectBind();
+    
+  foreach my $entry (getSchemaEntries($conn)) {
+    print $entry->get_value("cn");
+    if ($verbose) {
+      my @attrTypes = $entry->get_value("olcAttributeTypes");
+      my @objectClasses = $entry->get_value("olcObjectClasses");
+      print (" (".scalar(@attrTypes)." attribute types, ".scalar(@objectClasses)." object classes)");
+    }
+    print "\n";
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub addSchema {
+  my $schemaName = shift @ARGV;
+  my $schemaFilename = $filename;
+  print "schemaName=$schemaName, schemaFilename=$schemaFilename\n" if $debug;
+  my $schemaType = "schema";
+  if ($schemaFilename) {
+    my ($baseFileName, $dirs, $suffix) = fileparse($schemaFilename,"ldif","schema");
+    print ("schemaFilename=$schemaFilename, baseFileName=$baseFileName, dirs=$dirs, suffix=$suffix\n") if $debug;
+    $baseFileName = substr($baseFileName,0,-1);
+    $schemaType = $suffix;
+    if (!$schemaName) {
+      $schemaName = $baseFileName;
+    }
+  }
+  if (!$schemaName) {
+    die("Schema name not provided\n");
+  }
+  
+  my $schemaIndex = undef;
+  ($schemaName, $schemaIndex) = parseIndexedName($schemaName);
+  
+  print "schemaName=$schemaName, schemaIndex=$schemaIndex, schemaFilename=$schemaFilename, schemaType=$schemaType\n" if $debug;
+  
+  my $conn = ldapConnectBind();
+    
+  foreach my $entry (getSchemaEntries($conn)) {
+    my $entryCn = $entry->get_value("cn");
+    my ($entryName, $entryIndex) = parseIndexedName($entryCn);
+    if ($entryName eq $schemaName) {
+      ldapDisconnect($conn);
+      die("Schema $schemaName already present\n");
+    }
+    if ($schemaIndex && $schemaIndex eq $entryIndex) {
+      die("Index $schemaIndex already present (schema $entryName)\n");
+    }
+  }
+  
+  my $entry;
+  if ($schemaType eq "schema") {
+    # need to convert to LDIF
+    $entry = schema2ldif($schemaName, $schemaFilename);
+  } elsif ($schemaType eq "ldif") {
+    open(LDIF, $schemaFilename) or die("Cannot open $schemaFilename: $!\n");
+    $entry = parseLdifEntry(\*LDIF);
+  } else {
+    die ("Unknown schema type $schemaType\n");
+  }
+  
+  print ("Adding entry:\n".$entry->ldif."\n") if $debug;
+  
+  my $resp = $conn->add($entry);
+  if ($resp->code) {
+    ldapDisconnect($conn);
+    die("Error adding schema entry: ".$resp->error." (".$resp->code.")\n");
+  }
+  
+  print ("Added schema entry ".$entry->dn.", response code ".$resp->code."\n") if $debug;
+
+  ldapDisconnect($conn);  
+}
+
+sub schema2ldif {
+  my ($schemaName, $fileName) = @_;
+  
+  my ($baseFileName, $path, $suffix) = fileparse($0);
+  my $schema2ldifCommand = $path . "/schema2ldif -m -s '$schemaName'";
+  
+  print ("schema2ldifCommand=$schema2ldifCommand\n") if $debug;    
+  
+  my $pid = open3(\*WRITE, \*READ, \*ERR, $schema2ldifCommand);
+  
+  if ($fileName) {
+    open(SCHEMA,$fileName) or die("Cannot open $fileName: $!\n");
+    while (<SCHEMA>) {
+      print WRITE $_;
+    }
+    close(SCHEMA);
+  } else {
+    while (<STDIN>) {
+      print WRITE $_;
+    }
+  }
+  close(WRITE);
+    
+  select(undef,undef,undef,.5);
+  
+  my $entry = parseLdifEntry(\*READ);
+  
+  while(<ERR>) {
+    print STDERR;
+  }
+  
+  waitpid($pid, 1);
+  return $entry;
+}
+
+sub parseLdifEntry {
+  my ($fh) = @_;
+  
+  my $ldif = Net::LDAP::LDIF->new($fh);
+  my $entry;
+  while ( not $ldif->eof() ) {
+    if ( $ldif->error ( ) ) {
+      die("Error parsing LDIF: ".$ldif->error()."\n".$ldif->error_lines()."\n");
+     } else {
+      $entry = $ldif->read_entry();
+     }
+  }
+  $ldif->done ( );
+
+  return $entry;
+}
+
+sub deleteSchema {
+  my $schemaName = shift @ARGV;
+  if (!$schemaName) {
+    die("Schema name not provided\n");
+  }
+  
+  my $schemaIndex = undef;
+  ($schemaName, $schemaIndex) = parseIndexedName($schemaName);
+  
+  print "schemaName=$schemaName, schemaIndex=$schemaIndex\n" if $debug;
+  
+  my $conn = ldapConnectBind();
+    
+  my $schemaEntry = undef;
+  foreach my $entry (getSchemaEntries($conn)) {
+    my $entryCn = $entry->get_value("cn");
+    my ($entryName, $entryIndex) = parseIndexedName($entryCn);
+    if ($entryName eq $schemaName) {
+      if (defined $schemaIndex && $schemaIndex != $entryIndex) {
+        ldapDisconnect($conn);
+        die("Schema $schemaName present, but it does have index $entryIndex and not $schemaIndex\n");
+      }
+      $schemaEntry = $entry;
+      last;
+    }
+  }
+  
+  if (!$schemaEntry) {
+    die("Schema $schemaName does not exist\n");
+  }
+  
+  print ("Deleting entry:\n".$schemaEntry->ldif."\n") if $debug;
+
+  ldapDelete($conn, $schemaEntry->dn);
+
+  ldapDisconnect($conn);  
+}
+
+
+sub getSchemaEntries {
+  my ($conn) = @_;
+  
+  return getConfigEntriesByObjectclass($conn,"cn=schema,cn=config","one","olcSchemaConfig");
+}
+
+
+##### DSE, EXPORT, MODULES, etc.
+
+sub listModules {  
+  my $conn = ldapConnectBind();
+  
+  my ($entry) = getConfigEntriesByObjectclass($conn,"cn=config","sub","olcModuleList");
+  foreach my $module ($entry->get_value("olcModuleload")) {
+    print "$module\n";
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub addModule {  
+  my $module = shift @ARGV;
+  if (!$module) {
+    die("No module name specified\n");
+  }
+        
+  my $conn = ldapConnectBind();
+  
+  my ($entry) = getConfigEntriesByObjectclass($conn,"cn=config","sub","olcModuleList");
+  
+  if (!$entry) {
+    die("Cannot find module configuration entry (olcModuleList)");
+  }
+  
+  if (! grep { $_ =~ /^(\{\d+\})?$module$/ } $entry->get_value("olcModuleload")) {
+  
+    ldapModify($conn,$entry->dn,
+      add => { 'olcModuleload' => [ $module ] },
+    );
+  
+  } else {
+    print "Module $module already active in the server\n";
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub deleteModule {  
+  my $module = shift @ARGV;
+  if (!$module) {
+    die("No module name specified\n");
+  }
+        
+  my $conn = ldapConnectBind();
+  
+  my ($entry) = getConfigEntriesByObjectclass($conn,"cn=config","sub","olcModuleList");
+  
+  my @modids = grep { $_ =~ /^(\{\d+\})?$module$/ } $entry->get_value("olcModuleload");
+  if (! @modids) {
+  
+    print "Module $module not active in the server\n";
+    ldapModify($conn,$entry->dn,
+      add => { 'olcModuleload' => [ $module ] },
+    );
+  
+  } else {
+    ldapModify($conn,$entry->dn,
+      delete => { 'olcModuleload' => \@modids },
+    );    
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub dumpConfiguration {  
+  my $conn = ldapConnectBind();
+  
+  my $resp = $conn->search(
+    base => "cn=config",
+    filter => "(objectclass=*)",
+    scope => "sub",
+    attrs => ['*','+'],
+  );
+  if ($resp->code) {
+    die("Fetch configuratin (cn=config): ERROR: ".$resp->error." (".$resp->code.")\n");
+  }
+  
+  my $ldif;
+  if ($filename) {
+    $ldif = Net::LDAP::LDIF->new($filename, "w");
+  } else {
+    $ldif = Net::LDAP::LDIF->new(\*STDOUT, "w",
+      wrap => 1);
+  }  
+  $ldif->write_entry($resp->entries);  
+  $ldif->done;
+  
+  ldapDisconnect($conn);  
+}
+
+sub rootDse {
+  my $conn = ldapConnectBind();
+  my $arg = shift @ARGV || '';
+  
+  my $resp = $conn->search(
+    base => "",
+    filter => "(objectclass=*)",
+    scope => "base",
+    attrs => ['*','+'],
+  );
+  if ($resp->code) {
+    die("Fetch root DSE: ERROR: ".$resp->error." (".$resp->code.")\n");
+  }
+  my $rootDseEntry = $resp->entry(0);
+  if ($arg eq '--raw') {
+    $rootDseEntry->dump;
+  } else {
+    $rootDseEntry->dump if ($verbose);
+    my $version = $rootDseEntry->get_value("supportedLDAPVersion");
+    print("LDAP version $version\n");
+    my @suffixes = $rootDseEntry->get_value("namingContexts");
+    print("Suffixes:\n");
+    foreach my $suffix (@suffixes) { print ("  $suffix\n") };
+  }
+  
+  ldapDisconnect($conn);  
+}
+
+sub testConnection {
+  
+  my $conn = ldapConnect();
+  if ($uri) {
+    print "Connect to $uri: OK\n";
+  } else {
+    print "Connect to $hostname:$port: OK\n";
+  }
+  
+  my ($resp,$bindDesc) = ldapBind($conn,0);
+  if ($resp->code) {
+    print "Bind $bindDesc: ERROR: ".$resp->error." (".$resp->code.")\n";
+    exit(-1);
+  } else {
+    print "Bind $bindDesc: OK\n";
+  }
+  
+  my $dseResp = testFetchEntry($conn,"","base","root DSE");
+  my ($schemaDn) = $dseResp->entry->get_value('subschemaSubentry');
+  if (!$schemaDn) {
+    $schemaDn = "cn=schema";
+  }
+  testFetchEntry($conn,$schemaDn,"base","schema");
+  testFetchEntry($conn,"cn=config","sub","configuration entry");
+
+  # todo
+  
+  $resp = $conn->unbind;
+  if ($resp->code) {
+    print "Unbind: ERROR: ".$resp->error." (".$resp->code.")\n";
+    exit(-1);
+  } else {
+    print "Unbind: OK\n";
+  }
+  
+  $conn->disconnect;
+}
+
+sub testFetchEntry {
+  my ($conn,$dn,$scope,$entryName) = @_;
+  my $resp = $conn->search(
+    base => $dn,
+    filter => "(objectclass=*)",
+    scope => $scope,
+    attrs => ['*','+'],
+  );
+  if ($resp->code) {
+    print "Fetch $entryName (dn: $dn): ERROR: ".$resp->error." (".$resp->code.")\n";
+  } else {
+    print "Fetch $entryName (dn: $dn): OK";
+    if ($scope ne "base") { print " (".$resp->count." entries)"; }
+    print "\n";
+    if ($verbose) {
+      foreach my $entry ($resp->entries) { $entry->dump; }
+    }
+  }
+  return $resp;
+}
+
+sub getLogLevel {  
+  my $conn = ldapConnectBind();
+
+  my ($entry) = getConfigEntriesByDn($conn,"cn=config","base");
+  my (@loglevels) = $entry->get_value('olcLogLevel');
+  print "olcLogLevel : ".join(" ",@loglevels)."\n";
+
+  ldapDisconnect($conn);  
+}
+
+sub setLogLevel {
+  my (@newLevels) = @ARGV;
+  my $conn = ldapConnectBind();
+
+  my ($entry) = getConfigEntriesByDn($conn,"cn=config","base");
+#  my $loglevel = $entry->get_value('olcLogLevel');
+#  print "olcLogLevel : $loglevel\n";
+
+  ldapModify($conn,"cn=config",
+    replace => { 'olcLogLevel' => \@newLevels },
+  );
+
+  ldapDisconnect($conn);  
+}
+
+sub setTls {
+  my ($cacert,$cert,$key,$ciphersuite);
+  GetOptions (
+    "cacert=s" => \$cacert,
+    "cert=s" => \$cert,
+    "key=s" => \$key,
+    "ciphersuite=s" => \$ciphersuite,
+    ) or usage();
+  if (!$cacert) { die("No CA certificate file (cacert) specified\n"); }
+  if (!$cert) { die("No certificate file (cert) specified\n"); }
+  if (!$key) { die("No certificate key file (key) specified\n"); }
+
+  my $conn = ldapConnectBind();
+  
+  my $replace = { 
+      'olcTLSCACertificateFile' => $cacert,
+      'olcTLSCertificateFile' => $cert,
+      'olcTLSCertificateKeyFile' => $key,
+    };
+    
+  if ($ciphersuite) {
+    $replace->{olcTLSCipherSuite} = $ciphersuite;
+  } else {
+    my ($entry) = getConfigEntriesByDn($conn,"cn=config","base");
+    my ($olcTLSCipherSuite) = $entry->get_value('olcTLSCipherSuite');
+    if (!$olcTLSCipherSuite) {
+      $replace->{olcTLSCipherSuite} = $defaultTLSCipherSuite;
+    }
+  }
+  
+#  print(Dumper($replace)."\n");
+
+  ldapModify($conn,"cn=config",
+    replace => $replace,
+  );       
+
+  ldapDisconnect($conn);  
+}
+
+##### REPLICATION
+
+sub enableReplProvider {
+
+  my $suffix;
+  if ($ARGV[0] !~ /^-/) {
+    $suffix = shift @ARGV;
+  }
+  
+  my ($rpassword,$serverId);
+  GetOptions (
+    "rpassword=s" => \$rpassword,
+    "server-id|sid=s" => \$serverId,
+    ) or usage();
+
+  if (!defined($suffix)) {
+    $suffix = shift @ARGV;
+  }
+  if (!$suffix) {
+    die("No suffix name specified\n");
+  }
+    
+  my $conn = ldapConnectBind();
+
+  my ($centry) = getConfigEntriesByDn($conn,"cn=config","base");
+  my $olcServerId = $centry->get_value('olcServerID');
+  if (defined $serverId) {
+    if (!defined($olcServerId)) {
+      ldapModify($conn,"cn=config",
+        add => {
+          olcServerID => $serverId,
+        });
+    }
+  } elsif (!defined($olcServerId)) {
+    print("Note: server ID is not set\n");
+  }
+  
+  my $suffixEntry = getConfigObjectBySuffix($conn,$suffix,0);
+  if (!$suffixEntry) {
+    die("Suffix $suffix does not exists\n");
+  }
+  
+  enableModuleLoad($conn,'syncprov');
+  
+  my $rmDn = setupReplicationManager($conn,$suffix,$rpassword);
+  setupReplicationProviderACLsAndIndexes($conn,$suffix,$suffixEntry,$rmDn);
+  setupSyncprovOverlay($conn,$suffix,$suffixEntry);
+  
+  ldapDisconnect($conn);
+}
+
+
+sub getReplProvider {
+  my $suffix;
+  if ($ARGV[0] !~ /^-/) {
+    $suffix = shift @ARGV;
+  }
+  
+  my $conn = ldapConnectBind();
+ 
+  my ($centry) = getConfigEntriesByDn($conn,"cn=config","base");
+  my $serverId = $centry->get_value('olcServerID');
+  if (defined($serverId)) {
+    print "Server ID set: $serverId\n";
+  } else {
+    print "Server ID NOT set\n";
+  }
+  
+  my $mentry = getModuleLoadEntry($conn,'syncprov',0);
+  if ($mentry) {
+    print "Module syncProv loaded\n";
+  } else {
+    print "Module syncProv NOT loaded\n";
+  }
+  
+  if ($suffix) {
+    print "Replication configuration for $suffix:\n";
+    my $rmDn = findReplicationManager($conn,$suffix);
+    if ($rmDn) {
+      print "  Replication manager: $rmDn.\n";
+    } else {
+      print "  No replication manager entry\n";
+      $rmDn = "$defaultReplicationManagerNamingAttribute=$defaultReplicationManagerName,$suffix";
+    }
+    
+    my $sentry = getConfigObjectBySuffix($conn,$suffix,1);
+    my @acls = $sentry->get_value('olcAccess');
+    my (@good,@bad);
+    foreach my $acl (@acls) {
+      if ($acl =~ / by dn="$rmDn" read/ || $acl =~ / by \* read/) {
+        push @good,$acl;
+      } else {
+        push @bad,$acl;
+      }
+    }
+    if (!@bad) {
+      print("  replication ACL entries present\n");
+    } elsif (!@good) {
+      print("  replication ACL entries NOT present\n");
+    } else {
+      print("  replication ACL entries partially present. Wrong entries:\n");
+      foreach my $acl (@bad) {
+        print("    $acl\n");
+      }
+    }
+      
+    my @indexes = $sentry->get_value('olcDbIndex'); 
+    my @missingIndexes;
+    foreach my $rIndex (@replicationProviderIndexes) {
+      if (!(grep {$_ eq $rIndex} @indexes)) {
+        push @missingIndexes,$rIndex;
+      }
+    }
+    if (@missingIndexes) {
+      print("  some replication indexes missing:\n");
+      for my $index (@missingIndexes) {
+        print("    $index\n");
+      }
+    } else {
+      print("  replication indexes present\n");
+    }
+    
+    my $oentry = getOverlayEntry($conn,'syncprov',$suffix,$sentry,0);
+    if ($oentry) {
+      print("  syncprov overlay configured\n");
+      print("    checkpoint: ".$oentry->get_value('olcSpCheckpoint')."\n");
+      print("    session log: ".$oentry->get_value('olcSpSessionlog')."\n");
+    } else {
+      print("  syncprov overlay NOT configured\n");
+    }
+      
+    
+  }
+  
+  ldapDisconnect($conn);
+}
+
+sub findReplicationManager {
+  my ($conn, $suffix) = @_;
+  
+  my $resp = $conn->search(
+    base => $suffix,
+    filter => "(&(objectclass=simpleSecurityObject)($defaultReplicationManagerNamingAttribute=$defaultReplicationManagerName))",
+    scope => "sub",
+  );
+  if ($resp->code) {
+    die("Error searching for replication manager in $suffix: ".$resp->error." (".$resp->code.")\n");
+  }
+  if ($resp->count == 0) {
+    return undef;
+  } else {
+    return $resp->entry(0)->dn;
+  }
+}
+
+sub setupReplicationManager {
+  my ($conn, $suffix, $rpassword) = @_;
+  
+  my $rmdn = findReplicationManager($conn,$suffix);
+  
+  if ($rmdn) {
+    return $rmdn;
+  } else {
+    # No replication manager. We need to create it.
+    my $replicationManagerDn = "$defaultReplicationManagerNamingAttribute=$defaultReplicationManagerName,$suffix";
+    # WARNING! This is dangerous. Just for testing. ganerate the password later.
+    my $password = $rpassword || $defaultReplicationManagerPassword;
+    ldapAdd($conn,$replicationManagerDn,
+      'objectClass' => [ 'simpleSecurityObject', 'organizationalRole' ],
+      $defaultReplicationManagerNamingAttribute => $defaultReplicationManagerName,
+      'description' => 'Replication Manager',
+      'userPassword' => hashPassword($password),
+    );
+    return $replicationManagerDn;
+  }
+}
+
+sub setupReplicationProviderACLsAndIndexes {
+  my ($conn,$suffix,$suffixEntry,$rmDn) = @_;
+  
+  my %replace = ();
+  
+  my @acls = $suffixEntry->get_value('olcAccess');
+  my $changed = aclAddReadEverywhere(\@acls,$rmDn);
+#  print "Post-processed ACLS ($changed):\n".Dumper(\@acls)."\n";
+  if ($changed) {
+    $replace{olcAccess} = \@acls;
+  }
+  
+  my (@indexes) = $suffixEntry->get_value('olcDbIndex');
+  $changed = addToList(\@indexes, @replicationProviderIndexes);
+  if ($changed) {
+    $replace{olcDbIndex} = \@indexes;
+  }
+  
+  if (%replace) {
+    ldapModify($conn,$suffixEntry->dn,
+      replace => \%replace);
+  }
+  
+}
+
+sub aclAddReadEverywhere {
+  my ($aclsref, $rmDn) = @_;
+  
+  my $changed = 0;
+  foreach my $acl (@$aclsref) {
+    if ($acl !~ / by dn="$rmDn" read/ && $acl !~ / by \* read/) {
+      if ($acl =~ s/ by / by dn="$rmDn" read by /) {
+        $changed = 1;
+      }
+    }
+  }
+  return $changed;
+}
+
+sub setupSyncprovOverlay {
+  my ($conn,$suffix,$sentry) = @_;
+  
+  my $oentry = getOverlayEntry($conn,'syncprov',$suffix,$sentry,0);
+  if (!$oentry) {
+    ldapAdd($conn, "olcOverlay=syncprov,".$sentry->dn,
+      'objectClass' => [ 'olcOverlayConfig', 'olcSyncProvConfig' ],
+      'olcOverlay' => 'syncprov',
+      %defaultSyncprovOlcConfig);
+  }    
+}
+
+sub enableReplConsumer {
+
+  my $suffix;
+  if ($ARGV[0] !~ /^-/) {
+    $suffix = shift @ARGV;
+  }
+  
+  my ($optReadOnly,$providerUri,$rid,$rmDn,$rmPassword,$replType);
+  GetOptions (
+    "provider-uri|P=s" => \$providerUri,
+    "rid=s" => \$rid,
+    "read-only" => \$optReadOnly,
+    ) or usage();
+
+  if (!defined($suffix)) {
+    $suffix = shift @ARGV;
+  }
+  if (!$suffix) {
+    die("No suffix name specified\n");
+  }
+    
+  my $conn = ldapConnectBind();
+  
+  my $suffixEntry = getConfigObjectBySuffix($conn,$suffix,0);
+  if (!$suffixEntry) {
+    die("Suffix $suffix does not exists\n");
+  }
+  
+  my $olcSyncrepl = $suffixEntry->get_value('olcSyncrepl');
+  if ($olcSyncrepl) {
+    die("Replication consumer already enabled for suffix $suffix\n");
+  }
+  
+  if (!$providerUri) {
+    die("Replication provider URI not specified\n");
+  }
+
+  if (!$rid) {
+    die("Replica ID not specified\n");
+  }
+  
+  setupReplicationConsumerIndexes($conn,$suffix,$suffixEntry);
+
+  if (!$rmDn) {
+    $rmDn = "$defaultReplicationManagerNamingAttribute=$defaultReplicationManagerName,$suffix";
+  }
+  if (!$rmPassword) {
+    $rmPassword = $defaultReplicationManagerPassword;
+  }
+  if (!$replType) {
+    $replType = "refreshAndPersist";
+  }
+
+  my %syncReplConf = (
+    rid => $rid,
+    provider => dquote($providerUri),
+    type => $replType,
+    searchbase => dquote($suffix),
+    bindmethod => 'simple',
+    binddn => dquote($rmDn),
+    credentials => $rmPassword,
+    schemachecking => "off",
+    retry => dquote("5 5 300 5"),
+    timeout => 1,
+  );
+
+  my $syncreplConfString = createSyncreplConfString(%syncReplConf);
+
+  print "SYNCREPL: $syncreplConfString\n";
+
+#  ldapModify($conn,$suffixEntry->dn,
+#    add => {
+#      olcSyncrepl => $syncreplConfString,
+#    });
+  
+  ldapDisconnect($conn);
+}
+
+sub createSyncreplConfString {
+  my (%conf) = @_;
+  
+  my $s = "";
+  foreach my $k (@syncreplConfOrder) {
+    if (exists $conf{$k}) {
+      if ($s) { $s .= " " }
+      $s .= $k."=".$conf{$k};
+    }
+  }
+
+  foreach my $k (keys %conf) {
+    if (!(grep{$_ eq $k} @syncreplConfOrder)) {
+      if ($s) { $s .= " " }
+      $s .= $k."=".$conf{$k};
+    }
+  }
+  
+  return $s;
+}
+
+sub setupReplicationConsumerIndexes {
+  my ($conn,$suffix,$suffixEntry,$rmDn) = @_;
+  
+  my %replace = ();
+  
+  my (@indexes) = $suffixEntry->get_value('olcDbIndex');
+  my $changed = addToList(\@indexes, @replicationConsumerIndexes);
+  if ($changed) {
+    $replace{olcDbIndex} = \@indexes;
+  }
+  
+  if (%replace) {
+    ldapModify($conn,$suffixEntry->dn,
+      replace => \%replace);
+  }
+  
+sub disableReplConsumer {
+  # TODO
+} 
+
+sub getReplConsumer {
+  # TODO
+} 
+
+
+}
+
+
+##### UTIL functions
+
+
+sub getConfigObjectBySuffix {
+  my ($conn,$suffix,$die) = @_;
+  
+  my $resp = $conn->search(
+    base => "cn=config",
+    filter => "(&(objectclass=olcDatabaseConfig)(olcSuffix=$suffix))",
+    scope => "sub",
+    attrs => ['*','+'],
+  );
+  if ($die && $resp->count == 0) {
+    die("Suffix $suffix not found\n");
+  }
+  if ($resp->code) {
+    die("Error fetching configuration object for suffix $suffix: ".$resp->error." (".$resp->code.")\n");
+  }
+  
+  return $resp->entry(0);
+}
+
+sub getModuleLoadEntry {
+  my ($conn,$moduleName,$die) = @_;
+  
+  my (@entries) = getConfigEntriesByDn($conn,"cn=config","sub","(objectclass=olcModuleList)");
+  
+  foreach my $entry (@entries) {
+    my (@moduleLoads) = $entry->get_value('olcModuleLoad');
+    foreach my $moduleLoad (@moduleLoads) {
+      if ($moduleLoad =~ /^\{\d+\}$moduleName$/) {
+        return $entry;
+      }
+    }
+  }
+  
+  if ($die) {
+    die("Module load for module $moduleName not found\n");
+  }
+  
+  return undef;
+}
+
+sub enableModuleLoad {
+  my ($conn,$moduleName) = @_;
+  
+  my $mentry = getModuleLoadEntry($conn,$moduleName,0);
+  if (!$mentry) {
+    ldapModify($conn,'cn=module{0},cn=config',
+      add => {
+        olcModuleLoad => $moduleName,
+      });
+  }
+}
+
+sub getOverlayEntry {
+  my ($conn,$overlayName,$suffix,$sentry,$die) = @_;
+
+  my (@entries) = getConfigEntriesByDn($conn,$sentry->dn,"sub","(objectclass=olcOverlayConfig)");
+
+  foreach my $entry (@entries) {
+    my $olcOverlay = $entry->get_value('olcOverlay');
+    if ($olcOverlay =~ /^\{\d+\}$overlayName$/) {
+      return $entry;
+    }
+  }
+  
+  if ($die) {
+    die("Entry for overlay $overlayName in suffix $suffix not found\n");
+  }
+  
+  return undef;
+
+}
+
+sub getConfigEntriesByDn {
+  my ($conn,$dn,$scope,$filter) = @_;
+  
+  $filter = "(objectclass=*)" unless $filter;
+  
+  my $resp = $conn->search(
+    base => $dn,
+    filter => $filter,
+    scope => $scope,
+    attrs => ['*','+'],
+  );
+  if ($resp->code) {
+    die("Fetch configuration ($dn): ERROR: ".$resp->error." (".$resp->code.")\n");
+  }
+  
+  return $resp->entries;
+}
+
+sub getConfigEntriesByObjectclass {
+  my ($conn,$dn,$scope,$objectclass) = @_;
+  
+  my $resp = $conn->search(
+    base => $dn,
+    filter => "(objectclass=$objectclass)",
+    scope => $scope,
+    attrs => ['*','+'],
+  );
+  if ($resp->code) {
+    die("Fetch configuration ($dn, objectclass $objectclass): ERROR: ".$resp->error." (".$resp->code.")\n");
+  }
+  
+  return $resp->entries;
+}
+
+sub addToList {
+  my ($listref, @vals) = @_;
+  
+  my $changed = 0;
+  foreach my $val (@vals) {
+    if (!(grep {$_ eq $val} @$listref)) {
+      push @$listref,$val;
+      $changed = 1;
+    }
+  }
+  return $changed;
+}
+
+sub dquote {
+  return map {'"'.$_.'"'} @_;
+}
+
+sub hashPassword {
+  my ($clearPassword) = @_;
+  my $salt = generateSalt();
+  my $hash = "{SSHA}".encode_base64(sha1($clearPassword.$salt).$salt, "");
+  return $hash;
+}
+
+sub generateSalt {
+  return join('',map {$saltChars[rand(64)]} (1..4));
+}
+
+sub parseIndexedName {
+  my ($val) = @_;
+  if ($val =~ /^{(\d+)}/) {
+    return ($', $1);
+  } else {
+    return ($val, undef);
+  }
+}
+
+sub editLines {
+  my (@lines) = @_;
+  
+  my $fh = new File::Temp();
+  my $fname = $fh->filename;
+  print $fh join("\n", @lines);
+  $fh->close();
+  my $editor = $ENV{EDITOR} || 'vi';
+  system($editor, $fname);
+  open $fh, '<', $fname or die "Can't open temp file: $!";
+  my @newLines;
+  while (<$fh>) {
+    chomp;
+    push @newLines, $_;
+  }
+  $fh->close();
+  return @newLines;
+}
+
+####### LDAP functions
+
+sub ldapConnect {
+  my $conn;
+  if ($uri) {
+    $conn = Net::LDAP->new($uri) or die("Error connecting to $uri: ".$@."\n");
+  } else {
+   $conn = Net::LDAP->new($hostname,
+              port => $port,
+          ) or die("Error connecting to $hostname:$port: ".$@."\n");
+  }
+  return $conn;
+}
+
+sub ldapBind {
+  my ($conn,$die) = @_;
+  
+  my $resp;
+  my $desc;
+  if ($bindDn) {
+    $desc = "$bindDn (simple bind)";
+    print "Binding to $bindDn with simple bind\n" if $verbose;
+    $resp = $conn->bind($bindDn,
+      password => $bindPassword,
+    );
+  } elsif ($bindSaslMechanism) {
+    $desc = "(SASL $bindSaslMechanism)";
+    my $sasl = Authen::SASL->new(mechanism => $bindSaslMechanism);
+    my $saslArg = $sasl;
+    if ($bindSaslMechanism eq "EXTERNAL") {
+      $saslArg = $sasl->client_new('ldap', 'localhost');
+    }
+    print "Binding to $bindDn with SASL mechanism $bindSaslMechanism\n" if $verbose;
+    $resp = $conn->bind($bindDn,
+      sasl => $saslArg,
+    );
+  } else {
+    $desc = "(anonymous bind)";
+    print "Binding as anonymous\n" if $verbose;
+    $resp = $conn->bind();
+  }
+  if ($die && $resp->code) {
+    die("Error binding as $desc: ".$resp->error." (".$resp->code.")\n");
+  }
+  return ($resp,$desc);
+}
+
+sub ldapConnectBind {
+    my $conn = ldapConnect();
+  ldapBind($conn,1);
+  return $conn;
+}
+
+sub ldapDisconnect {
+  my ($conn) = @_;
+  
+  my $resp = $conn->unbind;
+  if ($resp->code) {
+    die("Unbind: ERROR: ".$resp->error." (".$resp->code.")\n");
+  }
+  
+  $conn->disconnect;  
+}
+
+sub ldapAdd {
+  my ($conn,$dn,%attrs) = @_;
+
+  my $entry = Net::LDAP::Entry->new($dn, %attrs);
+  
+  if ($verbose) {
+    print "Adding entry:\n";
+    $entry->dump;
+  }
+  
+  my $resp = $conn->add($entry);
+  if ($resp->code) {
+    die("Error adding $dn: ".$resp->error." (".$resp->code.")\n");
+  }        
+}
+
+sub ldapModify {
+  my ($conn,$dn,%args) = @_;
+ 
+  my $resp = $conn->modify($dn,%args);
+  if ($resp->code) {
+    die("Error modyfying $dn: ".$resp->error." (".$resp->code.")\n");
+  }        
+}
+
+sub ldapDelete {
+  my ($conn,$dn) = @_;
+ 
+  my $resp = $conn->delete($dn);
+  if ($resp->code) {
+    die("Error deleting $dn: ".$resp->error." (".$resp->code.")\n");
+  }        
+}
+
+### USAGE and DOCUMENTATION
+
+sub usage {
+  pod2usage(-verbose => 2);
+  exit(1);
+}
+
+sub man {
+  pod2usage(-verbose => 3);
+  exit(0);
+}
+
+__END__
+
+=head1 NAME
+
+slapdconf - a command-line tool to configure running OpenLDAP instance.
+
+=head1 SYNOPSIS
+
+slapdconf [global options] command [command options]
+
+
+=head1 OPTIONS
+
+=head2 COMMANDS
+
+=over 8
+
+=item B<root-dse> [ I<--raw> ]
+
+Show directory root DSE entry (entry with dn="").
+
+=item B<test>
+
+Tests connection to the directory server and configuration availability.
+
+=item B<get-server-prop>
+
+Display server-wide configuration properties.
+
+=item B<set-server-prop> [+]I<propname>:I<propvalue>
+
+Set server-wide configuration property. If plus sign is specified before
+a property name then the value will be added to existing values. Otherwise
+the new value overwrites existing value.
+
+=item B<get-log-level>
+
+Display current server log level
+
+=item B<set-log-level> I<loglevel> [ I<loglevel> [ I<loglevel> ... ] ]
+
+Sets new server log level(s).
+
+=item B<dump-configuration>
+
+Dumps a complete server configuration.
+
+
+=item B<list-databases>
+
+List databases configured on the server.
+
+=item B<list-suffixes>
+
+List directory suffixes configured on the server.
+
+=item B<create-suffix> I<suffixDn> [ --dbDir | -B I<dbDirectory> ] [ --dbType I<dbType> ] [ --rootDn I<rootUserDn> ] [ --rootPassword I<rootUserPassword> ]
+
+Creates new directory suffix with an associated database.
+It will create empty database without any entry - even without a root entry. This needs to be populated.
+But it creates a default configuration for the suffix including root user and default ACLs. 
+Default root user: cn=admin,I<suffix>. Default root password: secret
+
+=item B<delete-suffix> I<suffix>
+
+Deletes an existing directory suffix together with an associated database and the data.
+NOTE: this is currently not supported operation in running OpenLDAP instance. Use the C<slapdadm> tool instead.
+
+=item B<get-suffix-prop> I<suffix>
+
+Display a suffix configuration properties
+
+=item B<set-suffix-prop> I<suffix> [+]I<propname>:I<propvalue>
+
+Sets suffix configuration property.
+If plus sign is specified before
+a property name then the value will be added to existing values. Otherwise
+the new value overwrites existing value.
+
+=item B<get-suffix-acis> I<suffix>
+
+Display ACIs configured for specified suffix
+
+=item B<set-suffix-acis> I<suffix> [ I<filename> ]
+
+Set suffix ACIs. The ACIs are read from STDIN or from the specified file. Each ACI should be provided on its own line.
+The 'olcAccess' attribute name should NOT be present. The operation replaces all ACIs previously defined for the suffix.
+This is the same format as produced by get-suffix-acis operation.
+
+=item B<edit-suffix-acis> I<suffix>
+
+Opens a text editor filled with the content of suffix ACIs. Lets user edit the ACIs and then replaces them on the server.
+
+=item B<set-tls> C<-cacert> I<ca-cartificate-file> C<-cert> I<server-certificate-file> C<-key> I<server-private-key-file>
+
+Applies configuration for TLS/SSL connection support.
+
+=item B<list-schemas>
+
+List the LDAP schemas that are applied to the server.
+
+=item B<add-schema> [ I<schemaName> ] [ -f I<filename> ]
+
+Load specified LDAP schema to the server. Both the OpenLDAP format
+(suffix *.schema) and LDIF format (suffix *.ldif) are supported.
+
+=item B<delete-schema> I<schemaName>
+
+Delete specified LDAP schema from the server.
+
+=item B<list-modules>
+
+Lists modules that are enabled on the server.
+
+=item B<add-module> I<modulename>
+
+Adds specified module to server configuration
+
+=item B<delete-module> I<modulename>
+
+Deletes specified module from server configuration. (May not be supported by the server yet)
+
+=item B<list-suffix-overlays> [ I<suffix> ]
+
+Lists overlays that are activated for the specified suffix.
+
+=item B<add-overlay> I<suffix> I<overlayName> I<overlayObjectClass> [ I<propname>:I<propvalue> ] ...
+
+Activates specified overlay for the specified suffix.
+
+=item B<get-overlay-prop> I<suffix> I<overlayName>
+
+Show overlay configuration parameters.
+
+=item B<set-overlay-prop> I<suffix> I<overlayName> I<propname>:I<propvalue>
+
+Set overlay configuration parameter.
+
+=item B<enable-repl-provider> I<suffix>
+
+Sets up the server and the suffix to enable replication in a provider role. It configures required modules,
+sets up replication manager user, modifies the ACLs and so on.
+
+=item B<disable-repl-provider> I<suffix>
+
+Un-configures the support for replication provider for a specified suffix.
+
+=item B<get-repl-provider> I<suffix>
+
+Displays the status of a replication provider setup for the specified suffix.
+
+=item B<enable-repl-consumer> I<suffix>
+
+Sets up the specified suffix as a replication consumer. It enables the overlay and configures
+replication from the provider.
+
+=item B<disable-repl-consumer> I<suffix>
+
+Un-configures the replication consumer setup for specified suffix.
+
+=item B<get-repl-consumer> I<suffix>
+
+Displays the status of a replication consumer setup for specified suffix.
+
+=item B<help>
+
+Displays command usage summary.
+
+=back
+
+=head2 GLOBAL OPTIONS
+
+=over 8
+
+=item [ B<-h> | B<--hostname> ] I<hostname>
+
+Specifies hostname of the LDAP server.
+
+=item [ B<-p> | B<--port> ] I<portnumber>
+
+Specifies port number of the LDAP server. Defaults to 389.
+
+=item [ B<-H> | B<--uri> ] I<URI>
+
+Specifies complete URI for LDAP server connection. ldap://, ldaps:// and ldapi:// URIs can be used.
+Defaults to C<ldapi:///>
+
+=item [ B<-D> | B<--bindDn> ] I<DN>
+
+Specifies DN which will be used for LDAP Bind operation.
+
+=item [ B<-w> | B<--bindPassword> ] I<password>
+
+Specifies password which will be used for LDAP Bind operation.
+
+=item [ B<-Y> | B<--saslMechanism> ] I<mech>
+
+Specifies a SASL mechanism to used for LDAP Bind operation.
+
+=item [ B<-v> | B<--verbose> ]
+
+Increases verbosity.
+
+=item B<--help>
+
+Displays help message.
+
+=back
+
+=head1 DESCRIPTION
+
+This command-line tool is used to configure a runnint OpenLDAP server instance.
+It uses LDAP protocol to change the cn=config subtree of an OpenLDAP server.
+The configuration changes are applied without a server restart.
+
+=head1 EXAMPLES
+
+  slapdconf -h myserver.example.com -D "uid=admin,ou=people,dc=example,dc=com" -w secret get-server-prop
+  
+  slapdconf -Y EXTERNAL list-suffixes
+  
+  slapdconf -Y EXTERNAL create-suffix dc=example,dc=com --dbDir /var/lib/ldap/dc=example,dc=com --rootPassword supersecret
+
+=head1 NOTES
+
+This is still work in progress. Please feel free to contribute.
+
+=head1 AUTHOR
+
+Radovan Semancik
+
+=head1 SEE ALSO
+
+C<slapdadm>
+
+=cut
