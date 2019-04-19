@@ -1,0 +1,8 @@
+# config/ldap.yml
+# LDAP server configuration settings
+development:
+  host: tier-demo-ldap
+  port: 389
+  base: ou=people,dc=example,dc=edu
+  admin: cn=admin,dc=example,dc=edu
+  pass: password
