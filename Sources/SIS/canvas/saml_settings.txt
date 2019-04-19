@@ -1,8 +1,0 @@
-------- do not use ---- IdP Metadata URL: https://babb-www.cs.wisc.edu/tier-demo-metadata.xml
-IdP Entity ID: https://localhost/idp/shibboleth
-Log On URL: https://localhost/idp/profile/SAML2/Redirect/SSO
-Cert Fingerprint: 67b3add4d6bd52c5d573b2843083cf39fb509a58
-Login Attribute: eduPersonPrincipalName
-Identifier Format: urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
-Auth Context: no value
-JIT Provisioning: not checked.
