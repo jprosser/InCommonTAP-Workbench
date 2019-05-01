@@ -36,5 +36,5 @@ To restart the containers after the initial startup and database setup, run
 
 The application will be available at http://localhost:3000. To add / modify
 users, go to http://localhost:3000/users. To add/modify courses, go to
-http://localhost:3000/courses.
+http://localhost:3000/courses. To enroll students in courses, use the "Edit" button on the users page. Set the checkboxes for the courses you want that student to be enrolled in.
 
