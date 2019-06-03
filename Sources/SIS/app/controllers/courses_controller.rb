@@ -30,6 +30,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
+		@course.publish_to_rabbit('NEW')
         format.html { redirect_to @course, notice: 'Course was successfully created.' }
         format.json { render :show, status: :created, location: @course }
       else
@@ -44,6 +45,7 @@ class CoursesController < ApplicationController
   def update
     respond_to do |format|
       if @course.update(course_params)
+		@course.publish_to_rabbit('UPDATE')
         format.html { redirect_to @course, notice: 'Course was successfully updated.' }
         format.json { render :show, status: :ok, location: @course }
       else
@@ -56,6 +58,7 @@ class CoursesController < ApplicationController
   # DELETE /courses/1
   # DELETE /courses/1.json
   def destroy
+    @course.publish_to_rabbit('DELETE')
     @course.destroy
     respond_to do |format|
       format.html { redirect_to courses_url, notice: 'Course was successfully destroyed.' }

@@ -18,3 +18,16 @@ services:
       - "3000:3000"
     depends_on:
       - sis-db
+      - sis-rabbit
+    environment:
+      - RABBITMQ_URI=amqp://tier-demo-rabbit
+  sis-rabbit:
+    image: rabbitmq:3-management
+    container_name: tier-demo-rabbit
+    ports:
+      - 4369:4369
+      - 5671:5671
+      - 5672:5672
+      - 15671:15671
+      - 15672:15672
+      - 25672:25672
