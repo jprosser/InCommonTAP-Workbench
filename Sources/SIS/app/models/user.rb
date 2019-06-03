@@ -48,6 +48,9 @@ class User < ApplicationRecord
 		
 		channel = rabbit_connection.create_channel
 
+		# Create the queue if it does not exist
+		channel.queue("sis.user", :exclusive => false)
+
 		# TODO: allow user to specify exchange in config
 		exchange = channel.default_exchange
 		
