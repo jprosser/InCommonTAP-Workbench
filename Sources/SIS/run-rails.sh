@@ -23,7 +23,10 @@ fi
 # Do not start if we did not bootstrap
 if [ ! -f /FIRSTRUN ]
 then
+    # HACK...delete the pid file that seems to stick around
+    rm -f /myapp/tmp/pids/server.pid
     bundle exec rails s -p 3000 -b '0.0.0.0'
+    rm -f /myapp/tmp/pids/server.pid
 else
     echo "Bootstrap was not completed. Not starting..."
 fi
