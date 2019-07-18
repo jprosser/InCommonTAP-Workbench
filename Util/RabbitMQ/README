@@ -1,0 +1,11 @@
+# This builds a RabbitMQ instance
+# based on the tier/rabbitmq image
+# with supporting configuration
+# for both the midPoint complex demo
+# and for the TIER demo Source of 
+# Record applications for HR and
+# SIS.
+
+# A docker-compose file is included
+# here for bringing up the rabbitmq
+# instance as a standalone container.
