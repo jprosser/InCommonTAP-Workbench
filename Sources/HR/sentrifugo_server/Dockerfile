@@ -19,13 +19,13 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update   && apt-get install -y  softw
 RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" >> /etc/apt/sources.list && echo "deb-src http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" >> /etc/apt/sourceis.list && apt-get update --allow-unauthenticated
 RUN cat /etc/apt/sources.list && ls -l /etc/apt/
 RUN apt-get  install -y --allow-unauthenticated apache2-bin libapache2-mod-php php-curl php-ldap php-mysql php-mcrypt \
-php-gd php-xml patch curl vim git mysql-client wget unzip lynx
+php-gd php-xml patch curl vim git mysql-client wget unzip lynx netcat
 
 RUN phpenmod mcrypt && phpenmod gd
 RUN a2enmod xml2enc && a2enmod rewrite
 
-RUN sed -i 's/variables_order = .*/variables_order = "EGPCS"/' /etc/php/7.2/apache2/php.ini
-RUN sed -i 's/variables_order = .*/variables_order = "EGPCS"/' /etc/php/7.2/cli/php.ini
+RUN sed -i 's/variables_order = .*/variables_order = "EGPCS"/' /etc/php/7.3/apache2/php.ini
+RUN sed -i 's/variables_order = .*/variables_order = "EGPCS"/' /etc/php/7.3/cli/php.ini
 
 RUN useradd --uid 1000 --gid 50 docker
 
