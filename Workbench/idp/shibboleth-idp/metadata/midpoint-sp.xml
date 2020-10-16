@@ -1,0 +1,71 @@
+<!--
+This is example metadata only. Do *NOT* supply it as is without review,
+and do *NOT* provide it in real time to your partners.
+ -->
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_57114916ca68943103854cb57a3a3b1c7c38bb81" entityID="midpointdemo-shibboleth">
+
+  <md:Extensions xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport">
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2009/xmldsig11#dsa-sha256"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+  </md:Extensions>
+
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:1.0:protocol">
+    <md:Extensions>
+      <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://localhost:8443/Shibboleth.sso/Login"/>
+      <idpdisc:DiscoveryResponse xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" Location="https://localhost:8443/Shibboleth.sso/Login" index="1"/>
+    </md:Extensions>
+    <md:KeyDescriptor>
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:KeyName>midpoint.sp.example.org</ds:KeyName>
+        <ds:X509Data>
+          <ds:X509SubjectName>CN=sptest.example.edu,O=Internet2/TIER,L=Ann Arbor,ST=MI,C=US</ds:X509SubjectName>
+          <ds:X509Certificate>MIID/TCCAmWgAwIBAgIJAJZqOL69C6nRMA0GCSqGSIb3DQEBCwUAMB0xGzAZBgNVBAMTEnNwdGVz
+dC5leGFtcGxlLmVkdTAeFw0xODEyMjAyMjM4NDhaFw0yODEyMTcyMjM4NDhaMB0xGzAZBgNVBAMT
+EnNwdGVzdC5leGFtcGxlLmVkdTCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBANJ1OC6Q
+l4te2/7PArBkuM/EF1NcQILv7bJaecJDGYBVoWgL0a2KQ0XMESusgkVmVjj/jcbtvwIiXI/6BEu8
+15OF6eSZIwxWdQBpeKbrWTbt07GiGgdXoXot6oMs5a9YXuWLt8pTXrFVMmwXU+ZfWJtuU8OIgm9e
+sAEIQBHvDVOJtdKdBMWJFa5nUzkaVvA0Fr8r+/FHUvSCnlKOMaUIfTgtoS9AQnaRQ1dVl39Z2KAh
+87JYvRIxvbaPaKgar2eGQ+PQD8rqsB5K5wgnADAxYM9Vo0YXSpPH+FvwN3EJgURUSEY2E0Jx8JOx
+368ERNLXx3kfnRxCiZRDkTZF9WP6lBnDwc1WXRwpVCDTRnF+SIh6IC1Bj/qpkpCD3nri7tycejoe
+AtVj1YZHWarf9iqdcLYOAWmeyGbFl3hjv6qcXnIfy1KyHLCAdIrg1TymLovXXKW09pEbVLdsHmLz
+0h+DxPs4FsinK2AQBMn16u8BJJ/+spCzIQ2QNPcGORh6XemBpQIDAQABo0AwPjAdBgNVHREEFjAU
+ghJzcHRlc3QuZXhhbXBsZS5lZHUwHQYDVR0OBBYEFPC8rkASWHQxrtCQ4wwtnsJRy6K5MA0GCSqG
+SIb3DQEBCwUAA4IBgQCks2nY7YzdIKV02NHD9STWD3yPtEwPYZZ3NBno0WW20rS6cU+fxFx37nY8
+ULve4cFQkLR8fOO44e1qIuTgLGCauSGTx/Ts/tbmZXbpGTwV7cjZDCfC7yEFAVrfQFOMNKeQEssu
+LFj+d4STGLorxsM+2YygdOgohJz0e3xOcmCNHqEuC9RbzrnLc/A4/mOHKwnwCCg71zA1/Ew9NUoR
+m2n8IfaONIUaMg9opNiHxX4eu3UFaaPmn/mInuWYYMXzbIbdlU/XhKvXrujWYWj7anTDWvGQmNEe
+csQH92SrO0pf+9WwcWUQTQiWUdq8/OxjXfzs1PrQnSlp0eizgcdKHDKbCUaSuK1i2wdxfEsu5sbZ
+AIW0+dXJ2IyzM+0sv2g4DOsXsnSvinGqjr82A54mXGSr7edhPdlQhILFkJfhTwLq+mjnyQSNe3s2
+4VNeGc76jbHIrkEWuA460QGqz1Fa2CsQo5SH1IkxNIKpBZWt+w2LdAza/NzYyDruY5IJCrZa9Qw=
+</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes128-gcm"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes192-gcm"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes256-gcm"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes192-cbc"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#rsa-oaep"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://localhost:8443/midpoint/auth/gui-default/mySamlSso/logout/alias/midpointdemo-shibbolet"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://localhost:8443/midpoint/auth/gui-default/mySamlSso/SSO/alias/midpointdemo-shibboleth" index="1"/>
+  </md:SPSSODescriptor>
+
+</md:EntityDescriptor>
