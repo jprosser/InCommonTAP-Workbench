@@ -34,7 +34,7 @@
         Note that while we default checkAddress to "false", this has a negative impact on the
         security of your site. Stealing sessions via cookie theft is much easier with this disabled.
         -->
-        <Sessions lifetime="28800" timeout="28800" relayState="ss:mem"
+        <Sessions lifetime="28800" timeout="28800" relayState="ss:mem" handlerURL="/grouperSSO/Shibboleth.sso"
                   checkAddress="false" handlerSSL="true" cookieProps="https">
 
             <!--

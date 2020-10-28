@@ -86,6 +86,9 @@ services:
        source: ./configs-and-secrets/grouper/shibboleth/idp-metadata.xml
        target: /etc/shibboleth/idp-metadata.xml
      - type: bind
+       source: ./configs-and-secrets/grouper/httpd/shib.conf
+       target: /etc/httpd/conf.d/shib.conf
+     - type: bind
        source: ./configs-and-secrets/grouper/httpd/host-cert.pem
        target: /etc/pki/tls/certs/host-cert.pem
      - type: bind
