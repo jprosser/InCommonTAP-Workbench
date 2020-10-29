@@ -1,4 +1,4 @@
-FROM tier/shib-idp:3.4.6_20191002
+FROM tier/shib-idp:latest
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>"
 
