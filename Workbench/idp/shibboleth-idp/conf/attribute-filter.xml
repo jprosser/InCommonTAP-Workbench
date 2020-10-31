@@ -23,4 +23,14 @@
 
     </AttributeFilterPolicy>
 
+    <AttributeFilterPolicy id="proxy">
+        <PolicyRequirementRule xsi:type="Requester" value="https://proxysp.example.org/shibboleth" />
+
+        <AttributeRule attributeID="eduPersonPrincipalName" permitAny="true" />
+
+        <AttributeRule attributeID="uid" permitAny="true" />
+
+        <AttributeRule attributeID="mail" permitAny="true" />
+
+    </AttributeFilterPolicy>
 </AttributeFilterPolicyGroup>
