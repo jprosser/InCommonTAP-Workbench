@@ -4,11 +4,13 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>"
 
 RUN yum install -y epel-release \
     && yum update -y \
-    && yum install -y 389-ds-base \
+    && yum install -y 389-ds-base phpMyAdmin phpldapadmin mod_ssl \
     && yum clean all \
     && rm -rf /var/cache/yum
 
 COPY container_files/seed-data/ /seed-data/
+COPY container_files/httpd/* /etc/httpd/conf.d/
+COPY container_files/etc/ /etc/
 
 RUN useradd ldapadmin \
     && rm -fr /var/lock /usr/lib/systemd/system \
@@ -23,6 +25,6 @@ RUN useradd ldapadmin \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     ldapadd -H ldap:/// -f /seed-data/data.ldif -x -D "cn=Directory Manager" -w password
 
-EXPOSE 389
+EXPOSE 389 443
 
-CMD rm -rf /var/lock/dirsrv/slapd-dir/server/* && /usr/sbin/ns-slapd -D /etc/dirsrv/slapd-dir && sleep infinity
+CMD rm -rf /var/lock/dirsrv/slapd-dir/server/* && /usr/sbin/ns-slapd -D /etc/dirsrv/slapd-dir && httpd -DFOREGROUND && sleep infinity

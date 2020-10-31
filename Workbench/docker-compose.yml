@@ -56,7 +56,7 @@ services:
         aliases:
          - grouper-ui
     ports:
-     - 4443:443
+     - 8443:443
     secrets:
      - g_database_password.txt
      - source: grouper.hibernate.properties
@@ -85,6 +85,9 @@ services:
      - type: bind
        source: ./configs-and-secrets/grouper/shibboleth/idp-metadata.xml
        target: /etc/shibboleth/idp-metadata.xml
+     - type: bind
+       source: ./configs-and-secrets/grouper/httpd/shib.conf
+       target: /etc/httpd/conf.d/shib.conf
      - type: bind
        source: ./configs-and-secrets/grouper/httpd/host-cert.pem
        target: /etc/pki/tls/certs/host-cert.pem
@@ -191,7 +194,7 @@ services:
     depends_on:
      - midpoint_data
     ports:
-     - 8443:443
+     - 10443:443
     environment:
      - ENV
      - USERTOKEN
@@ -242,7 +245,7 @@ services:
     networks:
      - net
     ports:
-     - 443:443
+     - 13443:443
 
   mq:
     build: ./mq/
@@ -255,6 +258,13 @@ services:
      - 15672:15672
     volumes:
      - mq:/var/lib/rabbitmq
+
+  webproxy:
+    build: ./webproxy/
+    networks:
+     - net
+    ports:
+     - 443:443
 
 networks:
   net:    
@@ -296,3 +306,4 @@ volumes:
   midpoint_mysql:
   midpoint_home:
   mq:
+
