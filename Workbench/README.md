@@ -7,3 +7,5 @@ $ docker-compose up --build
 ```
 
 Please see a detailed description [here](https://spaces.at.internet2.edu/display/MID/Complex+midPoint+integration+demo).
+
+NOTE: This environment works with Docker for Windows CE, but before cloning this repository, ensure that your git client on Windows does not translate LF line endings into CRLF line endings or the mq and grouper_daemon contains will not start.  This can be done using the command: 'git config --global core.autocrlf false'
