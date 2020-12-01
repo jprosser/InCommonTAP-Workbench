@@ -41,7 +41,10 @@ services:
        target: /opt/grouper/conf/grouper.client.properties
 
   grouper_ui:
-    build: ./grouper_ui/
+    build: 
+      context: ./grouper_ui/
+      args:
+        - CSPHOSTNAME
     command: bash -c "while ! curl -s grouper_data:3306 > /dev/null; do echo waiting for mysql on grouper_data to start; sleep 3; done; while ! curl -s ldap://directory:389 > /dev/null; do echo waiting for ldap on directory to start; sleep 3; done; exec ui"
     depends_on:
      - grouper_data
@@ -82,9 +85,6 @@ services:
      - type: bind
        source: ./configs-and-secrets/grouper/shibboleth/shibboleth2.xml
        target: /etc/shibboleth/shibboleth2.xml
-     - type: bind
-       source: ./configs-and-secrets/grouper/shibboleth/idp-metadata.xml
-       target: /etc/shibboleth/idp-metadata.xml
      - type: bind
        source: ./configs-and-secrets/grouper/httpd/shib.conf
        target: /etc/httpd/conf.d/shib.conf
@@ -235,7 +235,10 @@ services:
        target: /etc/pki/tls/certs/cachain.pem
 
   idp:
-    build: ./idp/
+    build: 
+      context: ./idp/
+      args:
+        - CSPHOSTNAME
     depends_on:
      - directory
     environment:
@@ -260,7 +263,10 @@ services:
      - mq:/var/lib/rabbitmq
 
   webproxy:
-    build: ./webproxy/
+    build: 
+      context: ./webproxy/
+      args:
+        - CSPHOSTNAME
     networks:
      - net
     ports:
