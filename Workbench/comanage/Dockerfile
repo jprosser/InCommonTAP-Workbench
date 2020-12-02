@@ -4,7 +4,7 @@ ENV COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=XXXXX
 ENV COMANAGE_REGISTRY_ADMIN_USERNAME=XXXX
 ENV COMANAGE_REGISTRY_DATASOURCE=Database/Mysql
 ENV COMANAGE_REGISTRY_DATABASE=registry
-ENV COMANAGE_REGISTRY_DATABASE_HOST=data
+ENV COMANAGE_REGISTRY_DATABASE_HOST=grouper_data
 ENV COMANAGE_REGISTRY_DATABASE_USER=root
 ENV COMANAGE_REGISTRY_DATABASE_USER_PASSWORD=
 ENV COMANAGE_REGISTRY_EMAIL_FROM=xxxx@example.edu
@@ -30,8 +30,19 @@ RUN yum -y update && yum -y install --setopt=tsflags=nodocs epel-release python-
 ARG maintainer=my
 ARG imagename=comanage
 ARG version=3.3.1
+ARG CSPHOSTNAME=localhost
+ENV CSPHOSTNAME=$CSPHOSTNAME
 
 LABEL Version=$version
 ENV VERSION=$version
+
+COPY container_files/shibboleth/idp-metadata.xml /etc/shibboleth/
+
+COPY container_files/system/setservername.sh /usr/local/bin/
+RUN chmod 755 /usr/local/bin/setservername.sh
+
+#set hostname
+RUN /usr/local/bin/setservername.sh
+
 
 ENV LD_LIBRARY_PATH=/opt/shibboleth/lib64
