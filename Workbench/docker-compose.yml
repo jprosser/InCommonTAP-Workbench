@@ -275,6 +275,14 @@ services:
     ports:
      - 443:443
 
+  comanage:
+    build: ./comanage/
+    networks:
+     - net
+    ports:
+     - 11443:443
+
+
 networks:
   net:    
     driver: bridge
