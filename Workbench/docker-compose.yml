@@ -233,6 +233,9 @@ services:
      - type: bind
        source: ./configs-and-secrets/midpoint/httpd/host-cert.pem
        target: /etc/pki/tls/certs/cachain.pem
+     - type: bind
+       source: ./midpoint_server/container_files/csv/source-hr.csv
+       target: /opt/midpoint/csv/source-hr.csv
 
   idp:
     build: 

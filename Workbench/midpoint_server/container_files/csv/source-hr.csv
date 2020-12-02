@@ -1,0 +1,5 @@
+uid,firstname,lastname,department,mail,validFrom,validTo
+hr.jsmith,John R,Smith,HR_SOR,xjsmith@example.com,2018-01-01,9999-12-31
+hr.aanderson,Alice,Anderson,HR_SOR,xaanderson@example.com,2016-03-15,9999-12-31
+hr.ejohnson,Ellen,Johnson,HR_SOR,xejohnson@example.com,2019-10-01,2019-12-31
+hr.rvasquez,Ron,Vasquez,HR_SOR,xrvasquez@example.com,2019-01-01,2019-10-31

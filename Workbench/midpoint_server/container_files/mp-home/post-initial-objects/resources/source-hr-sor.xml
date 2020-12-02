@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2019-2020 Evolveum and contributors
+  ~
+  ~ This work is dual-licensed under the Apache License 2.0
+  ~ and European Union Public License. See LICENSE file for details.
+  -->
+<objects xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
+    <resource oid="10000000-9999-9999-0000-a000ff000001">
+        <!-- Resource name. It will be displayed in GUI.  -->
+        <name>HR SOR Source</name>
+        <!-- Reference to the ICF CSV connector. -->
+        <connectorRef type="ConnectorType">
+            <filter>
+                <q:equal>
+                    <q:path>c:connectorType</q:path>
+                    <q:value>com.evolveum.polygon.connector.csv.CsvConnector</q:value>
+                </q:equal>
+            </filter>
+        </connectorRef>
+        <!-- Configuration section contains configuration of the connector,
+             such as hostnames and passwords -->
+        <connectorConfiguration>
+            <!-- Configuration specific for the CSV connector -->
+            <icfc:configurationProperties xmlns:icfcsv="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-csv/com.evolveum.polygon.connector.csv.CsvConnector">
+                <icfcsv:filePath>/opt/midpoint/csv/source-hr.csv</icfcsv:filePath>
+                <icfcsv:encoding>utf-8</icfcsv:encoding>
+                <icfcsv:quote>"</icfcsv:quote>
+                <icfcsv:fieldDelimiter>,</icfcsv:fieldDelimiter>
+                <icfcsv:uniqueAttribute>uid</icfcsv:uniqueAttribute>
+                <icfcsv:readOnly>true</icfcsv:readOnly>
+                <icfcsv:ignoreSurroundingSpaces>true</icfcsv:ignoreSurroundingSpaces>
+            </icfc:configurationProperties>
+            <!-- Generic ICF configuration -->
+        </connectorConfiguration>
+        <!-- Resource Schema Handling definition.
+             This part defines how the schema defined above will be used by
+             midPoint. It defines expressions and limitations for individual
+             schema attributes.
+
+             The expressions that describe both inbound and outbound flow of
+             the attributes are defined in this section.
+
+             This is the part where most of the customization takes place.
+        -->
+        <schemaHandling>
+            <!-- Definition of default account type.
+                 This is now the only account type that midPoint can work with. -->
+            <objectType>
+                <kind>account</kind>
+                <intent>default</intent>
+                <!-- Readable name for the account type -->
+                <displayName>Default Account</displayName>
+                <default>true</default>
+                <!-- Reference to the Resource Schema (see above) specifying
+                     object class for this account type -->
+                <objectClass>ri:AccountObjectClass</objectClass>
+                <attribute>
+                    <ref>ri:uid</ref>
+                    <limitations>
+                        <access>
+                            <read>true</read>
+                            <add>false</add>
+                            <modify>false</modify>
+                        </access>
+                    </limitations>
+                    <inbound>
+                        <target>
+                            <path>name</path>
+                        </target>
+                    </inbound>
+                    <inbound>
+                        <description>Assignment of HR SOR archetype</description>
+                        <strength>strong</strength>
+                        <expression>
+                            <assignmentTargetSearch>
+                                <targetType>c:ArchetypeType</targetType>
+                                <oid>9ea701a0-fefb-11e9-aa4a-6f55fba8896e</oid>
+                            </assignmentTargetSearch>
+                        </expression>
+                        <target>
+                            <path>assignment</path>
+                        </target>
+                    </inbound>
+                    <inbound>
+                        <description>Assignment of HR SOR organization</description>
+                        <strength>strong</strength>
+                        <expression>
+                            <assignmentTargetSearch>
+                                <targetType>c:OrgType</targetType>
+                                <oid>9938f92a-015e-11ea-97bc-a3be3b7d3f5f</oid>
+                            </assignmentTargetSearch>
+                        </expression>
+                        <target>
+                            <path>assignment</path>
+                        </target>
+                    </inbound>
+                    <inbound>
+                        <description>Assignment of role-ldap-basic role</description>
+                        <strength>strong</strength>
+                        <expression>
+                            <assignmentTargetSearch>
+                                <targetType>c:RoleType</targetType>
+                                <oid>c89f31dd-8d4f-4e0a-82cb-58ff9d8c1b2f</oid>
+                            </assignmentTargetSearch>
+                        </expression>
+                        <target>
+                            <path>assignment</path>
+                        </target>
+                    </inbound>
+                </attribute>
+                <attribute>
+                    <ref>ri:department</ref>
+                    <displayName>Department name</displayName>
+                    <limitations>
+                        <access>
+                            <read>true</read>
+                            <add>false</add>
+                            <modify>false</modify>
+                        </access>
+                    </limitations>
+                    <inbound>
+                        <target>
+                            <path>organizationalUnit</path>
+                            <!-- Range used to REPLACE instead of ADD the value (organizationalUnit is multi-value) -->
+                            <set>
+                                <predefined>all</predefined>
+                            </set>
+                        </target>
+                    </inbound>
+                </attribute>
+                <attribute>
+                    <ref>ri:firstname</ref>
+                    <displayName>First name</displayName>
+                    <limitations>
+                        <access>
+                            <read>true</read>
+                            <add>false</add>
+                            <modify>false</modify>
+                        </access>
+                    </limitations>
+                    <inbound>
+                        <target>
+                            <path>givenName</path>
+                        </target>
+                    </inbound>
+                </attribute>
+                <attribute>
+                    <ref>ri:lastname</ref>
+                    <displayName>Last name</displayName>
+                    <limitations>
+                        <access>
+                            <read>true</read>
+                            <add>false</add>
+                            <modify>false</modify>
+                        </access>
+                    </limitations>
+                    <inbound>
+                        <target>
+                            <path>familyName</path>
+                        </target>
+                    </inbound>
+                    <inbound>
+                        <source>
+                            <path>$projection/attributes/ri:firstname</path>
+                            <name>firstname</name>
+                        </source>
+                        <expression>
+                            <script>
+                                <code>basic.concatName(firstname, input)</code>
+                            </script>
+                        </expression>
+                        <target>
+                            <path>fullName</path>
+                        </target>
+                    </inbound>
+                </attribute>
+                <attribute>
+                    <ref>ri:mail</ref>
+                    <displayName>E-mail</displayName>
+                    <limitations>
+                        <access>
+                            <read>true</read>
+                            <add>false</add>
+                            <modify>false</modify>
+                        </access>
+                    </limitations>
+                    <inbound>
+                        <target>
+                            <path>emailAddress</path>
+                        </target>
+                    </inbound>
+                </attribute>
+                <attribute>
+                    <ref>ri:validFrom</ref>
+                    <displayName>Valid From</displayName>
+                    <limitations>
+                        <maxOccurs>1</maxOccurs>
+                        <access>
+                            <read>true</read>
+                            <add>false</add>
+                            <modify>false</modify>
+                        </access>
+                    </limitations>
+                </attribute>
+                <attribute>
+                    <ref>ri:validTo</ref>
+                    <displayName>Valid To</displayName>
+                    <limitations>
+                        <maxOccurs>1</maxOccurs>
+                        <access>
+                            <read>true</read>
+                            <add>false</add>
+                            <modify>false</modify>
+                        </access>
+                    </limitations>
+                </attribute>
+                <activation>
+                    <validFrom>
+                        <inbound>
+                            <source>
+                                <path>$projection/attributes/ri:validFrom</path>
+                            </source>
+                            <expression>
+                                <script>
+                                    <code>basic.parseDateTime("yyyy-MM-dd", validFrom)</code>
+                                </script>
+                            </expression>
+                        </inbound>
+                    </validFrom>
+                    <validTo>
+                        <inbound>
+                            <source>
+                                <path>$projection/attributes/ri:validTo</path>
+                            </source>
+                            <expression>
+                                <script>
+                                    <code>basic.parseDateTime("yyyy-MM-dd", validTo)</code>
+                                </script>
+                            </expression>
+                        </inbound>
+                    </validTo>
+                </activation>
+<!-- TODO MidPoint Basics Training, LAB 5-2: uncomment the following content -->
+
+                <credentials>
+                    <password>
+                        <inbound>
+                            <strength>weak</strength>
+                            <expression>
+                               <generate/>
+                            </expression>
+                        </inbound>
+                    </password>
+                </credentials>
+
+<!-- TODO MidPoint Basics Training, LAB 5-2: end of to-be-uncommented content -->
+            </objectType>
+        </schemaHandling>
+        <capabilities xmlns:cap="http://midpoint.evolveum.com/xml/ns/public/resource/capabilities-3">
+            <configured>
+                <cap:delete>
+                    <cap:enabled>false</cap:enabled>
+                </cap:delete>
+                <cap:update>
+                    <cap:enabled>false</cap:enabled>
+                </cap:update>
+                <cap:create>
+                    <cap:enabled>false</cap:enabled>
+                </cap:create>
+                <cap:countObjects>
+                    <cap:simulate>sequentialSearch</cap:simulate>
+                </cap:countObjects>
+            </configured>
+        </capabilities>
+        <synchronization>
+            <objectSynchronization>
+                <name>Default account</name>
+                <kind>account</kind>
+                <intent>default</intent>
+                <enabled>true</enabled>
+                <correlation>
+                    <q:description>
+	                    Correlation expression is a search query.
+	                    Following search query will look for users that have "name"
+	                    equal to the "uid" attribute of the account. 
+	                    The correlation rule by default looks for users, so it will not match
+	                    any other object type.
+	                </q:description>
+                    <q:equal>
+                        <q:path>name</q:path>
+                        <expression>
+                            <path>$projection/attributes/ri:uid</path>
+                        </expression>
+                    </q:equal>
+                </correlation>
+                <!-- Following section describes reactions to a situations.
+	                 The setting here assumes that this resource is authoritative,
+	                 therefore all accounts created on the resource should be
+	                 reflected as new users in IDM.
+	                 See http://wiki.evolveum.com/display/midPoint/Synchronization+Situations
+	             -->
+                <reaction>
+                    <situation>linked</situation>
+                    <synchronize>true</synchronize>
+                </reaction>
+                <reaction>
+                    <situation>deleted</situation>
+                    <synchronize>true</synchronize>
+                    <action>
+                        <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#unlink</handlerUri>
+                    </action>
+                </reaction>
+                <reaction>
+                    <situation>unlinked</situation>
+                    <synchronize>true</synchronize>
+                    <action>
+                        <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#link</handlerUri>
+                    </action>
+                </reaction>
+                <reaction>
+                    <situation>unmatched</situation>
+                    <synchronize>true</synchronize>
+                    <action>
+                        <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#addFocus</handlerUri>
+                    </action>
+                </reaction>
+            </objectSynchronization>
+        </synchronization>
+    </resource>
+</objects>
