@@ -169,11 +169,26 @@ services:
      - 13306:3306
     networks:
      - net
+        aliases:
+         - comanage-data
     volumes:
      - source_mysql:/var/lib/mysql
      - source_data:/var/lib/mysqlmounted
     environment:
      - CREATE_NEW_DATABASE=if_needed
+
+  comanage_data:
+    build: ./comanage_data
+    ports:
+     - 23306:3306
+    networks:
+     - net
+    volumes:
+     - comanage_mysql:/var/lib/mysql
+     - comanage_data:/var/lib/mysqlmounted
+    environment:
+     - CREATE_NEW_DATABASE=if_needed
+
 
   midpoint_data:
     image: tier/mariadb:mariadb10
