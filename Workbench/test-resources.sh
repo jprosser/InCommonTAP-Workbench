@@ -8,4 +8,5 @@ test_resource a343fc2e-3954-4034-ba1a-2b72c21e577a
 test_resource e417225d-8a08-46f3-9b5d-624990b52386
 test_resource fe805d13-481b-43ec-97d8-9d2df72cd38e
 test_resource 1eff65de-5bb6-483d-9edf-8cc2c2ee0233
+test_resource 10000000-9999-9999-0000-a000ff000001
 
