@@ -291,6 +291,11 @@ services:
 
   comanage:
     build: ./comanage/
+      args:
+        - CSPHOSTNAME
+    environment:
+     - ENV
+     - USERTOKEN
     networks:
      - net
     ports:
