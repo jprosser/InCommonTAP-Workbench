@@ -175,6 +175,20 @@ services:
     environment:
      - CREATE_NEW_DATABASE=if_needed
 
+  comanage_data:
+    build: ./comanage_data
+    ports:
+     - 23306:3306
+    networks:
+      net:
+        aliases:
+         - comanage-data
+    volumes:
+     - comanage_mysql:/var/lib/mysql
+     - comanage_data:/var/lib/mysqlmounted
+    environment:
+     - CREATE_NEW_DATABASE=if_needed
+
   midpoint_data:
     image: tier/mariadb:mariadb10
     ports:
@@ -274,7 +288,7 @@ services:
      - net
     ports:
      - 443:443
-
+     
   wordpress_server:
     build: ./wordpress_server/
     container_name: wordpress_server
@@ -299,7 +313,18 @@ services:
       - wordpress_data:/var/lib/mysql
     ports:
       - 3306
-
+  comanage:
+    build: 
+      context: ./comanage/
+      args:
+        - CSPHOSTNAME
+    environment:
+     - ENV
+     - USERTOKEN
+    networks:
+     - net
+    ports:
+     - 11443:443
 
 networks:
   net:    
@@ -334,6 +359,8 @@ secrets:
 volumes:
   grouper_data:
   source_data:
+  comanage_data:
+  comanage_mysql:
   source_mysql:
   target_data:
   ldap:
