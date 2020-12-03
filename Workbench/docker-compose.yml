@@ -169,8 +169,6 @@ services:
      - 13306:3306
     networks:
      - net
-        aliases:
-         - comanage-data
     volumes:
      - source_mysql:/var/lib/mysql
      - source_data:/var/lib/mysqlmounted
@@ -182,13 +180,14 @@ services:
     ports:
      - 23306:3306
     networks:
-     - net
+      net:
+        aliases:
+         - comanage-data
     volumes:
      - comanage_mysql:/var/lib/mysql
      - comanage_data:/var/lib/mysqlmounted
     environment:
      - CREATE_NEW_DATABASE=if_needed
-
 
   midpoint_data:
     image: tier/mariadb:mariadb10
@@ -331,6 +330,8 @@ secrets:
 volumes:
   grouper_data:
   source_data:
+  comanage_data:
+  comanage_mysql:
   source_mysql:
   target_data:
   ldap:
