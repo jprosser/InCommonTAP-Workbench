@@ -290,7 +290,13 @@ services:
      - 443:443
 
   comanage:
-    build: ./comanage/
+    build: 
+      context: ./comanage/
+      args:
+        - CSPHOSTNAME
+    environment:
+     - ENV
+     - USERTOKEN
     networks:
      - net
     ports:
