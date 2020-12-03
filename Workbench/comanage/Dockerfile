@@ -33,10 +33,10 @@ ENV COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=$CSPHOSTNAME
 LABEL Version=$version
 ENV VERSION=$version
 
-COPY container_files/shibboleth/idp-metadata.xml /etc/shibboleth/
+COPY container_files/shibboleth/* /etc/shibboleth/
 
 COPY container_files/system/setservername.sh /usr/local/bin/
-RUN chmod 755 /usr/local/bin/setservername.sh
+RUN chmod 755 /usr/local/bin/setservername.sh && rm -f /etc/httpd/conf.d/ssl.conf
 
 #set hostname
 RUN /usr/local/bin/setservername.sh
