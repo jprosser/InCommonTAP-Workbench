@@ -27,7 +27,7 @@ RUN yum -y update && yum -y install --setopt=tsflags=nodocs epel-release python-
 ARG maintainer=my
 ARG imagename=comanage
 ARG version=3.3.1
-ARG CSPHOSTNAME=localhost
+ARG CSPHOSTNAME
 ENV CSPHOSTNAME=$CSPHOSTNAME
 ENV COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=$CSPHOSTNAME
 
