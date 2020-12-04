@@ -338,9 +338,6 @@ services:
      - type: bind
        source: ./configs-and-secrets/comanage/shibboleth/sp-cert.pem
        target: /etc/shibboleth/sp-cert.pem
-     - type: bind
-       source: ./configs-and-secrets/midpoint/shibboleth/idp-metadata.xml
-       target: /etc/shibboleth/idp-metadata.xml
     secrets:
      - source: c_sp-key.pem
        target: shib_sp-key.pem
