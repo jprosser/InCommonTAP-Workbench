@@ -324,6 +324,8 @@ services:
      - USERTOKEN
      - SHIBBOLETH_SP_ENCRYPT_CERT=/etc/shibboleth/sp-cert.pem
      - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shib_sp-key.pem
+     - SHIBBOLETH_SP_SIGNING_CERT=/etc/shibboleth/sp-cert.pem
+     - SHIBBOLETH_SP_SIGNING_PRIVKEY=/run/secrets/shib_sp-key.pem
     networks:
      - net
     ports:
