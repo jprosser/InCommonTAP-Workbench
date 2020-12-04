@@ -322,7 +322,7 @@ services:
     environment:
      - ENV
      - USERTOKEN
-     - SHIBBOLETH_SP_ENCRYPT_CERT=
+     - SHIBBOLETH_SP_ENCRYPT_CERT=/etc/shibboleth/sp-cert.pem
      - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shib_sp-key.pem
     networks:
      - net
@@ -338,6 +338,9 @@ services:
      - type: bind
        source: ./configs-and-secrets/comanage/shibboleth/sp-cert.pem
        target: /etc/shibboleth/sp-cert.pem
+     - type: bind
+       source: ./configs-and-secrets/midpoint/shibboleth/idp-metadata.xml
+       target: /etc/shibboleth/idp-metadata.xml
     secrets:
      - source: c_sp-key.pem
        target: shib_sp-key.pem
