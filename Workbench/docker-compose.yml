@@ -313,6 +313,7 @@ services:
       - wordpress_data:/var/lib/mysql
     ports:
       - 3306
+
   comanage:
     build: 
       context: ./comanage/
@@ -325,6 +326,10 @@ services:
      - net
     ports:
      - 11443:443
+    volumes:
+     - type: bind
+       source: ./configs-and-secrets/comanage/shibboleth/shibboleth2.xml
+       target: /etc/shibboleth/shibboleth2.xml
 
 networks:
   net:    
