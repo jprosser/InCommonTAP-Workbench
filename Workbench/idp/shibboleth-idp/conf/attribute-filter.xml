@@ -15,6 +15,17 @@
         <AttributeRule attributeID="mail" permitAny="true" />
 
     </AttributeFilterPolicy>
+        
+    <AttributeFilterPolicy id="comanage">
+        <PolicyRequirementRule xsi:type="Requester" value="https://comanagedemo/shibboleth" />
+
+        <AttributeRule attributeID="eduPersonPrincipalName" permitAny="true" />
+
+        <AttributeRule attributeID="uid" permitAny="true" />
+
+        <AttributeRule attributeID="mail" permitAny="true" />
+
+    </AttributeFilterPolicy>
 
     <AttributeFilterPolicy id="midpoint">
         <PolicyRequirementRule xsi:type="Requester" value="midpointdemo-shibboleth" />
