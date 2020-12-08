@@ -344,6 +344,17 @@ services:
      - source: c_sp-key.pem
        target: shib_sp-key.pem
 
+  comanage-cron:
+    build: 
+      context: ./comanage_cron/
+      args:
+        - CSPHOSTNAME
+    environment:
+     - ENV
+     - USERTOKEN
+    networks:
+     - net
+
 networks:
   net:    
     driver: bridge

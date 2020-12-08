@@ -1,0 +1,4 @@
+* * * * *  /usr/local/bin/runcomangejob.sh 1
+* * * * *  /usr/local/bin/runcomangejob.sh 2 
+# Deprecated job to run expirations, syncorgsources, and groupvalidity tasks (until Registry v4.0.0)
+0 * * * *  /usr/local/bin/runcomangejob.sh
