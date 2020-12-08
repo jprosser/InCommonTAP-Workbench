@@ -7,5 +7,6 @@ echo "Waiting for the server to start up..."
 rabbitmqctl -t 30 wait $RABBITMQ_PID_FILE
 echo "OK, creating sampleQueue..."
 rabbitmqadmin declare queue name=sampleQueue
+rabbitmqctl change_password guest password
 echo "Done"
 touch $RABBITMQ_INIT_DONE_FILE
