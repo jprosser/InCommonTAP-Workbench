@@ -21,7 +21,7 @@ ENV COMANAGE_REGISTRY_EMAIL_HOST=smtp.example.edu
 #ENV SHIBBOLETH_SP_METADATA_PROVIDER_XML=sdf
 #ENV SHIBBOLETH_SP_SAMLDS_URL=thing
 
-RUN yum -y update && yum -y install --setopt=tsflags=nodocs epel-release python-pip && pip install awscli && pip install --upgrade pip
+RUN apt-get update
 
 ARG maintainer=my
 ARG imagename=comanage
