@@ -38,4 +38,6 @@ COPY --chown=root:root container_files/system/root-crontab /usr/local/etc
 RUN chmod 755 /usr/local/bin/runcomangejob.sh && \
     /usr/bin/crontab -u root /usr/local/etc/root-crontab
 
+ENV COMANAGE_REGISTRY_CRONTAB=/usr/local/etc/root-crontab
+
 
