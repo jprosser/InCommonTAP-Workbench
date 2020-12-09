@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+
+# ensure php is in the path
+export PATH=$PATH:/usr/local/bin
 
 if [ "$#" -ne 1 ]; 
     then 
