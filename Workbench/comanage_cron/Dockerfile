@@ -34,8 +34,10 @@ LABEL Version=$version
 ENV VERSION=$version
 
 COPY container_files/system/runcomangejob.sh /usr/local/bin/
-COPY --chown=root:root container_files/system/root-crontab /usr/local/etc
-RUN chmod 755 /usr/local/bin/runcomangejob.sh 
+COPY --chown=www-data:www-data container_files/system/root-crontab /usr/local/etc
+RUN chmod 755 /usr/local/bin/runcomangejob.sh && \
+    mkdir -p /srv/comanage-registry/app/tmp && \
+    chown -R www-data:www-data /srv/comanage-registry/app/tmp
 #&& \
 #    /usr/bin/crontab -u root /usr/local/etc/root-crontab
 
