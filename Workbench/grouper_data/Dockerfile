@@ -8,7 +8,7 @@ RUN yum install -y epel-release \
     && yum clean all \
     && rm -rf /var/cache/yum
 
-COPY container_files/conf/ /opt/grouper/grouper.apiBinary/conf/
+COPY container_files/conf/ /opt/grouper/grouperWebapp/WEB-INF/classes/
 
 RUN ln -s /usr/bin/resolveip /usr/libexec/resolveip
 
@@ -29,7 +29,7 @@ RUN mysql_install_db \
 
 RUN (mysqld_safe & ) \
     && while ! curl -s localhost:3306 > /dev/null; do echo waiting for mysqld to start; sleep 1; done; \
-    bin/gsh -registry -check -runscript -noprompt
+    /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh -registry -check -runscript -noprompt
 
 EXPOSE 3306
 
