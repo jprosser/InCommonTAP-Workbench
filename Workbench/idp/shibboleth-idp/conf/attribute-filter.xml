@@ -7,41 +7,27 @@
     <!-- Release some attributes to an SP. -->
     <AttributeFilterPolicy id="grouper">
         <PolicyRequirementRule xsi:type="Requester" value="https://grouperdemo/shibboleth" />
-
         <AttributeRule attributeID="eduPersonPrincipalName" permitAny="true" />
-
         <AttributeRule attributeID="uid" permitAny="true" />
-
         <AttributeRule attributeID="mail" permitAny="true" />
-
     </AttributeFilterPolicy>
         
     <AttributeFilterPolicy id="comanage">
         <PolicyRequirementRule xsi:type="Requester" value="https://comanagedemo/shibboleth" />
-
         <AttributeRule attributeID="eduPersonPrincipalName" permitAny="true" />
-
         <AttributeRule attributeID="uid" permitAny="true" />
-
         <AttributeRule attributeID="mail" permitAny="true" />
-
     </AttributeFilterPolicy>
 
     <AttributeFilterPolicy id="midpoint">
-        <PolicyRequirementRule xsi:type="Requester" value="midpointdemo-shibboleth" />
-
+        <PolicyRequirementRule xsi:type="Requester" value="https://midpointdemo/shibboleth" />
         <AttributeRule attributeID="uid" permitAny="true" />
-
     </AttributeFilterPolicy>
 
     <AttributeFilterPolicy id="proxy">
         <PolicyRequirementRule xsi:type="Requester" value="https://proxysp.example.org/shibboleth" />
-
         <AttributeRule attributeID="eduPersonPrincipalName" permitAny="true" />
-
         <AttributeRule attributeID="uid" permitAny="true" />
-
         <AttributeRule attributeID="mail" permitAny="true" />
-
     </AttributeFilterPolicy>
 </AttributeFilterPolicyGroup>

@@ -63,7 +63,7 @@
                 <amqp091>
                     <uri>amqp://mq:5672</uri>
                     <username>guest</username>
-                    <password>guest</password>
+                    <password>password</password>
                     <queue>sampleQueue</queue>
                 </amqp091>
             </conf:sources>
