@@ -31,7 +31,7 @@ RUN mysql_install_db \
 RUN (mysqld_safe & ) \
     && while ! curl -s localhost:3306 > /dev/null; do echo waiting for mysqld to start; sleep 1; done; \
     /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh -registry -check -runscript -noprompt && \
-    /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh /tmp/initialize.sh
+    /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh /tmp/initialize.gsh
 
 EXPOSE 3306
 
