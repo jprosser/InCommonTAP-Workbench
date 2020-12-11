@@ -209,6 +209,7 @@ services:
      - midpoint_data
     ports:
      - 10443:443
+    command: /usr/local/bin/startup.sh
     environment:
      - ENV
      - USERTOKEN

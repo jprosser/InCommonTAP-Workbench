@@ -28,7 +28,7 @@
                     <singleLogoutEnabled>true</singleLogoutEnabled>
                     <nameId>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</nameId>
                     <keys>
-                        <activeKeyStoreKey>
+			<activeKeyStoreKey>
     				<keyStorePath>/etc/pki/mp/sp-shibboleth-keys.jks</keyStorePath>
     				<keyStorePassword>
         				<t:clearValue>changeit</t:clearValue>
@@ -63,19 +63,24 @@
                     </provider>
                 </serviceProvider>
             </saml2>
+            <httpHeader>
+              <name>httpHeader</name>
+              <logoutUrl>https://__CSPHOSTNAME__/MPSSO/Shibboleth.sso/Logout</logoutUrl>
+              <usernameHeader>uid</usernameHeader>
+            </httpHeader>
         </modules>
         <sequence>
-            <name>admin-gui-default</name>
+            <name>admin-gui-saml-internal</name>
             <description>
-                Default GUI authentication sequence.
+                Internal SAML2 GUI authentication sequence.
             </description>
             <channel>
-                <channelId>http://midpoint.evolveum.com/xml/ns/public/model/channels-3#user</channelId>
-                <default>true</default>
-                <urlSuffix>gui-default</urlSuffix>
+                <channelId>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</channelId>
+                <default>false</default>
+                <urlSuffix>saml-internal</urlSuffix>
             </channel>
             <module>
-                <name>internalLoginForm</name>
+                <name>mySamlSso</name>
                 <order>30</order>
                 <necessity>sufficient</necessity>
             </module>
@@ -86,7 +91,7 @@
                 Special GUI authentication sequence that is using just the internal user password.
             </description>
             <channel>
-                <channelId>http://midpoint.evolveum.com/xml/ns/public/model/channels-3#user</channelId>
+                <channelId>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</channelId>
                 <default>false</default>
                 <urlSuffix>emergency</urlSuffix>
             </channel>
@@ -99,12 +104,28 @@
             </module>
         </sequence>
         <sequence>
+            <name>admin-gui-default</name>
+            <description>
+                Special GUI authentication sequence that is using Shibboleth SP
+            </description>
+            <channel>
+                <channelId>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</channelId>
+                <default>true</default>
+                <urlSuffix>shib</urlSuffix>
+            </channel>
+            <module>
+                <name>httpHeader</name>
+                <order>30</order>
+                <necessity>sufficient</necessity>
+            </module>
+        </sequence>
+        <sequence>
             <name>rest</name>
             <description>
                 Authentication sequence for REST service.
             </description>
             <channel>
-                <channelId>http://midpoint.evolveum.com/xml/ns/public/model/channels-3#rest</channelId>
+                <channelId>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#rest</channelId>
                 <default>true</default>
                 <urlSuffix>rest-default</urlSuffix>
             </channel>
@@ -120,7 +141,7 @@
                 Authentication sequence for actuator.
             </description>
             <channel>
-                <channelId>http://midpoint.evolveum.com/xml/ns/public/model/channels-3#actuator</channelId>
+                <channelId>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#actuator</channelId>
                 <default>true</default>
                 <urlSuffix>actuator-default</urlSuffix>
             </channel>

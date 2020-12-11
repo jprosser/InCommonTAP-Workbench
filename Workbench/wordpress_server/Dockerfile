@@ -46,4 +46,12 @@ WORKDIR /var/www/html
 
 RUN ln -sf /run/secrets/shib_sp-key.pem /etc/shibboleth/sp-key.pem
 RUN chown -R apache:apache /var/www/html
+COPY container_files/system/setservername.sh /usr/local/bin/
+RUN chmod 755 /usr/local/bin/setservername.sh && rm -f /etc/httpd/conf.d/ssl.conf
+
+#set hostname
 RUN /usr/local/bin/setservername.sh
+
+
+ENV LD_LIBRARY_PATH=/opt/shibboleth/lib64
+
