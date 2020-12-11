@@ -44,6 +44,6 @@ WORKDIR /var/www/html
 #    && sed -i "s/define( 'DB_COLLATE', '' );/define( 'DB_COLLATE', '' );\ndefine('JWT_AUTH_SECRET_KEY', 'your-top-secret-key');\ndefine('JWT_AUTH_CORS_ENABLE', true);\n/" /var/www/html/wp-config.php \
 #    && sed -i "s/RewriteBase \//RewriteBase \/\nRewriteRule \^wp-json\/\(\.\*\) \/?rest_route=\/\$1 \[L\]\n/" /var/www/html/.htaccess 
 
-ln -sf /run/secrets/shib_sp-key.pem /etc/shibboleth/sp-key.pem
+RUN ln -sf /run/secrets/shib_sp-key.pem /etc/shibboleth/sp-key.pem
 RUN chown -R apache:apache /var/www/html
 RUN /usr/local/bin/setservername.sh
