@@ -1,4 +1,4 @@
-FROM tier/shibboleth_sp:3.0.4_03122019
+FROM tier/shibboleth_sp:latest
 
 VOLUME /var/www/html
 
