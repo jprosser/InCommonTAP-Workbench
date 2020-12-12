@@ -205,6 +205,7 @@ services:
 
   midpoint_server:
     build: ./midpoint_server/
+    command: /usr/local/bin/startup.sh
     depends_on:
      - midpoint_data
     ports:
