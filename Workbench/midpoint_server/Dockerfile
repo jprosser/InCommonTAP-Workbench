@@ -2,6 +2,9 @@ FROM tier/midpoint:latest
 
 MAINTAINER info@evolveum.com
 
+ARG CSPHOSTNAME=localhost
+ENV CSPHOSTNAME=$CSPHOSTNAME
+
 ENV MP_DIR /opt/midpoint
 ENV MP_MEM_MAX 2048m
 RUN mkdir ${MP_DIR}/csv
