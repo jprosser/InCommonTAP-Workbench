@@ -292,7 +292,6 @@ services:
      
   wordpress_server:
     build: ./wordpress_server/
-    container_name: wordpress_server
     networks:
       - net
     depends_on:
@@ -324,7 +323,6 @@ services:
 
   wordpress_data:
     build: ./wordpress_data/
-    container_name: wordpress_data
     networks:
       - net
     volumes:
