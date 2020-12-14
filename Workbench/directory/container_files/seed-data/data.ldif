@@ -49,3 +49,19 @@ objectClass: top
 uniqueMember: uid=banderson,ou=People,dc=internet2,dc=edu
 cn: sysadmingroup
 
+dn: ou=Guests,dc=internet2,dc=edu
+objectClass: top
+objectClass: organizationalUnit
+ou: Guests
+
+dn: uid=aguest,ou=Guests,dc=internet2,dc=edu
+objectClass: eduPerson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: Andy Guest
+sn: Aguest
+givenName: Andy
+userPassword: password
+description: A guest user
