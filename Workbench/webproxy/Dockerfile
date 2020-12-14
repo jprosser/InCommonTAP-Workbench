@@ -25,3 +25,6 @@ RUN sed -i 's/TransferLog logs\/ssl_access_log/TransferLog \/tmp\/logpipe/g' /et
 
 #set hostname
 RUN /usr/local/bin/setservername.sh 
+
+HEALTHCHECK --interval=1m --timeout=30s \
+  CMD curl -k -f -u csp:workbench https://127.0.0.1/Shibboleth.sso/Status || exit 1
