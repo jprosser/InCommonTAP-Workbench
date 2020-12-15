@@ -30,4 +30,11 @@
         <AttributeRule attributeID="uid" permitAny="true" />
         <AttributeRule attributeID="mail" permitAny="true" />
     </AttributeFilterPolicy>
+	
+	<AttributeFilterPolicy id="shibui">
+        <PolicyRequirementRule xsi:type="Requester" value="https://sp.example.org/shibui" />
+        <AttributeRule attributeID="uid" permitAny="true" />
+		<AttributeRule attributeID="mail" permitAny="true" />
+    </AttributeFilterPolicy>
+	
 </AttributeFilterPolicyGroup>

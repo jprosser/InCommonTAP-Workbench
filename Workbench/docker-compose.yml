@@ -268,7 +268,41 @@ services:
      - net
     ports:
      - 13443:443
+    volumes:
+     - generated-metadata:/opt/shibboleth-idp/metadata/generated
+     - generated-config:/opt/shibboleth-idp/conf/generated
+     
+  idp_ui:
+    build: 
+      context: ./idp_ui/
+      args:
+        - CSPHOSTNAME
+    depends_on:
+     - idp
+    networks:
+     - net
+    ports:
+     - 8080:8080
+    volumes:
+     - generated-metadata:/generated-metadata
+     - generated-config:/generated-config
 
+  idp_ui_data:
+    image: tier/mariadb:latest
+    ports:
+     - 33366:3306
+    environment:
+      MYSQL_USER: shibui
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: shibui
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    networks:
+      net:
+        aliases:
+         - idpui-data
+    volumes:
+    - mariadb-data:/var/lib/mysql
+    
   mq:
     build: ./mq/
     environment:
@@ -422,5 +456,8 @@ volumes:
   mq:
   wordpress_data:
   wordpress_server:
+  generated-config:
+  generated-metadata:
+  mariadb-data:
 
 
