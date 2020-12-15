@@ -28,6 +28,7 @@
     <MetadataProvider id="GrouperSP"  xsi:type="FilesystemMetadataProvider" metadataFile="%{idp.home}/metadata/grouper-sp.xml"/>
     <MetadataProvider id="MidpointSP"  xsi:type="FilesystemMetadataProvider" metadataFile="%{idp.home}/metadata/midpoint-sp.xml"/>
     <MetadataProvider id="ComanageSP"  xsi:type="FilesystemMetadataProvider" metadataFile="%{idp.home}/metadata/comanage-sp.xml"/>
+    <MetadataProvider id="WordpressSP"  xsi:type="FilesystemMetadataProvider" metadataFile="%{idp.home}/metadata/wordpress-sp.xml"/>
     <MetadataProvider id="ProxySP"  xsi:type="FilesystemMetadataProvider" metadataFile="%{idp.home}/metadata/proxy-sp.xml"/>
 	<MetadataProvider id="ShibUISP"  xsi:type="FilesystemMetadataProvider" metadataFile="%{idp.home}/metadata/idpui-sp.xml"/>
 
