@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_zij31efrehgvhxgib5fugrypnm9i5ru0olesbuo" entityID="https://sp.example.org/shibui" validUntil="2040-12-15T20:55:14.900Z">
+    <md:Extensions>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+    </md:Extensions>
+    <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.0:protocol urn:oasis:names:tc:SAML:1.1:protocol">
+        <md:Extensions>
+            <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=Saml2Client"/>
+        </md:Extensions>
+        <md:KeyDescriptor use="signing">
+		  <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+            <ds:X509Data>
+              <ds:X509Certificate>
+MIICpzCCAY+gAwIBAgIBATANBgkqhkiG9w0BAQUFADAXMRUwEwYDVQQDDAxmYzRh
+ZGZjYWU2YzEwHhcNMjAxMjE1MjE0MTEzWhcNMjExMjE1MjE0MTE0WjAXMRUwEwYD
+VQQDDAxmYzRhZGZjYWU2YzEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+AQCA6b7o1/Nk7n1QGEnlmvG9xEY7F9adyx5KBvoLLDQDN6PIKxH5nFoJJEmh3xWG
+BDWJV6+QG3qaCOLDgNzVPw8M9Ns+P9pVn+/y4Lpddel2QgoTNkUM7w1/1sm4LbbL
+rcnMqYjhGwdm5ay+PvmhUOncmQN3m7x58JRRQcaDmFY3wKs61F5+dDa1AJydjrNW
+2V1tJVOFEOozmxJDh0rllIzzlmacBNBK9i5pfhOt3dMoh4PdBsUqiqWFGPEYX+Vx
+BmtcpHblNXfQSORVIuqx4qbti//QcFMT+DNe08TTCs9/UFwRZI/MDM1sdRge4Im3
+a9u509zFJJBNh9UWwR3Bzlg5AgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAFd1tj7E
+joWPXpknmMzVGiJ3+3khvXnuIMOTHMcllxrjwcbAEfZ115tVlZHw3zza1qN3kq1L
+Gcg9NYCikn+ogPr542X06AgUs3KYBzHOTyubcgCGcvltNaOR+Du1LMQgr6VS5RII
+m8O7eQjL/Rpbm5GOkRROT8Sr+c8jcVFJoqw84pZyKdOaFTns2GfwLbHltLucLaON
+066UxGVYjBKhqeEzuEm+vn7Igrls6djGNKgH5DdmVpTzCqVyAUDEcGgRN6NOhcss
+4GamIudEFQczGqVgywv0nYIHZtSvYerO82ctt+osaOnmGU+Do4tdbBhIFHbguhzT
+490d7NC/yWS99RU=
+			</ds:X509Certificate>
+          </ds:X509Data>
+        </ds:KeyInfo>
+		</md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+		  <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+            <ds:X509Data>
+              <ds:X509Certificate>
+MIICpzCCAY+gAwIBAgIBATANBgkqhkiG9w0BAQUFADAXMRUwEwYDVQQDDAxmYzRh
+ZGZjYWU2YzEwHhcNMjAxMjE1MjE0MTEzWhcNMjExMjE1MjE0MTE0WjAXMRUwEwYD
+VQQDDAxmYzRhZGZjYWU2YzEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+AQCA6b7o1/Nk7n1QGEnlmvG9xEY7F9adyx5KBvoLLDQDN6PIKxH5nFoJJEmh3xWG
+BDWJV6+QG3qaCOLDgNzVPw8M9Ns+P9pVn+/y4Lpddel2QgoTNkUM7w1/1sm4LbbL
+rcnMqYjhGwdm5ay+PvmhUOncmQN3m7x58JRRQcaDmFY3wKs61F5+dDa1AJydjrNW
+2V1tJVOFEOozmxJDh0rllIzzlmacBNBK9i5pfhOt3dMoh4PdBsUqiqWFGPEYX+Vx
+BmtcpHblNXfQSORVIuqx4qbti//QcFMT+DNe08TTCs9/UFwRZI/MDM1sdRge4Im3
+a9u509zFJJBNh9UWwR3Bzlg5AgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAFd1tj7E
+joWPXpknmMzVGiJ3+3khvXnuIMOTHMcllxrjwcbAEfZ115tVlZHw3zza1qN3kq1L
+Gcg9NYCikn+ogPr542X06AgUs3KYBzHOTyubcgCGcvltNaOR+Du1LMQgr6VS5RII
+m8O7eQjL/Rpbm5GOkRROT8Sr+c8jcVFJoqw84pZyKdOaFTns2GfwLbHltLucLaON
+066UxGVYjBKhqeEzuEm+vn7Igrls6djGNKgH5DdmVpTzCqVyAUDEcGgRN6NOhcss
+4GamIudEFQczGqVgywv0nYIHZtSvYerO82ctt+osaOnmGU+Do4tdbBhIFHbguhzT
+490d7NC/yWS99RU=
+			</ds:X509Certificate>
+          </ds:X509Data>
+        </ds:KeyInfo>
+		</md:KeyDescriptor>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=Saml2Client&amp;idplogoutrequest=true"/>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=Saml2Client" index="0"/>
+    </md:SPSSODescriptor>
+</md:EntityDescriptor>
