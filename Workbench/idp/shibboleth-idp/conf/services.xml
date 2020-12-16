@@ -20,7 +20,7 @@
 
     <util:list id="shibboleth.MetadataResolverResources">
         <value>%{idp.home}/conf/metadata-providers.xml</value>
-		<value>%{idp.home}/conf/generated/shibui-metadata-providers.xml</value>
+		<!--<value>%{idp.home}/conf/generated/shibui-metadata-providers.xml</value>-->
         <value>%{idp.home}/system/conf/metadata-providers-system.xml</value>
     </util:list>
 
