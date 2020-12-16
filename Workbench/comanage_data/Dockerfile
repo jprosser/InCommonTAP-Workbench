@@ -7,6 +7,3 @@ ENV MYSQL_USER registry_user
 ENV MYSQL_PASSWORD 123321
 ENV MYSQL_DATADIR /var/lib/mysqlmounted
 ENV AFTER_FIRST_TIME_SQL /seed-data/comanage-bootstrap.sql
-
-  
-  
