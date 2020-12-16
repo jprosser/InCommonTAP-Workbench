@@ -9,6 +9,7 @@ declare -a fileList=(
 "idp/shibboleth-idp/metadata/grouper-sp.xml"
 "idp/shibboleth-idp/metadata/midpoint-sp.xml"
 "idp/shibboleth-idp/metadata/midpoint-sp-new.xml"
+"idp/shibboleth-idp/metadata/wordpress-sp.xml"
 )
 
 if [ $# -eq 0 ]
