@@ -14,7 +14,7 @@ server:
 shibui:
   default-password: "{noop}letmein7"
   metadataProviders:
-    target: "file:/generated-conf/shibui-metadata-providers.xml"
+    target: "file:/generated-config/shibui-metadata-providers.xml"
   metadata-dir: "/generated-metadata"
   beacon-enabled: true
   pac4j-enabled: false

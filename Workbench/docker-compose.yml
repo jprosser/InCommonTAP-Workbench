@@ -19,7 +19,7 @@ services:
         aliases:
          - grouper-daemon
     healthcheck:
-      test: curl -s grouper_data:3306
+      test: gsh
       interval: 30s
       timeout: 30s
       retries: 3
@@ -60,6 +60,11 @@ services:
          - grouper-ui
     ports:
      - 8443:443
+    healthcheck:
+      test: curl -k -f https://127.0.0.1/grouper/grouperUi/ || exit 1
+      interval: 30s
+      timeout: 30s
+      retries: 3
     secrets:
      - g_database_password.txt
      - source: grouper.hibernate.properties
@@ -112,6 +117,11 @@ services:
          - grouper-ws
     ports:
      - 9443:443
+    healthcheck:
+      test: curl -k -f https://127.0.0.1/grouper-ws/status?diagnosticType=trivial || exit 1
+      interval: 30s
+      timeout: 30s
+      retries: 3
     secrets:
      - g_database_password.txt
      - source: grouper.hibernate.properties
@@ -147,7 +157,7 @@ services:
     ports:
      - 3306:3306
     healthcheck:
-      test: curl -s grouper_data:3306
+      test: curl -s 127.0.0.1:3306
       interval: 30s
       timeout: 30s
       retries: 3
@@ -160,6 +170,11 @@ services:
      - 389:389
     networks:
      - net
+    healthcheck:
+      test: netstat -an | grep :389 | grep LISTEN
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
      - ldap:/var/lib/dirsrv
 
@@ -169,6 +184,11 @@ services:
      - 13306:3306
     networks:
      - net
+    healthcheck:
+      test: curl -s 127.0.0.1:3306
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
      - source_mysql:/var/lib/mysql
      - source_data:/var/lib/mysqlmounted
@@ -183,6 +203,11 @@ services:
       net:
         aliases:
          - comanage-data
+    healthcheck:
+      test: curl -s 127.0.0.1:3306
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
      - comanage_mysql:/var/lib/mysql
      - comanage_data:/var/lib/mysqlmounted
@@ -197,6 +222,11 @@ services:
       net:
         aliases:
          - midpoint-data
+    healthcheck:
+      test: curl -s 127.0.0.1:3306
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
      - midpoint_mysql:/var/lib/mysql
      - midpoint_data:/var/lib/mysqlmounted
@@ -260,6 +290,7 @@ services:
         - CSPHOSTNAME
     depends_on:
      - directory
+     - idp_ui
     environment:
      - JETTY_MAX_HEAP=64m
      - JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=password
@@ -278,11 +309,16 @@ services:
       args:
         - CSPHOSTNAME
     depends_on:
-     - idp
+     - idp_ui_data
     networks:
      - net
     ports:
      - 8080:8080
+    healthcheck:
+      test: curl -k -f https://127.0.0.1:8443/idpui/login || exit 1
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
      - generated-metadata:/generated-metadata
      - generated-config:/generated-config
@@ -300,6 +336,11 @@ services:
       net:
         aliases:
          - idpui-data
+    healthcheck:
+      test: curl -s 127.0.0.1:3306
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
     - mariadb-data:/var/lib/mysql
     
@@ -312,6 +353,11 @@ services:
      - net
     ports:
      - 15672:15672
+    healthcheck:
+      test: curl -s 127.0.0.1:15672
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
      - mq:/var/lib/rabbitmq
 
@@ -365,6 +411,11 @@ services:
     build: ./wordpress_data/
     networks:
       - net
+    healthcheck:
+      test: curl -s 127.0.0.1:3306
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
       - wordpress_data:/var/lib/mysql
     ports:
@@ -386,6 +437,11 @@ services:
      - net
     ports:
      - 11443:443
+    healthcheck:
+      test: curl -kf https://127.0.0.1/registry/ || exit 1
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
      - type: bind
        source: ./configs-and-secrets/comanage/shibboleth/shibboleth2.xml
@@ -405,6 +461,11 @@ services:
       context: ./comanage_cron/
       args:
         - CSPHOSTNAME
+    healthcheck:
+      test: curl -s comanage_data:3306
+      interval: 30s
+      timeout: 30s
+      retries: 3
     environment:
      - ENV
      - USERTOKEN

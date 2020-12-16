@@ -37,4 +37,70 @@
 		<AttributeRule attributeID="mail" permitAny="true" />
     </AttributeFilterPolicy>
 	
+	<!-- Supports annotated metadata supplied by the Shibb UI -->
+	<AttributeFilterPolicy id="Per-Attribute-singleValued">
+        <PolicyRequirementRule xsi:type="ANY"/>
+        <AttributeRule attributeID="eduPersonPrincipalName">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="eduPersonPrincipalName" />
+        </AttributeRule>
+        <AttributeRule attributeID="uid">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="uid" />
+        </AttributeRule>
+        <AttributeRule attributeID="mail">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="mail" />
+        </AttributeRule>
+        <AttributeRule attributeID="surname">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="surname" />
+        </AttributeRule>
+        <AttributeRule attributeID="givenName">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="givenName" />
+        </AttributeRule>
+        <AttributeRule attributeID="eduPersonAffiliation">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="eduPersonAffiliation" />
+        </AttributeRule>
+        <AttributeRule attributeID="eduPersonScopedAffiliation">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="eduPersonScopedAffiliation" />
+        </AttributeRule>
+        <AttributeRule attributeID="eduPersonPrimaryAffiliation">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="eduPersonPrimaryAffiliation" />
+        </AttributeRule>
+        <AttributeRule attributeID="eduPersonEntitlement">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="eduPersonEntitlement" />
+        </AttributeRule>
+        <AttributeRule attributeID="eduPersonAssurance">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="eduPersonAssurance" />
+        </AttributeRule>
+        <AttributeRule attributeID="eduPersonUniqueId">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="eduPersonUniqueId" />
+        </AttributeRule>
+        <AttributeRule attributeID="employeeNumber">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeValue="employeeNumber" />
+        </AttributeRule>
+    </AttributeFilterPolicy>
+	
+	
 </AttributeFilterPolicyGroup>
