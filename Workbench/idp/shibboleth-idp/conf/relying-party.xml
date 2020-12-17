@@ -61,15 +61,14 @@
         Override example that identifies a single RP by name and configures it
         for SAML 2 SSO without encryption. This is a common "vendor" scenario.
         -->
-        <!--
-        <bean parent="RelyingPartyByName" c:relyingPartyIds="https://sp.example.org">
+        
+        <bean parent="RelyingPartyByName" c:relyingPartyIds="https://sp.example.org/shibui">
             <property name="profileConfigurations">
                 <list>
-                    <bean parent="SAML2.SSO" p:encryptAssertions="false" />
+                    <bean parent="SAML2.SSO" p:encryptionOptional="true" />
                 </list>
             </property>
         </bean>
-        -->
         
     </util:list>
 

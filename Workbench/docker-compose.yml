@@ -324,7 +324,7 @@ services:
      - generated-config:/generated-config
 
   idp_ui_data:
-    image: tier/mariadb:latest
+    image: tier/mariadb:mariadb10.2
     ports:
      - 33366:3306
     environment:
