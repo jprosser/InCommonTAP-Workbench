@@ -17,7 +17,7 @@ shibui:
     target: "file:/generated-config/shibui-metadata-providers.xml"
   metadata-dir: "/generated-metadata"
   beacon-enabled: true
-  pac4j-enabled: false
+  pac4j-enabled: true
   pac4j:
     keystorePath: "/opt/shibui/saml/samlkeystore.jks"
     keystorePassword: "changeit"
