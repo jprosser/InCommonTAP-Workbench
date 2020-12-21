@@ -426,6 +426,8 @@ services:
       context: ./comanage/
       args:
         - CSPHOSTNAME
+    depends_on:
+     - comanage_data
     environment:
      - ENV
      - USERTOKEN
@@ -461,6 +463,8 @@ services:
       context: ./comanage_cron/
       args:
         - CSPHOSTNAME
+    depends_on:
+     - comanage
     healthcheck:
       test: curl -s comanage_data:3306
       interval: 30s
