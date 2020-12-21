@@ -1,0 +1,37 @@
+<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+      xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3"
+      xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+      xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3"
+      xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3"
+      xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3"
+      xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3"
+      oid="9ddfc0ff-6293-4f34-8eb7-5a049c21480f">
+   <name>Import from Guest LDAP</name>
+   <extension xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:type="c:ExtensionType">
+      <mext:kind>account</mext:kind>
+      <mext:objectclass>ri:AccountObjectClass</mext:objectclass>
+<!--
+      <mext:tracing>
+          <interval>500</interval>
+      </mext:tracing> -->
+   </extension>
+   <assignment>
+      <targetRef oid="00000000-0000-0000-0000-000000000503" type="ArchetypeType" /> <!--Import task-->
+   </assignment>
+   <taskIdentifier>df940655-2167-455d-a735-a5e8c234e289</taskIdentifier>
+   <ownerRef oid="00000000-0000-0000-0000-000000000002"
+             relation="org:default"
+             type="c:UserType"><!-- administrator --></ownerRef>
+   <executionStatus>runnable</executionStatus>
+   <category>ImportingAccounts</category>
+   <objectRef oid="7b40819f-2fec-4243-9d5d-355300acd312"
+              relation="org:default"
+              type="c:ResourceType"><!-- Guest LDAP --></objectRef>
+   <recurrence>recurring</recurrence>
+   <schedule>
+     <interval>60</interval>
+   </schedule>
+   <binding>loose</binding>
+</task>

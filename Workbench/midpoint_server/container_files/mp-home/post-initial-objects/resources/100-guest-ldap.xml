@@ -1,0 +1,252 @@
+<resource xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:apti="http://midpoint.evolveum.com/xml/ns/public/common/api-types-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="7b40819f-2fec-4243-9d5d-355300acd312" version="110">
+        <name>Guest LDAP</name>
+        <description>LDAP guests provisioned by COmanage</description>
+        <connectorRef type="ConnectorType">
+          <filter>
+            <q:equal>
+                <q:path>c:connectorType</q:path>
+                <q:value>com.evolveum.polygon.connector.ldap.LdapConnector</q:value>
+            </q:equal>
+          </filter>
+        </connectorRef>
+        <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
+            <icfc:resultsHandlerConfiguration>
+                <icfc:enableNormalizingResultsHandler>false</icfc:enableNormalizingResultsHandler>
+                <icfc:enableFilteredResultsHandler>false</icfc:enableFilteredResultsHandler>
+                <icfc:enableAttributesToGetSearchResultsHandler>false</icfc:enableAttributesToGetSearchResultsHandler>
+            </icfc:resultsHandlerConfiguration>
+            <icfc:configurationProperties xmlns:gen956="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-ldap/com.evolveum.polygon.connector.ldap.LdapConnector">
+                <gen956:host>directory</gen956:host>
+                <gen956:port>389</gen956:port>
+                <gen956:bindDn>cn=Directory Manager</gen956:bindDn>
+                <gen956:bindPassword>
+						<t:clearValue>password</t:clearValue>
+                </gen956:bindPassword>
+                <gen956:uidAttribute>nsUniqueId</gen956:uidAttribute>
+                <gen956:pagingStrategy>spr</gen956:pagingStrategy>
+                <gen956:baseContext>ou=Guests,dc=internet2,dc=edu</gen956:baseContext>
+                <!--<gen956:passwordHashAlgorithm>SSHA</gen956:passwordHashAlgorithm>-->
+                <gen956:pagingStrategy>spr</gen956:pagingStrategy>
+                <!--<gen956:vlvSortAttribute>uid</gen956:vlvSortAttribute>
+                <gen956:vlvSortOrderingRule>2.5.13.3</gen956:vlvSortOrderingRule>-->
+                <gen956:operationalAttributes>memberOf</gen956:operationalAttributes>
+                <gen956:operationalAttributes>createTimestamp</gen956:operationalAttributes>
+                <gen956:allowUnknownAttributes>true</gen956:allowUnknownAttributes>
+                <!--<gen956:usePermissiveModify>always</gen956:usePermissiveModify>-->
+            </icfc:configurationProperties>
+        </connectorConfiguration>
+        <schema>
+            <generationConstraints>
+                <generateObjectClass>ri:inetOrgPerson</generateObjectClass>
+                <generateObjectClass>ri:eduPerson</generateObjectClass>
+                <generateObjectClass>ri:organizationalPerson</generateObjectClass>
+                <generateObjectClass>ri:person</generateObjectClass>
+                <generateObjectClass>ri:groupOfUniqueNames</generateObjectClass>
+                <generateObjectClass>ri:groupOfNames</generateObjectClass>
+                <generateObjectClass>ri:organizationalUnit</generateObjectClass>
+            </generationConstraints>
+        </schema>
+        <schemaHandling>
+            <objectType id="2">
+                <kind>account</kind>
+                <intent>default</intent>
+                <displayName>Normal Account</displayName>
+                <default>true</default>
+                <objectClass>ri:inetOrgPerson</objectClass>
+                <auxiliaryObjectClass>ri:eduPerson</auxiliaryObjectClass>
+                <attribute id="4">
+                    <c:ref>ri:dn</c:ref>
+                    <displayName>Distinguished Name</displayName>
+                    <limitations>
+                        <minOccurs>0</minOccurs>
+                        <access>
+                            <read>true</read>
+                            <add>true</add>
+                            <modify>true</modify>
+                        </access>
+                    </limitations>
+                    <matchingRule xmlns:mr="http://prism.evolveum.com/xml/ns/public/matching-rule-3">mr:stringIgnoreCase</matchingRule>
+                </attribute>
+                <attribute id="7">
+                    <c:ref>ri:sn</c:ref>
+                    <displayName>Surname</displayName>
+                    <limitations>
+                        <minOccurs>0</minOccurs>
+                    </limitations>
+                    <inbound id="14">
+                        <target>
+                            <c:path>familyName</c:path>
+                        </target>
+                    </inbound>
+					<inbound>
+                        <source>
+                            <path>$projection/attributes/ri:givenName</path>
+                            <name>givenname</name>
+                        </source>
+                        <expression>
+                            <script>
+                                <code>basic.concatName(givenname, input)</code>
+                            </script>
+                        </expression>
+                        <target>
+                            <path>fullName</path>
+                        </target>
+                    </inbound>
+                </attribute>
+                <attribute id="8">
+                    <c:ref>ri:givenName</c:ref>
+                    <displayName>Given Name</displayName>
+                    <inbound id="15">
+                        <target>
+                            <c:path>$c:user/c:givenName</c:path>
+                        </target>
+                    </inbound>
+                </attribute>
+                <attribute id="31">
+                    <c:ref>ri:mail</c:ref>
+                    <inbound id="32">
+                        <target>
+                            <c:path>$c:user/c:emailAddress</c:path>
+                        </target>
+                    </inbound>
+                </attribute>
+                <attribute id="33">
+                    <c:ref>ri:uid</c:ref>
+                    <inbound id="34">
+                        <target>
+                            <c:path>name</c:path>
+                        </target>
+                    </inbound>
+					<inbound>
+                        <description>Assignment of Guest SOR archetype</description>
+                        <strength>strong</strength>
+                        <expression>
+                            <assignmentTargetSearch>
+                                <targetType>c:ArchetypeType</targetType>
+                                <oid>3d290ffd-35d6-40d5-9b20-964f891f569c</oid>
+                            </assignmentTargetSearch>
+                        </expression>
+                        <target>
+                            <path>assignment</path>
+                        </target>
+                    </inbound>
+                    <inbound>
+                        <description>Assignment of Guest SOR organization</description>
+                        <strength>strong</strength>
+                        <expression>
+                            <assignmentTargetSearch>
+                                <targetType>c:OrgType</targetType>
+                                <oid>55ced112-264c-4c77-a1bf-9e32d8a138b0</oid>
+                            </assignmentTargetSearch>
+                        </expression>
+                        <target>
+                            <path>assignment</path>
+                        </target>
+                    </inbound>
+                    <inbound>
+                        <description>Assignment of role-ldap-basic role</description>
+                        <strength>strong</strength>
+                        <expression>
+                            <assignmentTargetSearch>
+                                <targetType>c:RoleType</targetType>
+                                <oid>c89f31dd-8d4f-4e0a-82cb-58ff9d8c1b2f</oid>
+                            </assignmentTargetSearch>
+                        </expression>
+                        <target>
+                            <path>assignment</path>
+                        </target>
+                    </inbound>
+                </attribute>
+                <iteration>
+                    <maxIterations>5</maxIterations>
+                </iteration>
+                <protected>
+                    <filter>
+                        <q:equal>
+                            <q:matching>http://prism.evolveum.com/xml/ns/public/matching-rule-3#stringIgnoreCase</q:matching>
+                            <q:path>attributes/ri:dn</q:path>
+                            <q:value>cn=admin,dc=internet2,dc=edu</q:value>
+                        </q:equal>
+                    </filter>
+                </protected>
+                <activation>
+                    <administrativeStatus>
+                        <outbound id="18"/>
+                        <inbound id="19">
+                            <strength>weak</strength>
+                            <expression>
+                                <asIs xsi:type="c:AsIsExpressionEvaluatorType"/>
+                            </expression>
+                        </inbound>
+                    </administrativeStatus>
+                </activation>
+                <credentials>
+                    <password xsi:type="c:ResourcePasswordDefinitionType">
+                        <outbound>
+                            <expression>
+                                <asIs xsi:type="c:AsIsExpressionEvaluatorType"/>
+                            </expression>
+                        </outbound>
+                        <inbound>
+                            <strength>weak</strength>
+                            <expression>
+                                <generate xsi:type="c:GenerateExpressionEvaluatorType"/>
+                            </expression>
+                        </inbound>
+                    </password>
+                </credentials>
+            </objectType>
+        </schemaHandling>
+        <synchronization>
+            <objectSynchronization>
+                <enabled>true</enabled>
+                <correlation>
+                    <q:equal>
+                        <q:path>name</q:path>
+                        <expression>
+                            <path>
+								declare namespace ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3";
+								$account/attributes/ri:uid
+							</path>
+                        </expression>
+                    </q:equal>
+                    <q:description>
+	                    Correlation expression is a search query.
+	                    Following search query will look for users that have "name"
+	                    equal to the "eduPersonPrincipalName" attribute of the account. Simply speaking,
+	                    it will look for a match in usernames in the IDM and the resource.
+	                    The correlation rule always looks for users, so it will not match
+	                    any other object type.
+	                </q:description>
+                </correlation>
+                <reaction>
+                    <situation>linked</situation>
+                    <synchronize>true</synchronize>
+                </reaction>
+                <reaction>
+                    <situation>deleted</situation>
+                    <synchronize>true</synchronize>
+                    <action>
+                        <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#unlink</handlerUri>
+                    </action>
+                </reaction>
+                <reaction>
+                    <situation>unlinked</situation>
+                    <synchronize>true</synchronize>
+                    <action>
+                        <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#link</handlerUri>
+                    </action>
+                </reaction>
+                <reaction>
+                    <situation>unmatched</situation>
+                    <synchronize>true</synchronize>
+                    <action>
+                        <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#addFocus</handlerUri>
+                    </action>
+                </reaction>
+            </objectSynchronization>
+        </synchronization>
+		<consistency>
+          <avoidDuplicateValues>true</avoidDuplicateValues>
+        </consistency>
+    </resource>
