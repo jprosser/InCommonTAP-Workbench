@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archetype oid="9ea701a0-fefb-11e9-aa4a-6f55fba8896e"
+<archetype oid="3d290ffd-35d6-40d5-9b20-964f891f569c"
         xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
         xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
         xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3"
         xmlns:org='http://midpoint.evolveum.com/xml/ns/public/common/org-3'>
-    <name>HR</name>
-    <description>Non-academic person from the Human Resources system</description>
+    <name>Guest</name>
+    <description>Non-academic person from the Guest system</description>
     <archetypePolicy>
     	<display>
-    		<label>HR</label>
-            <pluralLabel>HRs</pluralLabel>
-    		<tooltip>Person imported from the HR CSV</tooltip>
+    		<label>Guest</label>
+            <pluralLabel>Guests</pluralLabel>
+    		<tooltip>Person imported from the Guest System</tooltip>
     		<icon>
-    			<cssClass>fa fa-user-circle</cssClass>
-    			<color>olive</color>
+    			<cssClass>fa fa-plus-square</cssClass>
+    			<color>blue</color>
     		</icon>
     	</display>
     </archetypePolicy>
