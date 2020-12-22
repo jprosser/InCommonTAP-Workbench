@@ -1,5 +1,6 @@
 from mariadb:latest
 RUN apt-get update
+RUN apt install curl -y
 #RUN apt-get install wget gcc libmysql++-dev librabbitmq-dev pkg-config libbsd-dev -y
 #ENV MYSQL_RANDOM_ROOT_PASSWORD=true
 ENV MYSQL_ROOT_PASSWORD=54y6RxN7GfC7aes3

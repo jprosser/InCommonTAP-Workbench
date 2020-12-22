@@ -61,6 +61,8 @@
 		<generationConstraints>
 			<generateObjectClass>ri:inetOrgPerson</generateObjectClass>
 			<generateObjectClass>ri:eduPerson</generateObjectClass>
+			<generateObjectClass>ri:organizationalPerson</generateObjectClass>
+			<generateObjectClass>ri:person</generateObjectClass>
 			<generateObjectClass>ri:groupOfUniqueNames</generateObjectClass>
 			<generateObjectClass>ri:groupOfNames</generateObjectClass>
 			<generateObjectClass>ri:organizationalUnit</generateObjectClass>

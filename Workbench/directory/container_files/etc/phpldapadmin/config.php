@@ -329,7 +329,7 @@ $servers->setValue('login','auth_type','cookie');
    the directory for users (ie, if your LDAP server does not allow anonymous
    binds. */
 // $servers->setValue('login','bind_id','');
-$servers->setValue('login','bind_id','cn=admin,dc=internet2,dc=edu');
+$servers->setValue('login','bind_id','cn=Directory Manager');
 
 /* Your LDAP password. If you specified an empty bind_id above, this MUST also
    be blank. */

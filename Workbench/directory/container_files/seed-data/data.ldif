@@ -62,6 +62,7 @@ objectClass: person
 objectClass: top
 cn: Andy Guest
 sn: Aguest
+mail: andyaguestcspuser@workbench.incommon.org
 givenName: Andy
 userPassword: password
 description: A guest user

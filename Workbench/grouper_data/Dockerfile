@@ -35,4 +35,5 @@ RUN (mysqld_safe & ) \
 
 EXPOSE 3306
 
+
 CMD mysqld_safe
