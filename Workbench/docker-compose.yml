@@ -372,7 +372,8 @@ services:
      - 443:443
      
   wordpress_server:
-    build: ./wordpress_server/
+    build: 
+      context: ./wordpress_server/
       args:
        - CSPHOSTNAME
     networks:
