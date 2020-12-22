@@ -373,6 +373,8 @@ services:
      
   wordpress_server:
     build: ./wordpress_server/
+    args:
+     - CSPHOSTNAME
     networks:
       - net
     depends_on:
