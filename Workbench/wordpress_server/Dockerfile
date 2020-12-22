@@ -2,7 +2,7 @@ FROM tier/shibboleth_sp:latest
 
 VOLUME /var/www/html
 
-RUN mkdir /opt/tier/.wp-cli
+#RUN mkdir /opt/tier/.wp-cli
 RUN mkdir /tmp/rpm
 #COPY container_files/wordpress/000-default.conf /etc/apache2/sites-available/
 COPY container_files/wordpress/sed.sh /root
@@ -12,7 +12,6 @@ COPY container_files/wordpress/wp-cli.yml /var/www/html
 COPY container_files/shibboleth/* /etc/shibboleth/
 COPY container_files/rpm/* /tmp/rpm/
 COPY container_files/system/setservername.sh /usr/local/bin/
-
 RUN chmod +x /root/wp
 RUN yum update -y 
 #RUN yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
