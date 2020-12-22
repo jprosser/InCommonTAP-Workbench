@@ -1,6 +1,6 @@
 #!/bin/bash
 
-files="/etc/shibboleth/idp-metadata.xml"
+files="/etc/shibboleth/idp-metadata.xml /root/sed.sh"
 
 for file in $files
   do
