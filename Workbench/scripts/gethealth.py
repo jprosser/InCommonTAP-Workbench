@@ -10,10 +10,10 @@ for container in containers:
     healthstatus = '<font color="grey">unknown</font>'
     for line in pipe.stdout:
         if ('(' in line):
-            healthstatus=line.split('(')[1].split(')')[0].strip()
-            if (healthstatus == "healthy"):
+            healthstatus=line.strip()
+            if ("healthy" in healthstatus):
                 healthstatus='<font color="green">' + healthstatus + '</font>'
-            elif (healthstatus == "unhealthy"):
+            elif ("unhealthy" in healthstatus):
                 healthstatus='<font color="red">' + healthstatus + '</font>'
             else:
                 healthstatus='<font color="blue">' + healthstatus + '</font>'
