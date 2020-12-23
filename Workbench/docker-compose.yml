@@ -372,7 +372,10 @@ services:
      - 443:443
      
   wordpress_server:
-    build: ./wordpress_server/
+    build: 
+      context: ./wordpress_server/
+      args:
+       - CSPHOSTNAME
     networks:
       - net
     depends_on:
@@ -397,15 +400,8 @@ services:
         source: ./configs-and-secrets/wordpress/httpd/host-cert.pem
         target: /etc/pki/tls/certs/cachain.pem
       - type: bind
-        source: ./configs-and-secrets/wordpress/shibboleth/sp-cert.pem
-        target: /etc/shibboleth/sp-cert.pem
-      - type: bind
         source: ./configs-and-secrets/wordpress/httpd/shib.conf
         target: /etc/httpd/conf.d/shib.conf
-
-    secrets:
-      - source: w_sp-key.pem
-        target: shib_sp-key.pem
 
   wordpress_data:
     build: ./wordpress_data/
@@ -508,9 +504,6 @@ secrets:
 # COmanage
   c_sp-key.pem:
     file: ./configs-and-secrets/comanage/shibboleth/sp-key.pem
-# Wordpress
-  w_sp-key.pem:
-    file: ./configs-and-secrets/wordpress/shibboleth/sp-key.pem
 
 volumes:
   grouper_data:

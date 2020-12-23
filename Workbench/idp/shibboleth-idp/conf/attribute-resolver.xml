@@ -28,7 +28,7 @@
         <InputDataConnector ref="myLDAP" attributeNames="cn"/>
     </AttributeDefinition>
     <AttributeDefinition xsi:type="Scoped" id="eduPersonPrincipalName" scope="%{idp.scope}">
-        <InputDataConnector ref="myLDAP" attributeNames="eduPersonPrincipalName"/>
+        <InputDataConnector ref="myLDAP" attributeNames="uid"/>
     </AttributeDefinition>
 
     <!-- ========================================== -->

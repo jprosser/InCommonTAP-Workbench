@@ -86,13 +86,19 @@
 				<matchingRule>mr:distinguishedName</matchingRule>
                 <outbound>
                     <strength>strong</strength>
+					<source>
+                        <path>familyName</path>
+                    </source>
                     <source>
-                        <path>name</path>
+                        <path>givenName</path>
                     </source>
                     <expression>
                         <script>
                             <code>
-                                'uid=' + name + ',ou=People,dc=internet2,dc=edu'
+								tmpGivenName = basic.norm(basic.stringify(givenName))?.tr(' ', '.')
+                                tmpFamilyName = basic.norm(basic.stringify(familyName))?.tr(' ', '.')
+							    tmpuid = tmpGivenName.substring(0, 1) + tmpFamilyName + iterationToken
+                                'uid=' + tmpuid + ',ou=People,dc=internet2,dc=edu'
                             </code>
                         </script>
                     </expression>
@@ -147,9 +153,21 @@
 				<matchingRule>mr:stringIgnoreCase</matchingRule>
                 <outbound>
                     <strength>strong</strength>
-                    <source>
-                        <path>name</path>
+					<source>
+                        <path>familyName</path>
                     </source>
+                    <source>
+                        <path>givenName</path>
+                    </source>
+					<expression>
+                        <script>
+                            <code>
+							  tmpGivenName = basic.norm(basic.stringify(givenName))?.tr(' ', '.')
+                              tmpFamilyName = basic.norm(basic.stringify(familyName))?.tr(' ', '.')
+							  return tmpGivenName.substring(0, 1) + tmpFamilyName + iterationToken
+                            </code>
+                        </script>
+                    </expression>
                 </outbound>
 			</attribute>
 			<attribute>
@@ -220,6 +238,20 @@
                     <outbound/>
                 </password>
             </credentials>
+            <iteration>
+                <maxIterations>10</maxIterations>
+                <tokenExpression>
+                    <script>
+                        <code>
+                            if (iteration == 0) {
+                                return "";
+                            } else {
+                                return sprintf("%02d", iteration);
+                            }
+                        </code>
+                    </script>
+                </tokenExpression>
+            </iteration>
 		</objectType>
         
         <objectType>

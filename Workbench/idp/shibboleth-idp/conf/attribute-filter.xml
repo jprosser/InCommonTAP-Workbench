@@ -19,6 +19,13 @@
         <AttributeRule attributeID="mail" permitAny="true" />
     </AttributeFilterPolicy>
 
+    <AttributeFilterPolicy id="wordpress">
+        <PolicyRequirementRule xsi:type="Requester" value="https://wordpressdemo/shibboleth" />
+        <AttributeRule attributeID="eduPersonPrincipalName" permitAny="true" />
+        <AttributeRule attributeID="uid" permitAny="true" />
+        <AttributeRule attributeID="mail" permitAny="true" />
+    </AttributeFilterPolicy>
+	
     <AttributeFilterPolicy id="midpoint">
         <PolicyRequirementRule xsi:type="Requester" value="https://midpointdemo/shibboleth" />
         <AttributeRule attributeID="uid" permitAny="true" />
