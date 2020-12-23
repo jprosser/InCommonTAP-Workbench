@@ -6,6 +6,7 @@ VOLUME /var/www/html
 RUN mkdir /tmp/rpm
 #COPY container_files/wordpress/000-default.conf /etc/apache2/sites-available/
 COPY container_files/wordpress/sed.sh /root
+COPY container_files/wordpress/config-shibb.sql /root
 COPY container_files/wordpress/wp /root
 COPY container_files/wordpress/config.yml /root/.wp-cli
 COPY container_files/wordpress/wp-cli.yml /var/www/html
