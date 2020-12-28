@@ -1,5 +1,11 @@
 USE registry;
 
+-- MySQL dump 10.16  Distrib 10.1.36-MariaDB, for Linux (x86_64)
+--
+-- Host: localhost    Database: registry
+-- ------------------------------------------------------
+-- Server version	10.1.36-MariaDB
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -1119,7 +1125,7 @@ CREATE TABLE `cm_co_group_members` (
   KEY `cm_co_group_members_i3` (`co_group_id`,`co_person_id`),
   KEY `cm_co_group_members_i4` (`co_group_member_id`),
   KEY `cm_co_group_members_i5` (`source_org_identity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1130,6 +1136,12 @@ LOCK TABLES `cm_co_group_members` WRITE;
 /*!40000 ALTER TABLE `cm_co_group_members` DISABLE KEYS */;
 INSERT INTO `cm_co_group_members` (`id`, `co_group_id`, `co_person_id`, `member`, `owner`, `valid_from`, `valid_through`, `source_org_identity_id`, `co_group_nesting_id`, `created`, `modified`, `co_group_member_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,2,1,1,0,NULL,NULL,NULL,NULL,'2020-12-05 02:15:59','2020-12-05 02:15:59',NULL,0,0,'Shell user \"root\"');
 INSERT INTO `cm_co_group_members` (`id`, `co_group_id`, `co_person_id`, `member`, `owner`, `valid_from`, `valid_through`, `source_org_identity_id`, `co_group_nesting_id`, `created`, `modified`, `co_group_member_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,1,1,1,1,NULL,NULL,NULL,NULL,'2020-12-05 02:15:59','2020-12-05 02:15:59',NULL,0,0,'Shell user \"root\"');
+INSERT INTO `cm_co_group_members` (`id`, `co_group_id`, `co_person_id`, `member`, `owner`, `valid_from`, `valid_through`, `source_org_identity_id`, `co_group_nesting_id`, `created`, `modified`, `co_group_member_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,9,2,1,0,NULL,NULL,NULL,NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_group_members` (`id`, `co_group_id`, `co_person_id`, `member`, `owner`, `valid_from`, `valid_through`, `source_org_identity_id`, `co_group_nesting_id`, `created`, `modified`, `co_group_member_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,8,2,1,0,NULL,NULL,NULL,NULL,'2020-12-28 02:27:23','2020-12-28 02:27:23',NULL,0,0,'banderson');
+INSERT INTO `cm_co_group_members` (`id`, `co_group_id`, `co_person_id`, `member`, `owner`, `valid_from`, `valid_through`, `source_org_identity_id`, `co_group_nesting_id`, `created`, `modified`, `co_group_member_id`, `revision`, `deleted`, `actor_identifier`) VALUES (5,9,4,1,0,NULL,NULL,NULL,NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_group_members` (`id`, `co_group_id`, `co_person_id`, `member`, `owner`, `valid_from`, `valid_through`, `source_org_identity_id`, `co_group_nesting_id`, `created`, `modified`, `co_group_member_id`, `revision`, `deleted`, `actor_identifier`) VALUES (6,8,4,1,0,NULL,NULL,NULL,NULL,'2020-12-28 02:29:03','2020-12-28 02:29:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_group_members` (`id`, `co_group_id`, `co_person_id`, `member`, `owner`, `valid_from`, `valid_through`, `source_org_identity_id`, `co_group_nesting_id`, `created`, `modified`, `co_group_member_id`, `revision`, `deleted`, `actor_identifier`) VALUES (7,9,6,1,0,NULL,NULL,NULL,NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_group_members` (`id`, `co_group_id`, `co_person_id`, `member`, `owner`, `valid_from`, `valid_through`, `source_org_identity_id`, `co_group_nesting_id`, `created`, `modified`, `co_group_member_id`, `revision`, `deleted`, `actor_identifier`) VALUES (8,8,6,1,0,NULL,NULL,NULL,NULL,'2020-12-28 02:30:15','2020-12-28 02:30:15',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_co_group_members` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1417,7 +1429,7 @@ CREATE TABLE `cm_co_invites` (
   KEY `cm_co_invites_i2` (`invitation`),
   KEY `cm_co_invites_i3` (`co_person_id`,`mail`(255)),
   KEY `cm_co_invites_i4` (`co_invite_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1426,6 +1438,9 @@ CREATE TABLE `cm_co_invites` (
 
 LOCK TABLES `cm_co_invites` WRITE;
 /*!40000 ALTER TABLE `cm_co_invites` DISABLE KEYS */;
+INSERT INTO `cm_co_invites` (`id`, `co_person_id`, `invitation`, `mail`, `email_address_id`, `expires`, `created`, `modified`, `co_invite_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,2,'650fbe2b67af1b5d57b84eb01181c20fbdf127fc','guest1@workbench.incommon.org',NULL,'2020-12-29 02:27:08','2020-12-28 02:27:08','2020-12-28 02:27:08',NULL,0,0,'banderson');
+INSERT INTO `cm_co_invites` (`id`, `co_person_id`, `invitation`, `mail`, `email_address_id`, `expires`, `created`, `modified`, `co_invite_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,4,'170776b4af430d01fdaf3fa39b0137fea4956a60','guest2@workbench.incommon.org',NULL,'2020-12-29 02:28:50','2020-12-28 02:28:50','2020-12-28 02:28:50',NULL,0,0,'banderson');
+INSERT INTO `cm_co_invites` (`id`, `co_person_id`, `invitation`, `mail`, `email_address_id`, `expires`, `created`, `modified`, `co_invite_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,6,'1c96afc81cd674a866cbf63ad66d691cfaa4ec89','guest3@workbench.incommon.org',NULL,'2020-12-29 02:30:05','2020-12-28 02:30:05','2020-12-28 02:30:05',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_co_invites` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1498,7 +1513,7 @@ CREATE TABLE `cm_co_jobs` (
   KEY `cm_co_jobs_i1` (`co_id`),
   KEY `cm_co_jobs_i2` (`job_type`,`job_type_fk`),
   KEY `cm_co_jobs_i3` (`co_id`,`job_type`,`job_type_fk`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=307 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=308 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1813,6 +1828,7 @@ INSERT INTO `cm_co_jobs` (`id`, `co_id`, `job_type`, `job_type_fk`, `job_mode`, 
 INSERT INTO `cm_co_jobs` (`id`, `co_id`, `job_type`, `job_type_fk`, `job_mode`, `job_params`, `status`, `register_summary`, `start_summary`, `finish_summary`, `queue_time`, `start_time`, `complete_time`, `percent_complete`, `created`, `modified`) VALUES (304,1,'GV',NULL,'',NULL,'OK','Reprovisioning 0 record(s)','','Reprovisioned 0 record(s)','2020-12-28 02:00:01','2020-12-28 02:00:01','2020-12-28 02:00:01',NULL,'2020-12-28 02:00:01','2020-12-28 02:00:01');
 INSERT INTO `cm_co_jobs` (`id`, `co_id`, `job_type`, `job_type_fk`, `job_mode`, `job_params`, `status`, `register_summary`, `start_summary`, `finish_summary`, `queue_time`, `start_time`, `complete_time`, `percent_complete`, `created`, `modified`) VALUES (305,3,'GV',NULL,'',NULL,'OK','Reprovisioning 0 record(s)','','Reprovisioned 0 record(s)','2020-12-28 02:00:01','2020-12-28 02:00:01','2020-12-28 02:00:01',NULL,'2020-12-28 02:00:01','2020-12-28 02:00:01');
 INSERT INTO `cm_co_jobs` (`id`, `co_id`, `job_type`, `job_type_fk`, `job_mode`, `job_params`, `status`, `register_summary`, `start_summary`, `finish_summary`, `queue_time`, `start_time`, `complete_time`, `percent_complete`, `created`, `modified`) VALUES (306,2,'GV',NULL,'',NULL,'OK','Reprovisioning 0 record(s)','','Reprovisioned 0 record(s)','2020-12-28 02:00:01','2020-12-28 02:00:01','2020-12-28 02:00:01',NULL,'2020-12-28 02:00:01','2020-12-28 02:00:01');
+INSERT INTO `cm_co_jobs` (`id`, `co_id`, `job_type`, `job_type_fk`, `job_mode`, `job_params`, `status`, `register_summary`, `start_summary`, `finish_summary`, `queue_time`, `start_time`, `complete_time`, `percent_complete`, `created`, `modified`) VALUES (307,3,'Provisioner',NULL,NULL,'{\"co_provisioning_target_id\":\"2\",\"record_type\":\"All\"}','X','A Job of this type is already registered (id=303)',NULL,'A Job of this type is already registered (id=303)','2020-12-28 02:31:05',NULL,'2020-12-28 02:31:05',NULL,'2020-12-28 02:31:05','2020-12-28 02:31:05');
 /*!40000 ALTER TABLE `cm_co_jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2015,7 +2031,7 @@ CREATE TABLE `cm_co_ldap_provisioner_dns` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `cm_co_ldap_provisioner_dns_i1` (`co_ldap_provisioner_target_id`,`co_person_id`),
   UNIQUE KEY `cm_co_ldap_provisioner_dns_i2` (`co_ldap_provisioner_target_id`,`co_group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2024,6 +2040,9 @@ CREATE TABLE `cm_co_ldap_provisioner_dns` (
 
 LOCK TABLES `cm_co_ldap_provisioner_dns` WRITE;
 /*!40000 ALTER TABLE `cm_co_ldap_provisioner_dns` DISABLE KEYS */;
+INSERT INTO `cm_co_ldap_provisioner_dns` (`id`, `co_ldap_provisioner_target_id`, `co_person_id`, `co_group_id`, `dn`, `created`, `modified`) VALUES (1,2,2,NULL,'uid=G00000001,ou=guests,dc=internet2,dc=edu','2020-12-28 02:28:03','2020-12-28 02:28:03');
+INSERT INTO `cm_co_ldap_provisioner_dns` (`id`, `co_ldap_provisioner_target_id`, `co_person_id`, `co_group_id`, `dn`, `created`, `modified`) VALUES (2,2,4,NULL,'uid=G00000002,ou=guests,dc=internet2,dc=edu','2020-12-28 02:29:29','2020-12-28 02:29:29');
+INSERT INTO `cm_co_ldap_provisioner_dns` (`id`, `co_ldap_provisioner_target_id`, `co_person_id`, `co_group_id`, `dn`, `created`, `modified`) VALUES (3,2,6,NULL,'uid=G00000003,ou=guests,dc=internet2,dc=edu','2020-12-28 02:30:28','2020-12-28 02:30:28');
 /*!40000 ALTER TABLE `cm_co_ldap_provisioner_dns` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2284,7 +2303,7 @@ CREATE TABLE `cm_co_org_identity_links` (
   KEY `cm_co_org_identity_links_i2` (`org_identity_id`),
   KEY `cm_co_org_identity_links_i3` (`co_person_id`,`org_identity_id`),
   KEY `cm_co_org_identity_links_i4` (`co_org_identity_link_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2294,6 +2313,9 @@ CREATE TABLE `cm_co_org_identity_links` (
 LOCK TABLES `cm_co_org_identity_links` WRITE;
 /*!40000 ALTER TABLE `cm_co_org_identity_links` DISABLE KEYS */;
 INSERT INTO `cm_co_org_identity_links` (`id`, `co_person_id`, `org_identity_id`, `created`, `modified`, `co_org_identity_link_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,1,1,'2020-12-05 02:15:59','2020-12-05 02:15:59',NULL,0,0,'Shell user \"root\"');
+INSERT INTO `cm_co_org_identity_links` (`id`, `co_person_id`, `org_identity_id`, `created`, `modified`, `co_org_identity_link_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,2,2,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_org_identity_links` (`id`, `co_person_id`, `org_identity_id`, `created`, `modified`, `co_org_identity_link_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,4,3,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_org_identity_links` (`id`, `co_person_id`, `org_identity_id`, `created`, `modified`, `co_org_identity_link_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,6,4,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_co_org_identity_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2319,7 +2341,7 @@ CREATE TABLE `cm_co_people` (
   PRIMARY KEY (`id`),
   KEY `cm_co_people_i1` (`co_id`),
   KEY `cm_co_people_i2` (`co_person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2329,6 +2351,12 @@ CREATE TABLE `cm_co_people` (
 LOCK TABLES `cm_co_people` WRITE;
 /*!40000 ALTER TABLE `cm_co_people` DISABLE KEYS */;
 INSERT INTO `cm_co_people` (`id`, `co_id`, `status`, `date_of_birth`, `timezone`, `created`, `modified`, `co_person_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,1,'A',NULL,NULL,'2020-12-05 02:15:59','2020-12-05 02:15:59',NULL,0,0,'Shell user \"root\"');
+INSERT INTO `cm_co_people` (`id`, `co_id`, `status`, `date_of_birth`, `timezone`, `created`, `modified`, `co_person_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,3,'A',NULL,NULL,'2020-12-28 02:27:06','2020-12-28 02:27:23',NULL,1,0,'banderson');
+INSERT INTO `cm_co_people` (`id`, `co_id`, `status`, `date_of_birth`, `timezone`, `created`, `modified`, `co_person_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,3,'P',NULL,NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',2,0,0,'banderson');
+INSERT INTO `cm_co_people` (`id`, `co_id`, `status`, `date_of_birth`, `timezone`, `created`, `modified`, `co_person_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,3,'A',NULL,'','2020-12-28 02:28:49','2020-12-28 02:29:03',NULL,1,0,'banderson');
+INSERT INTO `cm_co_people` (`id`, `co_id`, `status`, `date_of_birth`, `timezone`, `created`, `modified`, `co_person_id`, `revision`, `deleted`, `actor_identifier`) VALUES (5,3,'P',NULL,NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',4,0,0,'banderson');
+INSERT INTO `cm_co_people` (`id`, `co_id`, `status`, `date_of_birth`, `timezone`, `created`, `modified`, `co_person_id`, `revision`, `deleted`, `actor_identifier`) VALUES (6,3,'A',NULL,'','2020-12-28 02:30:03','2020-12-28 02:30:15',NULL,1,0,'banderson');
+INSERT INTO `cm_co_people` (`id`, `co_id`, `status`, `date_of_birth`, `timezone`, `created`, `modified`, `co_person_id`, `revision`, `deleted`, `actor_identifier`) VALUES (7,3,'P',NULL,NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',6,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_co_people` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2365,7 +2393,7 @@ CREATE TABLE `cm_co_person_roles` (
   KEY `cm_co_person_roles_i3` (`cou_id`),
   KEY `cm_co_person_roles_i4` (`co_person_role_id`),
   KEY `cm_co_person_roles_i5` (`source_org_identity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2375,6 +2403,10 @@ CREATE TABLE `cm_co_person_roles` (
 LOCK TABLES `cm_co_person_roles` WRITE;
 /*!40000 ALTER TABLE `cm_co_person_roles` DISABLE KEYS */;
 INSERT INTO `cm_co_person_roles` (`id`, `co_person_id`, `sponsor_co_person_id`, `cou_id`, `affiliation`, `title`, `o`, `ou`, `valid_from`, `valid_through`, `ordr`, `status`, `source_org_identity_id`, `created`, `modified`, `co_person_role_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,1,NULL,NULL,'staff','Administrator',NULL,NULL,NULL,NULL,NULL,'A',NULL,'2020-12-05 02:15:59','2020-12-05 02:15:59',NULL,0,0,'Shell user \"root\"');
+INSERT INTO `cm_co_person_roles` (`id`, `co_person_id`, `sponsor_co_person_id`, `cou_id`, `affiliation`, `title`, `o`, `ou`, `valid_from`, `valid_through`, `ordr`, `status`, `source_org_identity_id`, `created`, `modified`, `co_person_role_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,2,NULL,NULL,'affiliate','','','',NULL,NULL,NULL,'A',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:23',NULL,1,0,'banderson');
+INSERT INTO `cm_co_person_roles` (`id`, `co_person_id`, `sponsor_co_person_id`, `cou_id`, `affiliation`, `title`, `o`, `ou`, `valid_from`, `valid_through`, `ordr`, `status`, `source_org_identity_id`, `created`, `modified`, `co_person_role_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,2,NULL,NULL,'affiliate',NULL,NULL,NULL,NULL,NULL,NULL,'P',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',2,0,0,'banderson');
+INSERT INTO `cm_co_person_roles` (`id`, `co_person_id`, `sponsor_co_person_id`, `cou_id`, `affiliation`, `title`, `o`, `ou`, `valid_from`, `valid_through`, `ordr`, `status`, `source_org_identity_id`, `created`, `modified`, `co_person_role_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,4,NULL,NULL,'affiliate',NULL,NULL,NULL,NULL,NULL,NULL,'P',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_person_roles` (`id`, `co_person_id`, `sponsor_co_person_id`, `cou_id`, `affiliation`, `title`, `o`, `ou`, `valid_from`, `valid_through`, `ordr`, `status`, `source_org_identity_id`, `created`, `modified`, `co_person_role_id`, `revision`, `deleted`, `actor_identifier`) VALUES (5,6,NULL,NULL,'affiliate',NULL,NULL,NULL,NULL,NULL,NULL,'P',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_co_person_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2402,7 +2434,7 @@ CREATE TABLE `cm_co_petition_attributes` (
   KEY `cm_co_petition_attributes_i1` (`co_petition_id`),
   KEY `cm_co_petition_attributes_i2` (`co_enrollment_attribute_id`),
   KEY `cm_co_petition_attributes_i3` (`co_petition_attribute_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2411,6 +2443,42 @@ CREATE TABLE `cm_co_petition_attributes` (
 
 LOCK TABLES `cm_co_petition_attributes` WRITE;
 /*!40000 ALTER TABLE `cm_co_petition_attributes` DISABLE KEYS */;
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,1,28,'type','official',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,1,28,'primary_name','1',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,1,28,'given','Gusto',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,1,28,'family','Guest',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (5,1,29,'type','official',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (6,1,29,'verified','0',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (7,1,29,'mail','guest1@workbench.incommon.org',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (8,1,28,'type','official',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (9,1,28,'primary_name','1',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (10,1,28,'given','Gusto',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (11,1,28,'family','Guest',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (12,1,30,'affiliation','affiliate',NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (13,5,28,'type','official',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (14,5,28,'primary_name','1',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (15,5,28,'given','Philipe',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (16,5,28,'family','Invitado',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (17,5,29,'type','official',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (18,5,29,'verified','0',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (19,5,29,'mail','guest2@workbench.incommon.org',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (20,5,28,'type','official',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (21,5,28,'primary_name','1',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (22,5,28,'given','Philipe',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (23,5,28,'family','Invitado',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (24,5,30,'affiliation','affiliate',NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (25,9,28,'type','official',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (26,9,28,'primary_name','1',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (27,9,28,'given','Christie',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (28,9,28,'family','Walken',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (29,9,29,'type','official',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (30,9,29,'verified','0',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (31,9,29,'mail','guest3@workbench.incommon.org',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (32,9,28,'type','official',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (33,9,28,'primary_name','1',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (34,9,28,'given','Christie',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (35,9,28,'family','Walken',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_attributes` (`id`, `co_petition_id`, `co_enrollment_attribute_id`, `attribute`, `value`, `attribute_foreign_key`, `created`, `modified`, `co_petition_attribute_id`, `revision`, `deleted`, `actor_identifier`) VALUES (36,9,30,'affiliation','affiliate',NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_co_petition_attributes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2436,7 +2504,7 @@ CREATE TABLE `cm_co_petition_history_records` (
   PRIMARY KEY (`id`),
   KEY `cm_co_petition_history_records_i1` (`co_petition_id`),
   KEY `cm_co_petition_history_records_i2` (`co_petition_history_record_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2445,6 +2513,15 @@ CREATE TABLE `cm_co_petition_history_records` (
 
 LOCK TABLES `cm_co_petition_history_records` WRITE;
 /*!40000 ALTER TABLE `cm_co_petition_history_records` DISABLE KEYS */;
+INSERT INTO `cm_co_petition_history_records` (`id`, `co_petition_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `co_petition_history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,1,NULL,'PC','Petition created from enrollment flow \"Self Signup (CSP Use Case) (7)\"','2020-12-28 02:26:22','2020-12-28 02:26:22',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_history_records` (`id`, `co_petition_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `co_petition_history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,1,1,'AU','Petition attributes updated','2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_history_records` (`id`, `co_petition_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `co_petition_history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,1,1,'SX','php_network_getaddresses: getaddrinfo failed: Name or service not known','2020-12-28 02:27:08','2020-12-28 02:27:08',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_history_records` (`id`, `co_petition_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `co_petition_history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,5,NULL,'PC','Petition created from enrollment flow \"Self Signup (CSP Use Case) (7)\"','2020-12-28 02:28:22','2020-12-28 02:28:22',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_history_records` (`id`, `co_petition_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `co_petition_history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (5,5,1,'AU','Petition attributes updated','2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_history_records` (`id`, `co_petition_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `co_petition_history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (6,5,1,'SX','php_network_getaddresses: getaddrinfo failed: Name or service not known','2020-12-28 02:28:51','2020-12-28 02:28:51',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_history_records` (`id`, `co_petition_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `co_petition_history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (7,9,NULL,'PC','Petition created from enrollment flow \"Self Signup (CSP Use Case) (7)\"','2020-12-28 02:29:38','2020-12-28 02:29:38',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_history_records` (`id`, `co_petition_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `co_petition_history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (8,9,1,'AU','Petition attributes updated','2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_co_petition_history_records` (`id`, `co_petition_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `co_petition_history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (9,9,1,'SX','php_network_getaddresses: getaddrinfo failed: Name or service not known','2020-12-28 02:30:05','2020-12-28 02:30:05',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_co_petition_history_records` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2488,7 +2565,7 @@ CREATE TABLE `cm_co_petitions` (
   KEY `cm_co_petitions_i5` (`co_invite_id`),
   KEY `cm_co_petitions_i6` (`co_petition_id`),
   KEY `cm_co_petitions_i7` (`enrollee_co_person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2497,6 +2574,18 @@ CREATE TABLE `cm_co_petitions` (
 
 LOCK TABLES `cm_co_petitions` WRITE;
 /*!40000 ALTER TABLE `cm_co_petitions` DISABLE KEYS */;
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,7,3,NULL,2,NULL,2,2,NULL,NULL,NULL,NULL,NULL,'302632192e3ecb5402807292617d78bf74cc1bad',NULL,NULL,NULL,'CR','2020-12-28 02:26:22','2020-12-28 02:27:06',NULL,3,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,7,3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'302632192e3ecb5402807292617d78bf74cc1bad',NULL,NULL,NULL,'CR','2020-12-28 02:26:22','2020-12-28 02:26:22',1,0,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,7,3,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'302632192e3ecb5402807292617d78bf74cc1bad',NULL,NULL,NULL,'CR','2020-12-28 02:26:22','2020-12-28 02:27:06',1,1,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,7,3,NULL,2,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,'302632192e3ecb5402807292617d78bf74cc1bad',NULL,NULL,NULL,'CR','2020-12-28 02:26:22','2020-12-28 02:27:06',1,2,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (5,7,3,NULL,3,NULL,4,4,NULL,NULL,NULL,NULL,NULL,'47da1fe0aca8acb96c57ee47ff0136436dc79e2e',NULL,NULL,NULL,'CR','2020-12-28 02:28:22','2020-12-28 02:28:49',NULL,3,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (6,7,3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'47da1fe0aca8acb96c57ee47ff0136436dc79e2e',NULL,NULL,NULL,'CR','2020-12-28 02:28:22','2020-12-28 02:28:22',5,0,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (7,7,3,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'47da1fe0aca8acb96c57ee47ff0136436dc79e2e',NULL,NULL,NULL,'CR','2020-12-28 02:28:22','2020-12-28 02:28:49',5,1,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (8,7,3,NULL,3,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'47da1fe0aca8acb96c57ee47ff0136436dc79e2e',NULL,NULL,NULL,'CR','2020-12-28 02:28:22','2020-12-28 02:28:49',5,2,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (9,7,3,NULL,4,NULL,6,5,NULL,NULL,NULL,NULL,NULL,'682a31ba31595cc371f242073137ec72ec536af0',NULL,NULL,NULL,'CR','2020-12-28 02:29:38','2020-12-28 02:30:03',NULL,3,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (10,7,3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'682a31ba31595cc371f242073137ec72ec536af0',NULL,NULL,NULL,'CR','2020-12-28 02:29:38','2020-12-28 02:29:38',9,0,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (11,7,3,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'682a31ba31595cc371f242073137ec72ec536af0',NULL,NULL,NULL,'CR','2020-12-28 02:29:38','2020-12-28 02:30:03',9,1,0,'banderson');
+INSERT INTO `cm_co_petitions` (`id`, `co_enrollment_flow_id`, `co_id`, `cou_id`, `enrollee_org_identity_id`, `archived_org_identity_id`, `enrollee_co_person_id`, `enrollee_co_person_role_id`, `petitioner_co_person_id`, `sponsor_co_person_id`, `approver_co_person_id`, `co_invite_id`, `authenticated_identifier`, `petitioner_token`, `enrollee_token`, `return_url`, `approver_comment`, `status`, `created`, `modified`, `co_petition_id`, `revision`, `deleted`, `actor_identifier`) VALUES (12,7,3,NULL,4,NULL,6,NULL,NULL,NULL,NULL,NULL,NULL,'682a31ba31595cc371f242073137ec72ec536af0',NULL,NULL,NULL,'CR','2020-12-28 02:29:38','2020-12-28 02:30:03',9,2,0,'banderson');
 /*!40000 ALTER TABLE `cm_co_petitions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2568,7 +2657,7 @@ CREATE TABLE `cm_co_provisioning_exports` (
   UNIQUE KEY `cm_co_provisioning_exports_i2` (`co_provisioning_target_id`,`co_group_id`),
   UNIQUE KEY `cm_co_provisioning_exports_i3` (`co_provisioning_target_id`,`co_email_list_id`),
   UNIQUE KEY `cm_co_provisioning_exports_i4` (`co_provisioning_target_id`,`co_service_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2578,8 +2667,11 @@ CREATE TABLE `cm_co_provisioning_exports` (
 LOCK TABLES `cm_co_provisioning_exports` WRITE;
 /*!40000 ALTER TABLE `cm_co_provisioning_exports` DISABLE KEYS */;
 INSERT INTO `cm_co_provisioning_exports` (`id`, `co_provisioning_target_id`, `co_person_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `exporttime`, `created`, `modified`) VALUES (1,2,NULL,7,NULL,NULL,'2020-12-28 01:26:49','2020-12-28 01:26:49','2020-12-28 01:26:49');
-INSERT INTO `cm_co_provisioning_exports` (`id`, `co_provisioning_target_id`, `co_person_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `exporttime`, `created`, `modified`) VALUES (2,2,NULL,8,NULL,NULL,'2020-12-28 01:26:49','2020-12-28 01:26:49','2020-12-28 01:26:49');
-INSERT INTO `cm_co_provisioning_exports` (`id`, `co_provisioning_target_id`, `co_person_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `exporttime`, `created`, `modified`) VALUES (3,2,NULL,9,NULL,NULL,'2020-12-28 01:26:49','2020-12-28 01:26:49','2020-12-28 01:26:49');
+INSERT INTO `cm_co_provisioning_exports` (`id`, `co_provisioning_target_id`, `co_person_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `exporttime`, `created`, `modified`) VALUES (2,2,NULL,8,NULL,NULL,'2020-12-28 02:30:15','2020-12-28 01:26:49','2020-12-28 02:30:15');
+INSERT INTO `cm_co_provisioning_exports` (`id`, `co_provisioning_target_id`, `co_person_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `exporttime`, `created`, `modified`) VALUES (3,2,NULL,9,NULL,NULL,'2020-12-28 02:30:15','2020-12-28 01:26:49','2020-12-28 02:30:15');
+INSERT INTO `cm_co_provisioning_exports` (`id`, `co_provisioning_target_id`, `co_person_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `exporttime`, `created`, `modified`) VALUES (4,2,2,NULL,NULL,NULL,'2020-12-28 02:28:03','2020-12-28 02:27:23','2020-12-28 02:28:03');
+INSERT INTO `cm_co_provisioning_exports` (`id`, `co_provisioning_target_id`, `co_person_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `exporttime`, `created`, `modified`) VALUES (5,2,4,NULL,NULL,NULL,'2020-12-28 02:29:29','2020-12-28 02:29:29','2020-12-28 02:29:29');
+INSERT INTO `cm_co_provisioning_exports` (`id`, `co_provisioning_target_id`, `co_person_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `exporttime`, `created`, `modified`) VALUES (6,2,6,NULL,NULL,NULL,'2020-12-28 02:30:28','2020-12-28 02:30:28','2020-12-28 02:30:28');
 /*!40000 ALTER TABLE `cm_co_provisioning_exports` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2694,7 +2786,7 @@ CREATE TABLE `cm_co_sequential_identifier_assignments` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2703,6 +2795,7 @@ CREATE TABLE `cm_co_sequential_identifier_assignments` (
 
 LOCK TABLES `cm_co_sequential_identifier_assignments` WRITE;
 /*!40000 ALTER TABLE `cm_co_sequential_identifier_assignments` DISABLE KEYS */;
+INSERT INTO `cm_co_sequential_identifier_assignments` (`id`, `co_identifier_assignment_id`, `affix`, `last`, `created`, `modified`) VALUES (1,1,'G%08.8s',3,'2020-12-28 02:28:03','2020-12-28 02:30:28');
 /*!40000 ALTER TABLE `cm_co_sequential_identifier_assignments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3035,7 +3128,7 @@ CREATE TABLE `cm_email_addresses` (
   KEY `cm_email_addresses_i4` (`email_address_id`),
   KEY `cm_email_addresses_i5` (`source_email_address_id`),
   KEY `cm_email_addresses_i6` (`co_department_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3044,6 +3137,12 @@ CREATE TABLE `cm_email_addresses` (
 
 LOCK TABLES `cm_email_addresses` WRITE;
 /*!40000 ALTER TABLE `cm_email_addresses` DISABLE KEYS */;
+INSERT INTO `cm_email_addresses` (`id`, `mail`, `description`, `type`, `verified`, `co_person_id`, `org_identity_id`, `co_department_id`, `source_email_address_id`, `created`, `modified`, `email_address_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,'guest1@workbench.incommon.org',NULL,'official',0,NULL,2,NULL,NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_email_addresses` (`id`, `mail`, `description`, `type`, `verified`, `co_person_id`, `org_identity_id`, `co_department_id`, `source_email_address_id`, `created`, `modified`, `email_address_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,'guest1@workbench.incommon.org','','official',0,2,NULL,NULL,NULL,'2020-12-28 02:27:41','2020-12-28 02:27:41',NULL,0,0,'banderson');
+INSERT INTO `cm_email_addresses` (`id`, `mail`, `description`, `type`, `verified`, `co_person_id`, `org_identity_id`, `co_department_id`, `source_email_address_id`, `created`, `modified`, `email_address_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,'guest2@workbench.incommon.org',NULL,'official',0,NULL,3,NULL,NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_email_addresses` (`id`, `mail`, `description`, `type`, `verified`, `co_person_id`, `org_identity_id`, `co_department_id`, `source_email_address_id`, `created`, `modified`, `email_address_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,'guest2@workbench.incommon.org','','official',0,4,NULL,NULL,NULL,'2020-12-28 02:29:20','2020-12-28 02:29:20',NULL,0,0,'banderson');
+INSERT INTO `cm_email_addresses` (`id`, `mail`, `description`, `type`, `verified`, `co_person_id`, `org_identity_id`, `co_department_id`, `source_email_address_id`, `created`, `modified`, `email_address_id`, `revision`, `deleted`, `actor_identifier`) VALUES (5,'guest3@workbench.incommon.org',NULL,'official',0,NULL,4,NULL,NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_email_addresses` (`id`, `mail`, `description`, `type`, `verified`, `co_person_id`, `org_identity_id`, `co_department_id`, `source_email_address_id`, `created`, `modified`, `email_address_id`, `revision`, `deleted`, `actor_identifier`) VALUES (6,'guest3@workbench.incommon.org','','official',0,6,NULL,NULL,NULL,'2020-12-28 02:30:24','2020-12-28 02:30:24',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_email_addresses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3138,7 +3237,7 @@ CREATE TABLE `cm_history_records` (
   KEY `cm_history_records_i4` (`co_group_id`),
   KEY `cm_history_records_i5` (`history_record_id`),
   KEY `cm_history_records_i6` (`co_email_list_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3152,6 +3251,53 @@ INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `or
 INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,NULL,NULL,NULL,7,NULL,NULL,NULL,'PCGM','Provisioned Guests/Sponsored Accounts','2020-12-28 01:26:49','2020-12-28 01:26:49',NULL,0,0,'Shell user \"www-data\"');
 INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,NULL,NULL,NULL,8,NULL,NULL,NULL,'PCGM','Provisioned Guests/Sponsored Accounts','2020-12-28 01:26:49','2020-12-28 01:26:49',NULL,0,0,'Shell user \"www-data\"');
 INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (5,NULL,NULL,NULL,9,NULL,NULL,NULL,'PCGM','Provisioned Guests/Sponsored Accounts','2020-12-28 01:26:49','2020-12-28 01:26:49',NULL,0,0,'Shell user \"www-data\"');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (6,NULL,NULL,2,NULL,NULL,NULL,1,'AOIP','Org Identity Created (Petition)','2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (7,2,NULL,NULL,9,NULL,NULL,NULL,'ACGM','Added to CO Group CO:members:all (9) (member=Yes, owner=No)','2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (8,2,NULL,2,NULL,NULL,NULL,1,'ACPP','CO Person Created (Petition)','2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (9,2,2,2,NULL,NULL,NULL,1,'ACRP','CO Person Role Created (Petition)','2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (10,2,2,2,NULL,NULL,NULL,1,'LOCP','CO Person and Org Identity Linked','2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (11,2,NULL,NULL,NULL,NULL,NULL,1,'PCPA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:27:23','2020-12-28 02:27:23',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (12,2,NULL,NULL,NULL,NULL,NULL,1,'PRVX','Provisioning failed for Guests/Sponsored Accounts: DN not found for CO Person 2 (DN component GuestID not available)','2020-12-28 02:27:23','2020-12-28 02:27:23',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (13,NULL,NULL,NULL,9,NULL,NULL,1,'PCGA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:27:23','2020-12-28 02:27:23',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (14,2,NULL,NULL,NULL,NULL,NULL,1,'PRVX','Provisioning failed for Guests/Sponsored Accounts: DN not found for CO Person 2 (DN component GuestID not available)','2020-12-28 02:27:23','2020-12-28 02:27:23',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (15,NULL,NULL,NULL,8,NULL,NULL,1,'PCGA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:27:23','2020-12-28 02:27:23',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (16,2,NULL,NULL,8,NULL,NULL,NULL,'ACGM','Added to CO Group CO:members:active (8) (member=Yes, owner=No)','2020-12-28 02:27:23','2020-12-28 02:27:23',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (17,2,NULL,NULL,NULL,NULL,NULL,NULL,'RCPS','CO Person status recalculated to Active','2020-12-28 02:27:23','2020-12-28 02:27:23',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (18,2,2,NULL,NULL,NULL,NULL,1,'ECRM','CO Person Role Edited (2):Status: Pending (P) > Active (A)','2020-12-28 02:27:23','2020-12-28 02:27:23',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (19,2,NULL,NULL,NULL,NULL,NULL,1,'PRVX','Provisioning failed for Guests/Sponsored Accounts: DN not found for CO Person 2 (DN component GuestID not available)','2020-12-28 02:27:41','2020-12-28 02:27:41',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (20,2,NULL,NULL,NULL,NULL,NULL,1,'ECPM','Email Address Added: Email: Null > guest1@workbench.incommon.org;Type: Null > Official (official)','2020-12-28 02:27:41','2020-12-28 02:27:41',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (21,2,NULL,NULL,NULL,NULL,NULL,1,'AIDA','Identifier Auto Assigned: G00000001 (GuestID)','2020-12-28 02:28:03','2020-12-28 02:28:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (22,2,NULL,NULL,NULL,NULL,NULL,NULL,'PCPA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:28:03','2020-12-28 02:28:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (23,NULL,NULL,3,NULL,NULL,NULL,1,'AOIP','Org Identity Created (Petition)','2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (24,4,NULL,NULL,9,NULL,NULL,NULL,'ACGM','Added to CO Group CO:members:all (9) (member=Yes, owner=No)','2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (25,4,NULL,3,NULL,NULL,NULL,1,'ACPP','CO Person Created (Petition)','2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (26,4,4,3,NULL,NULL,NULL,1,'ACRP','CO Person Role Created (Petition)','2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (27,4,4,3,NULL,NULL,NULL,1,'LOCP','CO Person and Org Identity Linked','2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (28,4,NULL,NULL,NULL,NULL,NULL,1,'PRVX','Provisioning failed for Guests/Sponsored Accounts: DN not found for CO Person 4 (DN component GuestID not available)','2020-12-28 02:29:03','2020-12-28 02:29:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (29,NULL,NULL,NULL,9,NULL,NULL,1,'PCGA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:29:03','2020-12-28 02:29:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (30,4,NULL,NULL,NULL,NULL,NULL,1,'PRVX','Provisioning failed for Guests/Sponsored Accounts: DN not found for CO Person 4 (DN component GuestID not available)','2020-12-28 02:29:03','2020-12-28 02:29:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (31,NULL,NULL,NULL,8,NULL,NULL,1,'PCGA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:29:03','2020-12-28 02:29:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (32,4,NULL,NULL,8,NULL,NULL,NULL,'ACGM','Added to CO Group CO:members:active (8) (member=Yes, owner=No)','2020-12-28 02:29:03','2020-12-28 02:29:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (33,4,NULL,3,NULL,NULL,NULL,1,'ECPM','CO Person Edited: Status: Pending (P) > Active (A)','2020-12-28 02:29:03','2020-12-28 02:29:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (34,4,NULL,NULL,NULL,NULL,NULL,1,'PRVX','Provisioning failed for Guests/Sponsored Accounts: DN not found for CO Person 4 (DN component GuestID not available)','2020-12-28 02:29:20','2020-12-28 02:29:20',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (35,4,NULL,NULL,NULL,NULL,NULL,1,'ECPM','Email Address Added: Email: Null > guest2@workbench.incommon.org;Type: Null > Official (official)','2020-12-28 02:29:20','2020-12-28 02:29:20',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (36,4,NULL,NULL,NULL,NULL,NULL,1,'AIDA','Identifier Auto Assigned: G00000002 (GuestID)','2020-12-28 02:29:29','2020-12-28 02:29:29',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (37,4,NULL,NULL,NULL,NULL,NULL,NULL,'PCPA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:29:29','2020-12-28 02:29:29',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (38,NULL,NULL,4,NULL,NULL,NULL,1,'AOIP','Org Identity Created (Petition)','2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (39,6,NULL,NULL,9,NULL,NULL,NULL,'ACGM','Added to CO Group CO:members:all (9) (member=Yes, owner=No)','2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (40,6,NULL,4,NULL,NULL,NULL,1,'ACPP','CO Person Created (Petition)','2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (41,6,5,4,NULL,NULL,NULL,1,'ACRP','CO Person Role Created (Petition)','2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (42,6,5,4,NULL,NULL,NULL,1,'LOCP','CO Person and Org Identity Linked','2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (43,6,NULL,NULL,NULL,NULL,NULL,1,'PRVX','Provisioning failed for Guests/Sponsored Accounts: DN not found for CO Person 6 (DN component GuestID not available)','2020-12-28 02:30:15','2020-12-28 02:30:15',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (44,NULL,NULL,NULL,9,NULL,NULL,1,'PCGA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:30:15','2020-12-28 02:30:15',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (45,6,NULL,NULL,NULL,NULL,NULL,1,'PRVX','Provisioning failed for Guests/Sponsored Accounts: DN not found for CO Person 6 (DN component GuestID not available)','2020-12-28 02:30:15','2020-12-28 02:30:15',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (46,NULL,NULL,NULL,8,NULL,NULL,1,'PCGA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:30:15','2020-12-28 02:30:15',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (47,6,NULL,NULL,8,NULL,NULL,NULL,'ACGM','Added to CO Group CO:members:active (8) (member=Yes, owner=No)','2020-12-28 02:30:15','2020-12-28 02:30:15',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (48,6,NULL,4,NULL,NULL,NULL,1,'ECPM','CO Person Edited: Status: Pending (P) > Active (A)','2020-12-28 02:30:15','2020-12-28 02:30:15',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (49,6,NULL,NULL,NULL,NULL,NULL,1,'PRVX','Provisioning failed for Guests/Sponsored Accounts: DN not found for CO Person 6 (DN component GuestID not available)','2020-12-28 02:30:24','2020-12-28 02:30:24',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (50,6,NULL,NULL,NULL,NULL,NULL,1,'ECPM','Email Address Added: Email: Null > guest3@workbench.incommon.org;Type: Null > Official (official)','2020-12-28 02:30:24','2020-12-28 02:30:24',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (51,6,NULL,NULL,NULL,NULL,NULL,1,'AIDA','Identifier Auto Assigned: G00000003 (GuestID)','2020-12-28 02:30:28','2020-12-28 02:30:28',NULL,0,0,'banderson');
+INSERT INTO `cm_history_records` (`id`, `co_person_id`, `co_person_role_id`, `org_identity_id`, `co_group_id`, `co_email_list_id`, `co_service_id`, `actor_co_person_id`, `action`, `comment`, `created`, `modified`, `history_record_id`, `revision`, `deleted`, `actor_identifier`) VALUES (52,6,NULL,NULL,NULL,NULL,NULL,NULL,'PCPA','Provisioned Guests/Sponsored Accounts','2020-12-28 02:30:28','2020-12-28 02:30:28',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_history_records` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3220,7 +3366,7 @@ CREATE TABLE `cm_identifiers` (
   KEY `cm_identifiers_i6` (`co_department_id`),
   KEY `cm_identifiers_i7` (`co_person_id`),
   KEY `cm_identifiers_i8` (`org_identity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3230,6 +3376,9 @@ CREATE TABLE `cm_identifiers` (
 LOCK TABLES `cm_identifiers` WRITE;
 /*!40000 ALTER TABLE `cm_identifiers` DISABLE KEYS */;
 INSERT INTO `cm_identifiers` (`id`, `identifier`, `type`, `login`, `status`, `co_person_id`, `org_identity_id`, `co_department_id`, `co_group_id`, `source_identifier_id`, `co_provisioning_target_id`, `created`, `modified`, `identifier_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,'banderson','uid',1,'A',NULL,1,NULL,NULL,NULL,NULL,'2020-12-05 02:15:59','2020-12-05 02:15:59',NULL,0,0,'Shell user \"root\"');
+INSERT INTO `cm_identifiers` (`id`, `identifier`, `type`, `login`, `status`, `co_person_id`, `org_identity_id`, `co_department_id`, `co_group_id`, `source_identifier_id`, `co_provisioning_target_id`, `created`, `modified`, `identifier_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,'G00000001','GuestID',1,'A',2,NULL,NULL,NULL,NULL,NULL,'2020-12-28 02:28:03','2020-12-28 02:28:03',NULL,0,0,'banderson');
+INSERT INTO `cm_identifiers` (`id`, `identifier`, `type`, `login`, `status`, `co_person_id`, `org_identity_id`, `co_department_id`, `co_group_id`, `source_identifier_id`, `co_provisioning_target_id`, `created`, `modified`, `identifier_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,'G00000002','GuestID',1,'A',4,NULL,NULL,NULL,NULL,NULL,'2020-12-28 02:29:29','2020-12-28 02:29:29',NULL,0,0,'banderson');
+INSERT INTO `cm_identifiers` (`id`, `identifier`, `type`, `login`, `status`, `co_person_id`, `org_identity_id`, `co_department_id`, `co_group_id`, `source_identifier_id`, `co_provisioning_target_id`, `created`, `modified`, `identifier_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,'G00000003','GuestID',1,'A',6,NULL,NULL,NULL,NULL,NULL,'2020-12-28 02:30:28','2020-12-28 02:30:28',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_identifiers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3279,7 +3428,7 @@ CREATE TABLE `cm_locks` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cm_locks_i1` (`co_id`,`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=12152 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=12210 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3374,7 +3523,7 @@ CREATE TABLE `cm_names` (
   KEY `cm_names_i1` (`name_id`),
   KEY `cm_names_i2` (`co_person_id`),
   KEY `cm_names_i3` (`org_identity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3385,6 +3534,12 @@ LOCK TABLES `cm_names` WRITE;
 /*!40000 ALTER TABLE `cm_names` DISABLE KEYS */;
 INSERT INTO `cm_names` (`id`, `honorific`, `given`, `middle`, `family`, `suffix`, `type`, `language`, `co_person_id`, `org_identity_id`, `primary_name`, `source_name_id`, `created`, `modified`, `name_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,NULL,'Registry',NULL,'Anderson',NULL,'official',NULL,NULL,1,1,NULL,'2020-12-05 02:15:59','2020-12-05 02:15:59',NULL,0,0,'Shell user \"root\"');
 INSERT INTO `cm_names` (`id`, `honorific`, `given`, `middle`, `family`, `suffix`, `type`, `language`, `co_person_id`, `org_identity_id`, `primary_name`, `source_name_id`, `created`, `modified`, `name_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,NULL,'Registry',NULL,'Anderson',NULL,'official',NULL,1,NULL,1,NULL,'2020-12-05 02:15:59','2020-12-05 02:15:59',NULL,0,0,'Shell user \"root\"');
+INSERT INTO `cm_names` (`id`, `honorific`, `given`, `middle`, `family`, `suffix`, `type`, `language`, `co_person_id`, `org_identity_id`, `primary_name`, `source_name_id`, `created`, `modified`, `name_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,'','Gusto','','Guest','','official','',NULL,2,1,NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_names` (`id`, `honorific`, `given`, `middle`, `family`, `suffix`, `type`, `language`, `co_person_id`, `org_identity_id`, `primary_name`, `source_name_id`, `created`, `modified`, `name_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,'','Gusto','','Guest','','official','',2,NULL,1,NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_names` (`id`, `honorific`, `given`, `middle`, `family`, `suffix`, `type`, `language`, `co_person_id`, `org_identity_id`, `primary_name`, `source_name_id`, `created`, `modified`, `name_id`, `revision`, `deleted`, `actor_identifier`) VALUES (5,'','Philipe','','Invitado','','official','',NULL,3,1,NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_names` (`id`, `honorific`, `given`, `middle`, `family`, `suffix`, `type`, `language`, `co_person_id`, `org_identity_id`, `primary_name`, `source_name_id`, `created`, `modified`, `name_id`, `revision`, `deleted`, `actor_identifier`) VALUES (6,'','Philipe','','Invitado','','official','',4,NULL,1,NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_names` (`id`, `honorific`, `given`, `middle`, `family`, `suffix`, `type`, `language`, `co_person_id`, `org_identity_id`, `primary_name`, `source_name_id`, `created`, `modified`, `name_id`, `revision`, `deleted`, `actor_identifier`) VALUES (7,'','Christie','','Walken','','official','',NULL,4,1,NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
+INSERT INTO `cm_names` (`id`, `honorific`, `given`, `middle`, `family`, `suffix`, `type`, `language`, `co_person_id`, `org_identity_id`, `primary_name`, `source_name_id`, `created`, `modified`, `name_id`, `revision`, `deleted`, `actor_identifier`) VALUES (8,'','Christie','','Walken','','official','',6,NULL,1,NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_names` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3505,7 +3660,7 @@ CREATE TABLE `cm_org_identities` (
   PRIMARY KEY (`id`),
   KEY `cm_org_identities_i1` (`co_id`),
   KEY `cm_org_identities_i2` (`org_identity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3515,6 +3670,9 @@ CREATE TABLE `cm_org_identities` (
 LOCK TABLES `cm_org_identities` WRITE;
 /*!40000 ALTER TABLE `cm_org_identities` DISABLE KEYS */;
 INSERT INTO `cm_org_identities` (`id`, `status`, `date_of_birth`, `affiliation`, `title`, `o`, `ou`, `co_id`, `valid_from`, `valid_through`, `created`, `modified`, `org_identity_id`, `revision`, `deleted`, `actor_identifier`) VALUES (1,NULL,NULL,'member',NULL,NULL,NULL,1,NULL,NULL,'2020-12-05 02:15:59','2020-12-05 02:15:59',NULL,0,0,'Shell user \"root\"');
+INSERT INTO `cm_org_identities` (`id`, `status`, `date_of_birth`, `affiliation`, `title`, `o`, `ou`, `co_id`, `valid_from`, `valid_through`, `created`, `modified`, `org_identity_id`, `revision`, `deleted`, `actor_identifier`) VALUES (2,NULL,NULL,NULL,NULL,'',NULL,3,NULL,NULL,'2020-12-28 02:27:06','2020-12-28 02:27:06',NULL,0,0,'banderson');
+INSERT INTO `cm_org_identities` (`id`, `status`, `date_of_birth`, `affiliation`, `title`, `o`, `ou`, `co_id`, `valid_from`, `valid_through`, `created`, `modified`, `org_identity_id`, `revision`, `deleted`, `actor_identifier`) VALUES (3,NULL,NULL,NULL,NULL,'',NULL,3,NULL,NULL,'2020-12-28 02:28:49','2020-12-28 02:28:49',NULL,0,0,'banderson');
+INSERT INTO `cm_org_identities` (`id`, `status`, `date_of_birth`, `affiliation`, `title`, `o`, `ou`, `co_id`, `valid_from`, `valid_through`, `created`, `modified`, `org_identity_id`, `revision`, `deleted`, `actor_identifier`) VALUES (4,NULL,NULL,NULL,NULL,'',NULL,3,NULL,NULL,'2020-12-28 02:30:03','2020-12-28 02:30:03',NULL,0,0,'banderson');
 /*!40000 ALTER TABLE `cm_org_identities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3814,4 +3972,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-28  2:02:10
+-- Dump completed on 2020-12-28  2:31:27
