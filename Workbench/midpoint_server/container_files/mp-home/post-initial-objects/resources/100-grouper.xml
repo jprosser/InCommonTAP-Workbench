@@ -31,7 +31,7 @@
         <icfc:configurationProperties>
             <rest:baseUrl>https://grouper-ws:443</rest:baseUrl>
             <rest:username>banderson</rest:username>
-            <rest:password>password</rest:password>
+            <rest:password>password1</rest:password>
             <rest:testStem>:</rest:testStem>
             <!-- no testGroup: we cannot be sure that banderson is a member of sysadmingroup when doing the first test -->
             <rest:baseStem>:</rest:baseStem>
