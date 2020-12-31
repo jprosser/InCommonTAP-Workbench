@@ -26,20 +26,22 @@ services:
     secrets:
      - g_database_password.txt
      - rabbitmq_password.txt
-     - source: grouper.hibernate.properties
-       target: grouper_grouper.hibernate.properties
-     - source: grouper-loader.properties
-       target: grouper_grouper-loader.properties
-     - source: subject.properties
-       target: grouper_subject.properties
     volumes:
      - type: bind
        source: ./configs-and-secrets/grouper/application/grouper.properties
-       target: /opt/grouper/conf/grouper.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouper.properties
      - type: bind
        source: ./configs-and-secrets/grouper/application/grouper.client.properties
-       target: /opt/grouper/conf/grouper.client.properties
-
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouper.client.properties
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/grouper.hibernate.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouper.hibernate.properties
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/grouper-loader.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouper-loader.properties
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/subject.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/subject.properties
   grouper_ui:
     build: 
       context: ./grouper_ui/
@@ -67,12 +69,6 @@ services:
       retries: 3
     secrets:
      - g_database_password.txt
-     - source: grouper.hibernate.properties
-       target: grouper_grouper.hibernate.properties
-     - source: grouper-loader.properties
-       target: grouper_grouper-loader.properties
-     - source: subject.properties
-       target: grouper_subject.properties
      - source: g_sp-key.pem
        target: shib_sp-key.pem
      - source: g_host-key.pem
@@ -99,7 +95,15 @@ services:
      - type: bind
        source: ./configs-and-secrets/grouper/httpd/host-cert.pem
        target: /etc/pki/tls/certs/cachain.pem
-
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/grouper.hibernate.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouper.hibernate.properties
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/grouper-loader.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouper-loader.properties
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/subject.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/subject.properties
   grouper_ws:
     build: ./grouper_ws/
     command: bash -c "while ! curl -s grouper_data:3306 > /dev/null; do echo waiting for mysql to start; sleep 3; done; while ! curl -s ldap://directory:389 > /dev/null; do echo waiting for ldap to start; sleep 3; done; exec ws"
@@ -124,12 +128,6 @@ services:
       retries: 3
     secrets:
      - g_database_password.txt
-     - source: grouper.hibernate.properties
-       target: grouper_grouper.hibernate.properties
-     - source: grouper-loader.properties
-       target: grouper_grouper-loader.properties
-     - source: subject.properties
-       target: grouper_subject.properties
      - source: g_sp-key.pem
        target: shib_sp-key.pem
      - source: g_host-key.pem
@@ -147,6 +145,15 @@ services:
      - type: bind
        source: ./configs-and-secrets/grouper/httpd/host-cert.pem
        target: /etc/pki/tls/certs/cachain.pem
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/grouper.hibernate.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouper.hibernate.properties
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/grouper-loader.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouper-loader.properties
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/subject.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/subject.properties
 
   grouper_data:
     build: ./grouper_data/
@@ -486,12 +493,6 @@ secrets:
     file: ./configs-and-secrets/grouper/application/database_password.txt
   rabbitmq_password.txt:
     file: ./configs-and-secrets/grouper/application/rabbitmq_password.txt
-  grouper.hibernate.properties:
-    file: ./configs-and-secrets/grouper/application/grouper.hibernate.properties
-  grouper-loader.properties:
-    file: ./configs-and-secrets/grouper/application/grouper-loader.properties
-  subject.properties:
-    file: ./configs-and-secrets/grouper/application/subject.properties
 # midPoint
   mp_host-key.pem:
     file: ./configs-and-secrets/midpoint/httpd/host-key.pem
