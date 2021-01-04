@@ -78,9 +78,10 @@
 			<attribute>
 				<ref>ri:uid</ref>
 				<displayName>UID</displayName>
-                <inbound>
+                <inbound id="34">
+				    <strength>strong</strength>
                     <target>
-                        <path>name</path>
+                        <c:path xmlns:incommon="http://grouper-demo.tier.internet2.edu">c:extension/incommon:SIS_ID</c:path>
                     </target>
                 </inbound>
                 <inbound>
@@ -175,19 +176,17 @@
 	<synchronization>
 		<objectSynchronization>
 			<enabled>true</enabled>
-
 			<correlation>
 				<q:equal>
-					<q:path>name</q:path>
-					<expression>
+				    <q:path xmlns:incommon="http://grouper-demo.tier.internet2.edu">c:extension/incommon:SIS_ID</q:path>
+                    <expression>
 						<path>
-							declare namespace ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3";
+						    declare namespace ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3";
 							$projection/attributes/ri:uid
 						</path>
-					</expression>
+                    </expression>
 				</q:equal>
 			</correlation>
-
 			<reaction>
 				<situation>linked</situation>
 				<synchronize>true</synchronize>

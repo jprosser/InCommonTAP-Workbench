@@ -99,7 +99,7 @@
             </requireAssignmentTarget>
             <module>
                 <name>internalLoginForm</name>
-                <order>30</order>
+                <order>40</order>
                 <necessity>sufficient</necessity>
             </module>
         </sequence>
