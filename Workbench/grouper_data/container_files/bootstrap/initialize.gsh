@@ -25,6 +25,8 @@ attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperL
 attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperLoaderLdapSubjectAttributeName(), "uniqueMember")
 attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperLoaderLdapSubjectIdTypeName(), "subjectId")
 
+admins = new GroupSave(gs).assignName("app:wordpress:admins").assignCreateParentStemsIfNotExist(true).save()
+editors = new GroupSave(gs).assignName("app:wordpress:editors").assignCreateParentStemsIfNotExist(true).save()
 chess = new GroupSave(gs).assignName("app:mailinglist:chess").assignCreateParentStemsIfNotExist(true).save()
 idmfans = new GroupSave(gs).assignName("app:mailinglist:idm-fans").assignCreateParentStemsIfNotExist(true).save()
 cs = new GroupSave(gs).assignName("app:cs").assignCreateParentStemsIfNotExist(true).save()
