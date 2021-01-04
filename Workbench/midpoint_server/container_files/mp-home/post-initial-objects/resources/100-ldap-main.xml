@@ -61,6 +61,7 @@
 		<generationConstraints>
 			<generateObjectClass>ri:inetOrgPerson</generateObjectClass>
 			<generateObjectClass>ri:eduPerson</generateObjectClass>
+            <generateObjectClass>ri:incwbPerson</generateObjectClass>
 			<generateObjectClass>ri:organizationalPerson</generateObjectClass>
 			<generateObjectClass>ri:person</generateObjectClass>
 			<generateObjectClass>ri:groupOfUniqueNames</generateObjectClass>
@@ -76,6 +77,7 @@
 			<default>true</default>
 			<objectClass>ri:inetOrgPerson</objectClass>
 			<auxiliaryObjectClass>ri:eduPerson</auxiliaryObjectClass>
+			<auxiliaryObjectClass>ri:incwbPerson</auxiliaryObjectClass>
 			<attribute>
 				<ref>ri:dn</ref>
 				<displayName>Distinguished Name</displayName>
@@ -87,18 +89,12 @@
                 <outbound>
                     <strength>strong</strength>
 					<source>
-                        <path>familyName</path>
-                    </source>
-                    <source>
-                        <path>givenName</path>
+                        <path>employeeNumber</path>
                     </source>
                     <expression>
                         <script>
                             <code>
-								tmpGivenName = basic.norm(basic.stringify(givenName))?.tr(' ', '.')
-                                tmpFamilyName = basic.norm(basic.stringify(familyName))?.tr(' ', '.')
-							    tmpuid = tmpGivenName.substring(0, 1) + tmpFamilyName + iterationToken
-                                'uid=' + tmpuid + ',ou=People,dc=internet2,dc=edu'
+                                'uid=' + employeeNumber + ',ou=People,dc=internet2,dc=edu'
                             </code>
                         </script>
                     </expression>
@@ -115,6 +111,48 @@
                     <strength>strong</strength>
                     <source>
                         <path>fullName</path>
+                    </source>
+                </outbound>
+			</attribute>
+			<attribute>
+				<ref>ri:incwbPersonStudentID</ref>
+				<displayName>Student ID</displayName>
+				<limitations>
+					<minOccurs>0</minOccurs>
+				</limitations>
+                <tolerant>false</tolerant>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>extension/SIS_ID</path>
+                    </source>
+                </outbound>
+			</attribute>			
+			<attribute>
+				<ref>ri:incwbPersonEmployeeID</ref>
+				<displayName>Employee ID</displayName>
+				<limitations>
+					<minOccurs>0</minOccurs>
+				</limitations>
+                <tolerant>false</tolerant>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>extension/HR_ID</path>
+                    </source>
+                </outbound>
+			</attribute>
+			<attribute>
+				<ref>ri:incwbPersonGuestID</ref>
+				<displayName>Guest ID</displayName>
+				<limitations>
+					<minOccurs>0</minOccurs>
+				</limitations>
+                <tolerant>false</tolerant>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>extension/Guest_ID</path>
                     </source>
                 </outbound>
 			</attribute>
@@ -154,20 +192,8 @@
                 <outbound>
                     <strength>strong</strength>
 					<source>
-                        <path>familyName</path>
+                        <path>employeeNumber</path>
                     </source>
-                    <source>
-                        <path>givenName</path>
-                    </source>
-					<expression>
-                        <script>
-                            <code>
-							  tmpGivenName = basic.norm(basic.stringify(givenName))?.tr(' ', '.')
-                              tmpFamilyName = basic.norm(basic.stringify(familyName))?.tr(' ', '.')
-							  return tmpGivenName.substring(0, 1) + tmpFamilyName + iterationToken
-                            </code>
-                        </script>
-                    </expression>
                 </outbound>
 			</attribute>
 			<attribute>

@@ -6,12 +6,131 @@
   ~ and European Union Public License. See LICENSE file for details.
   -->
 
-<objectTemplate xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" oid="8098b124-c20c-4965-8adf-e528abedf7a4">
-    <name>template-user</name>
+<objectTemplate oid="8098b124-c20c-4965-8adf-e528abedf7a4"
+	xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xmlns='http://midpoint.evolveum.com/xml/ns/public/common/common-3'
+	xmlns:c='http://midpoint.evolveum.com/xml/ns/public/common/common-3'
+	xmlns:t='http://prism.evolveum.com/xml/ns/public/types-3'>
+	
+    <name>User Template</name>
+    <iterationSpecification>
+        <maxIterations>99</maxIterations>
+        <tokenExpression>
+            <script>
+                <code>
+                    if (iteration == 0) {
+                        return "";
+                    } else {
+                        return "_"+iteration;
+                    }
+                </code>
+            </script>
+        </tokenExpression>
+        <postIterationCondition>
+            <variable>
+                <name>givenName</name>
+                <path>$focus/givenName</path>
+            </variable>
+            <variable>
+                <name>familyName</name>
+                <path>$focus/familyName</path>
+            </variable>
+            <script>
+                <code>
+				    import com.evolveum.midpoint.xml.ns._public.common.common_3.*
+                    import com.evolveum.midpoint.schema.constants.*
+                    import com.evolveum.midpoint.schema.* 
+                    import javax.xml.namespace.*
+                    import com.evolveum.midpoint.util.*
+                    import com.evolveum.midpoint.prism.path.*
+					import com.evolveum.midpoint.prism.polystring.*
+					import com.evolveum.midpoint.prism.PrismContainer.*
+
+					def nameunique = false
+					def uidunique = false
+					if (givenName == null || familyName == null) { 
+						return true;
+					} else {
+						def testname = basic.norm(basic.stringify(givenName))?.tr(' ', '_') + '_' + basic.norm(basic.stringify(familyName))?.tr(' ', '_') + "" + iterationToken;
+						//log.info('post-iterate for name for {}', testname.toString());
+						//nameunique = midpoint.isUniquePropertyValue(focus, 'name', PolyString.fromOrig(testname.toString()));
+						nameunique = midpoint.isUniquePropertyValue(focus, 'name', PolyString.fromOrig(testname.toString()));
+						//midpoint.isUniquePropertyValue(focus, 'name', PolyString.fromOrig(testname.toString()));
+											
+						def testuid = basic.norm(basic.stringify(givenName))?.tr(' ', '_').substring(0,1) + basic.norm(basic.stringify(familyName))?.tr(' ', '_') + "" + iterationToken;
+						//log.info('post-iterate for uid for {}', testname.toString());
+						//uidunique = midpoint.isUniquePropertyValue(focus, 'UserID', PolyString.fromOrig(testuid.toString()));
+						uidunique = midpoint.isUniquePropertyValue(focus, 'employeeNumber', testuid.toString());
+					}
+										
+					return (nameunique &amp;&amp; uidunique)
+					
+                </code>
+            </script>
+        </postIterationCondition>
+	</iterationSpecification>
+	
+	
+	<item>
+		<ref>name</ref>
+		<mapping>
+			<!--<trace>true</trace>-->
+			<strength>weak</strength>
+			<source>
+				<path>familyName</path>
+			</source>
+			<source>
+				<path>givenName</path>
+			</source>
+			<expression>
+				<script>
+					<language>http://midpoint.evolveum.com/xml/ns/public/expression/language#Groovy</language>
+					<code>
+					//log.info('mapping expression for {}', basic.norm(basic.stringify(givenName))?.tr(' ', '_') + '_' + basic.norm(basic.stringify(familyName))?.tr(' ', '_') + "" + iterationToken)
+					basic.norm(basic.stringify(givenName))?.tr(' ', '_') + '_' + basic.norm(basic.stringify(familyName))?.tr(' ', '_') + "" + iterationToken
+					</code>
+				</script>
+			</expression>
+			<condition>
+				<script>
+					<code>givenName != null &amp;&amp; familyName != null</code>
+				</script>
+			</condition>
+		</mapping>
+	</item>
+	<item>
+		<ref>employeeNumber</ref>
+		<mapping>
+			<!--<trace>true</trace>-->
+			<strength>weak</strength>
+			<source>
+				<path>familyName</path>
+			</source>
+			<source>
+				<path>givenName</path>
+			</source>
+			<expression>
+				<script>
+					<language>http://midpoint.evolveum.com/xml/ns/public/expression/language#Groovy</language>
+					<code>
+					tmpGivenName = basic.norm(basic.stringify(givenName))?.tr(' ', '_')
+                    tmpFamilyName = basic.norm(basic.stringify(familyName))?.tr(' ', '_')
+					tmpGivenName.substring(0, 1) + tmpFamilyName + iterationToken
+					</code>
+				</script>
+			</expression>
+			<condition>
+				<script>
+					<code>givenName != null &amp;&amp; familyName != null</code>
+				</script>
+			</condition>
+		</mapping>
+	</item>
+
     <mapping>
         <strength>strong</strength>
         <source>
-            <path>name</path>
+            <path>employeeNumber</path>
         </source>
         <expression>
             <script>
@@ -35,13 +154,13 @@
                         .and().item(ShadowType.F_KIND).eq(ShadowKindType.ENTITLEMENT)
                         .and().item(ShadowType.F_INTENT).eq('group')
                         .and().block().item(ShadowType.F_DEAD).isNull().or().item(ShadowType.F_DEAD).eq(false).endBlock()
-                        .and().item(ItemPath.create(ShadowType.F_ATTRIBUTES, MEMBER_NAME), memberDef).eq(basic.stringify(name))
+                        .and().item(ItemPath.create(ShadowType.F_ATTRIBUTES, MEMBER_NAME), memberDef).eq(basic.stringify(employeeNumber))
                         .build()
                         
                     //log.info('shadowQuery = {}\n{}', shadowQuery, shadowQuery.debugDump())
                     options = SelectorOptions.createCollection(GetOperationOptions.createNoFetch())
                     shadows = midpoint.searchObjects(ShadowType.class, shadowQuery, options)
-                    //log.info('shadows found for {}: {}', name, shadows)
+                    //log.info('shadows found for {}: {}', employeeNumber, shadows)
                     
                     orgNames = shadows.collect { basic.stringify(it.name) }            // todo - use attributes
                     log.info('org names = {}', orgNames)

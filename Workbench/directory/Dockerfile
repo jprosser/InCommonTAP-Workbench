@@ -23,7 +23,8 @@ RUN useradd ldapadmin \
     && setup-ds.pl --silent --file /seed-data/ds-setup.inf \
     && /usr/sbin/ns-slapd -D /etc/dirsrv/slapd-dir \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
-    ldapadd -H ldap:/// -f /seed-data/data.ldif -x -D "cn=Directory Manager" -w password
+    ldapadd -H ldap:/// -f /seed-data/data.ldif -x -D "cn=Directory Manager" -w password \
+    && ldapmodify -H ldap:/// -f /seed-data/incwbperson-obj.ldif -x -D "cn=Directory Manager" -w password
 
 EXPOSE 389 443
 
