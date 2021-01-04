@@ -1,0 +1,36 @@
+#
+# incwbPerson Objectclass
+#
+#
+# "incwbperson" attributes
+#
+dn: cn=schema
+changetype: modify
+#
+add: attributetypes
+attributeTypes: ( 1.3.6.1.4.1.5923.999.1.1.1 
+ NAME 'incwbPersonStudentID' 
+ DESC 'incwbPerson Student ID' 
+ EQUALITY caseIgnoreMatch 
+ SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE X-ORIGIN 'user defined' )
+attributeTypes: ( 1.3.6.1.4.1.5923.999.1.1.2 
+ NAME 'incwbPersonEmployeeID' 
+ DESC 'incwbPerson Employee ID' 
+ EQUALITY caseIgnoreMatch 
+ SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE X-ORIGIN 'user defined' )
+#
+attributeTypes: ( 1.3.6.1.4.1.5923.999.1.1.3 
+ NAME 'incwbPersonGuestID' 
+ DESC 'incwbPerson Guest ID' 
+ EQUALITY caseIgnoreMatch 
+ SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE X-ORIGIN 'user defined' )
+-
+#
+add: objectclasses
+objectClasses: ( 1.3.6.1.4.1.5923.999.1.2 NAME 'incwbPerson' 
+ AUXILIARY 
+ MAY ( incwbPersonStudentID $ incwbPersonEmployeeID $ incwbPersonGuestID ) 
+ )
+#
+# end of LDIF
+#

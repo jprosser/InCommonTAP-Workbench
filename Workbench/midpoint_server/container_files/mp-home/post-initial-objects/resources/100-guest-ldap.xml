@@ -25,10 +25,7 @@
                 <gen956:uidAttribute>nsUniqueId</gen956:uidAttribute>
                 <gen956:pagingStrategy>spr</gen956:pagingStrategy>
                 <gen956:baseContext>ou=Guests,dc=internet2,dc=edu</gen956:baseContext>
-                <!--<gen956:passwordHashAlgorithm>SSHA</gen956:passwordHashAlgorithm>-->
                 <gen956:pagingStrategy>spr</gen956:pagingStrategy>
-                <!--<gen956:vlvSortAttribute>uid</gen956:vlvSortAttribute>
-                <gen956:vlvSortOrderingRule>2.5.13.3</gen956:vlvSortOrderingRule>-->
                 <gen956:operationalAttributes>memberOf</gen956:operationalAttributes>
                 <gen956:operationalAttributes>createTimestamp</gen956:operationalAttributes>
                 <gen956:allowUnknownAttributes>true</gen956:allowUnknownAttributes>
@@ -114,7 +111,7 @@
                     <c:ref>ri:uid</c:ref>
                     <inbound id="34">
                         <target>
-                            <c:path>name</c:path>
+                            <c:path>extension/Guest_ID</c:path>
                         </target>
                     </inbound>
 					<inbound>
@@ -202,7 +199,7 @@
                 <enabled>true</enabled>
                 <correlation>
                     <q:equal>
-                        <q:path>name</q:path>
+                        <q:path>c:extension/Guest_ID</q:path>
                         <expression>
                             <path>
 								declare namespace ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3";

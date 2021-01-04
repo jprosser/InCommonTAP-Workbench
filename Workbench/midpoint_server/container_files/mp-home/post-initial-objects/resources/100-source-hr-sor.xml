@@ -66,7 +66,7 @@
                     </limitations>
                     <inbound>
                         <target>
-                            <path>name</path>
+                            <c:path>extension/HR_ID</c:path>
                         </target>
                     </inbound>
                     <inbound>
@@ -191,7 +191,7 @@
                         </target>
                     </inbound>
                 </attribute>
-                <attribute>
+                <!--<attribute>
                     <ref>ri:validFrom</ref>
                     <displayName>Valid From</displayName>
                     <limitations>
@@ -240,7 +240,7 @@
                             </expression>
                         </inbound>
                     </validTo>
-                </activation>
+                </activation>-->
 <!-- TODO MidPoint Basics Training, LAB 5-2: uncomment the following content -->
 
                 <credentials>
@@ -288,7 +288,7 @@
 	                    any other object type.
 	                </q:description>
                     <q:equal>
-                        <q:path>name</q:path>
+                        <q:path>c:extension/HR_ID</q:path>
                         <expression>
                             <path>$projection/attributes/ri:uid</path>
                         </expression>
