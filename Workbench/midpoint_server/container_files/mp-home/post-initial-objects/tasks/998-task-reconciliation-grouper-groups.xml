@@ -26,11 +26,13 @@
 	<assignment>
 		<targetRef oid="00000000-0000-0000-0000-000000000501" type="ArchetypeType" /> <!-- Reconciliation task -->
 	</assignment>
-	<taskIdentifier>605a0127-a313-442a-9d5e-151eac8b0745</taskIdentifier>
 	<ownerRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType">
 		<!-- administrator -->
 	</ownerRef>
-	<executionStatus>runnable</executionStatus>
+   <dependent>1494860531232132-0-2</dependent>
+    <taskIdentifier>1494860531232132-0-1</taskIdentifier>
+	<executionStatus>waiting</executionStatus>
+   <waitingReason>otherTasks</waitingReason>
 	<category>Reconciliation</category>
 	<objectRef oid="1eff65de-5bb6-483d-9edf-8cc2c2ee0233" relation="org:default" type="c:ResourceType">
 		<!-- Grouper Resource -->

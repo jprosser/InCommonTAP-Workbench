@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+	xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+	xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3">
+	<org xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" oid="d0b2135a-f6bb-412b-bbef-5b76a1b32e52" version="6">
+    <name>generic_app:wordpress:admins</name>
+    <extension xmlns:gen376="http://grouper-demo.tier.internet2.edu">
+        <gen376:grouperName xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">app:wordpress:admins</gen376:grouperName>
+        <gen376:ldapDn xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">cn=app:wordpress:admins,ou=generic,ou=Groups,dc=internet2,dc=edu</gen376:ldapDn>
+    </extension>
+    <parentOrgRef oid="1f339075-5b2f-4a18-9c98-451f3eb0d28d" relation="org:default" type="c:OrgType">
+        <!-- generic-groups -->
+    </parentOrgRef>
+    <metadata>
+        <requestTimestamp>2020-12-31T16:22:32.989Z</requestTimestamp>
+        <requestorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType">
+            <!-- administrator -->
+        </requestorRef>
+        <createTimestamp>2020-12-31T16:22:33.049Z</createTimestamp>
+        <creatorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType">
+            <!-- administrator -->
+        </creatorRef>
+        <createChannel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#reconciliation</createChannel>
+        <createTaskRef oid="605a0127-a313-442a-9d5e-151eac8b0745" relation="org:default" type="c:TaskType">
+            <!-- Grouper reconciliation (groups) -->
+        </createTaskRef>
+        <modifyTimestamp>2020-12-31T19:08:17.662Z</modifyTimestamp>
+        <modifierRef oid="e897468f-20bd-419c-8fc5-1fe60e2600de" relation="org:default" type="c:UserType">
+            <!-- banderson -->
+        </modifierRef>
+        <modifyChannel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</modifyChannel>
+        <lastProvisioningTimestamp>2020-12-31T16:22:33.048Z</lastProvisioningTimestamp>
+    </metadata>
+    <lifecycleState>active</lifecycleState>
+    <operationExecution id="4">
+        <timestamp>2020-12-31T18:40:43.115Z</timestamp>
+        <status>success</status>
+        <initiatorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType">
+            <!-- administrator -->
+        </initiatorRef>
+        <taskRef oid="605a0127-a313-442a-9d5e-151eac8b0745" relation="org:default" type="c:TaskType">
+            <!-- Grouper reconciliation (groups) -->
+        </taskRef>
+        <channel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#reconciliation</channel>
+    </operationExecution>
+    <assignment id="1">
+        <metadata>
+            <requestTimestamp>2020-12-31T16:22:32.989Z</requestTimestamp>
+            <requestorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType">
+                <!-- administrator -->
+            </requestorRef>
+            <createTimestamp>2020-12-31T16:22:33.049Z</createTimestamp>
+            <creatorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType">
+                <!-- administrator -->
+            </creatorRef>
+            <createChannel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#reconciliation</createChannel>
+            <createTaskRef oid="605a0127-a313-442a-9d5e-151eac8b0745" relation="org:default" type="c:TaskType">
+                <!-- Grouper reconciliation (groups) -->
+            </createTaskRef>
+        </metadata>
+        <targetRef oid="5f2b96d2-49b5-4a8a-9601-14457309a69b" relation="org:default" type="c:ArchetypeType">
+            <!-- generic-grouper-group -->
+        </targetRef>
+        <activation>
+            <effectiveStatus>enabled</effectiveStatus>
+        </activation>
+    </assignment>
+    <iteration>0</iteration>
+    <iterationToken/>
+    <archetypeRef oid="5f2b96d2-49b5-4a8a-9601-14457309a69b" relation="org:default" type="c:ArchetypeType">
+        <!-- generic-grouper-group -->
+    </archetypeRef>
+    <roleMembershipRef oid="5f2b96d2-49b5-4a8a-9601-14457309a69b" relation="org:default" type="c:ArchetypeType">
+        <!-- generic-grouper-group -->
+    </roleMembershipRef>
+    <roleMembershipRef oid="1f339075-5b2f-4a18-9c98-451f3eb0d28d" relation="org:default" type="c:OrgType">
+        <!-- generic-groups -->
+    </roleMembershipRef>
+    <linkRef oid="ee269e22-a60d-473b-8f2c-00aa3d76d696" relation="org:default" type="c:ShadowType">
+        <!-- app:wordpress:admins -->
+    </linkRef>
+    <linkRef oid="58092e7d-2ed4-475a-b0e7-7bf68e7fa3c8" relation="org:default" type="c:ShadowType">
+        <!-- cn=app:wordpress:admins,ou=Generic,ou=Groups,dc=internet2,dc=edu -->
+    </linkRef>
+    <activation>
+        <effectiveStatus>enabled</effectiveStatus>
+        <enableTimestamp>2020-12-31T16:22:32.989Z</enableTimestamp>
+    </activation>
+    <displayName>app:wordpress:admins</displayName>
+    <identifier>app:wordpress:admins</identifier>
+    <inducement id="5">
+        <targetRef oid="9e5a82fc-7969-4fd8-9f74-e0857969cdbb" relation="org:default" type="c:RoleType">
+            <!-- Metarole Wordpress Admin -->
+        </targetRef>
+    </inducement>
+</org>
+
+</objects>
