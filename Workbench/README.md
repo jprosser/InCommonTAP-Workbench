@@ -2,8 +2,7 @@ This is a demonstration of using midPoint dockerization for TIER environment in 
 
 # Building and execution
 ```
-$ ../../build.sh
-$ docker-compose up --build
+$ docker-compose up --build -d
 ```
 
 NOTE: The workbench requires that an environment variable named CSPHOSTNAME be set.  Just set it to 'localhost' for a local build.
