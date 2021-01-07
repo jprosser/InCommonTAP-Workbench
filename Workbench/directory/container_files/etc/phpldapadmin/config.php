@@ -385,7 +385,7 @@ $servers->setValue('login','bind_pass','password');
 /* Default password hashing algorithm. One of md5, ssha, sha, md5crpyt, smd5,
    blowfish, crypt or leave blank for now default algorithm. */
 // $servers->setValue('appearance','password_hash','md5');
-$servers->setValue('appearance','password_hash','');
+//$servers->setValue('appearance','password_hash','');
 
 /* If you specified 'cookie' or 'session' as the auth_type above, you can
    optionally specify here an attribute to use when logging in. If you enter
