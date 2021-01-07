@@ -108,13 +108,13 @@
     </connectorRef>
     <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
         <icfc:configurationProperties xmlns:gen774="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/edu.unc.polygon.connector-rest-wordpress/edu.unc.polygon.connector.wordpress.WordpressRestConnector">
-            <gen774:wordpressPassword>54y6RxN7GfC7aes3</gen774:wordpressPassword>
+            <gen774:wordpressPassword>password</gen774:wordpressPassword>
             <gen774:trustAllCertificates>true</gen774:trustAllCertificates>
             <gen774:wordpressUniqueAttribute>id</gen774:wordpressUniqueAttribute>
-            <gen774:wordpressRestUrl>http://wordpress_server/wp-json</gen774:wordpressRestUrl>
+            <gen774:wordpressRestUrl>http://wordpress_server/wordpress/wp-json</gen774:wordpressRestUrl>
             <gen774:wordpressPasswordAttribute>password</gen774:wordpressPasswordAttribute>
             <gen774:wordpressNameAttribute>username</gen774:wordpressNameAttribute>
-            <gen774:wordpressUsername>admin</gen774:wordpressUsername>
+            <gen774:wordpressUsername>banderson</gen774:wordpressUsername>
             <gen774:wordpressRecyclebinUser>1</gen774:wordpressRecyclebinUser>
             <gen774:wordpressSoftUserDelete>true</gen774:wordpressSoftUserDelete>
         </icfc:configurationProperties>
