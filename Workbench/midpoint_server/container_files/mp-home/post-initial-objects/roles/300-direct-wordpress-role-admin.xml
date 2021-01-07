@@ -52,7 +52,7 @@
                         <c:path>$containingObject/name</c:path>
                     </source>
                     <expression>
-                        <value>admin</value>
+                        <value>administrator</value>
                     </expression>
                 </outbound>
             </attribute>
