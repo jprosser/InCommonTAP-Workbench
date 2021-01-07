@@ -12,7 +12,8 @@ services:
      - USERTOKEN
      - GROUPER_CLIENT_WEBSERVICE_PASSWORD_FILE=password
      - GROUPER_DATABASE_PASSWORD_FILE=/run/secrets/g_database_password.txt
-     - RABBITMQ_PASSWORD_FILE=/run/secrets/rabbitmq_password.txt
+     #- RABBITMQ_PASSWORD_FILE=/run/secrets/rabbitmq_password.txt
+     - RABBITMQ_PASSWORD=password
      - SUBJECT_SOURCE_LDAP_PASSWORD=password
     networks:
       net:
