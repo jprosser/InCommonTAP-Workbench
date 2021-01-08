@@ -361,6 +361,7 @@ services:
      - net
     ports:
      - 15672:15672
+     - 5672:5672
     healthcheck:
       test: curl -s 127.0.0.1:15672 > /dev/null
       interval: 30s

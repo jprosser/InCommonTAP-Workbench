@@ -23,7 +23,10 @@ Please type in the hostname of this instance to confirm you want to refresh.
 <br /><br />
 
 <form method = "POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-Confirmation: <input type="text" name="confirm" id="confirm" value="<?php echo $confirm;?>">
+Confirmation: <input type="text" name="confirm" id="confirm" value="<?php echo $confirm;?>"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="checkbox" name="delvol" id="delvol" value="delvol">
+<label for="delvol">Delete data volumes during refresh?</label>
+
 <br /><br />
 <button type = "submit" id = "btn-submit">Confirm</button>
 </form>
@@ -40,7 +43,11 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
     $channel->queue_declare('refreshInstance', false, false, false, false);
 
-    $msg = new AMQPMessage('REFRESH_THIS_INSTANCE');
+    if (isset($_POST["delvol"])) {
+     $msg = new AMQPMessage('REFRESH_THIS_INSTANCE_DELETE_DATA');
+	} else {
+	 $msg = new AMQPMessage('REFRESH_THIS_INSTANCE');	
+	}
     $channel->basic_publish($msg, '', 'refreshInstance');
 
     $channel->close();
