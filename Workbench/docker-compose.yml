@@ -524,5 +524,3 @@ volumes:
   generated-config:
   generated-metadata:
   mariadb-data:
-
-

@@ -3,9 +3,13 @@ FROM tier/shibboleth_sp:latest
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 
-RUN yum -y install cronie
+RUN yum -y install cronie php composer php-bcmath
+RUN composer require php-amqplib/php-amqplib
+RUN composer install
+RUN mkdir -p /var/www/html/refresh
 
-#COPY container_files/httpd/httpd.conf /etc/httpd/conf/
+
+COPY container_files/httpd/refresh/index.php /var/www/html/refresh/
 COPY container_files/httpd/proxy.conf /etc/httpd/conf.d/
 COPY container_files/httpd/shib.conf /etc/httpd/conf.d/
 COPY container_files/httpd/ssl.conf /etc/httpd/conf.d/
@@ -21,6 +25,8 @@ RUN mkdir -p /var/www/html/status
 COPY container_files/shibboleth/ /etc/shibboleth/
 COPY container_files/system/setservername.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/setservername.sh
+
+RUN mkdir -p /signalreload
 
 # fix httpd logging for ssl logs
 RUN sed -i 's/TransferLog logs\/ssl_access_log/TransferLog \/tmp\/logpipe/g' /etc/httpd/conf.d/ssl.conf \
