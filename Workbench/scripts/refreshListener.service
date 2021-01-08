@@ -1,0 +1,15 @@
+[Unit]
+Description=CSP Workbench Refresh Listener
+
+[Service]
+User=csprootuser
+WorkingDirectory=/csp-tap/InCommonTAP-Examples/Workbench/scripts/
+ExecStart=/usr/bin/php /csp-tap/InCommonTAP-Examples/Workbench/scripts/refreshListener.php &
+
+SuccessExitStatus=0
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
