@@ -1,8 +1,8 @@
 <?php
-require_once '/vendor/autoload.php';
+require_once '/home/csprootuser/vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-$connection = new AMQPStreamConnection('mq', 5672, 'guest', 'password');
+$connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'password');
 $channel = $connection->channel();
 
 $channel->queue_declare('refreshInstance', false, false, false, false);
@@ -14,6 +14,10 @@ $callback = function ($msg) {
     if ($msg->body == "REFRESH_THIS_INSTANCE") {
         echo "Received REFRESH message!\n";
 		shell_exec( "/csp-tap/InCommonTAP-Examples/Workbench/scripts/refresh-this-instance.sh" );
+	}
+    if ($msg->body == "REFRESH_THIS_INSTANCE_DELETE_DATA") {
+        echo "Received REFRESH-DELETE message!\n";
+		shell_exec( "/csp-tap/InCommonTAP-Examples/Workbench/scripts/refresh-this-instance.sh -dv" );
 	}
 };
 
