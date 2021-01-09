@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. /etc/profile
+
 DELETE_VOLUMES="false"
 
 if [[ $1 == "-dv" ]]; then

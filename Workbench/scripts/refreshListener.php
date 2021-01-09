@@ -13,11 +13,11 @@ $callback = function ($msg) {
     echo ' [x] Received ', $msg->body, "\n";
     if ($msg->body == "REFRESH_THIS_INSTANCE") {
         echo "Received REFRESH message!\n";
-		shell_exec( "/csp-tap/InCommonTAP-Examples/Workbench/scripts/refresh-this-instance.sh" );
+		exec( "/csp-tap/InCommonTAP-Examples/Workbench/scripts/refresh-this-instance.sh" );
 	}
     if ($msg->body == "REFRESH_THIS_INSTANCE_DELETE_DATA") {
         echo "Received REFRESH-DELETE message!\n";
-		shell_exec( "/csp-tap/InCommonTAP-Examples/Workbench/scripts/refresh-this-instance.sh -dv" );
+		exec( "/csp-tap/InCommonTAP-Examples/Workbench/scripts/refresh-this-instance.sh -dv" );
 	}
 };
 
