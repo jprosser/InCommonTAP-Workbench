@@ -4,7 +4,7 @@ Description=CSP Workbench Refresh Listener
 [Service]
 User=csprootuser
 WorkingDirectory=/csp-tap/InCommonTAP-Examples/Workbench/scripts/
-ExecStart=/usr/bin/php /csp-tap/InCommonTAP-Examples/Workbench/scripts/refreshListener.php &
+ExecStart=/usr/bin/php /csp-tap/InCommonTAP-Examples/Workbench/scripts/refreshListener.php > /dev/null 2>&1 &
 
 SuccessExitStatus=0
 TimeoutStopSec=10
