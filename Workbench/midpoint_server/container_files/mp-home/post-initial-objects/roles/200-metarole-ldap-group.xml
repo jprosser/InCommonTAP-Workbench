@@ -122,6 +122,20 @@
                     </expression>
                 </outbound>
             </association>
+			<association>
+                <ref>ri:isMemberOfAssociation</ref>
+                <outbound>
+                    <expression>
+                        <associationFromLink>
+                            <projectionDiscriminator>
+                                <kind>entitlement</kind>
+                                <intent>group</intent>
+                            </projectionDiscriminator>
+                            <assignmentPathIndex>1</assignmentPathIndex>
+                        </associationFromLink>
+                    </expression>
+                </outbound>
+            </association>
         </construction>
         <order>3</order>        <!--  order=3 means the user object; user has an assignment to the org: user->org->archetype->metarole -->
     </inducement>
