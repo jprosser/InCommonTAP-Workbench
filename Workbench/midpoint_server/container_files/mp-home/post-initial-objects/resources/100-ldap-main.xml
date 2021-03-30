@@ -61,6 +61,7 @@
 		<generationConstraints>
 			<generateObjectClass>ri:inetOrgPerson</generateObjectClass>
 			<generateObjectClass>ri:eduPerson</generateObjectClass>
+			<generateObjectClass>ri:eduMember</generateObjectClass>
             <generateObjectClass>ri:incwbPerson</generateObjectClass>
 			<generateObjectClass>ri:organizationalPerson</generateObjectClass>
 			<generateObjectClass>ri:person</generateObjectClass>
@@ -77,6 +78,7 @@
 			<default>true</default>
 			<objectClass>ri:inetOrgPerson</objectClass>
 			<auxiliaryObjectClass>ri:eduPerson</auxiliaryObjectClass>
+			<auxiliaryObjectClass>ri:eduMember</auxiliaryObjectClass>
 			<auxiliaryObjectClass>ri:incwbPerson</auxiliaryObjectClass>
 			<attribute>
 				<ref>ri:dn</ref>
@@ -250,6 +252,15 @@
                 <associationAttribute>ri:uniqueMember</associationAttribute>
                 <valueAttribute>ri:dn</valueAttribute>
             </association>
+			<association>
+                <ref>ri:isMemberOfAssociation</ref>
+                <tolerant>false</tolerant>
+                <kind>entitlement</kind>
+                <intent>group</intent>
+                <direction>subjectToObject</direction>
+                <associationAttribute>ri:isMemberOf</associationAttribute>
+                <valueAttribute>ri:cn</valueAttribute>
+            </association>
 			<protected>
 				<filter>
 					<q:equal>
@@ -303,6 +314,7 @@
             <attribute>
                 <ref>ri:cn</ref>
                 <matchingRule>mr:stringIgnoreCase</matchingRule>
+				<secondaryIdentifier>true</secondaryIdentifier>
                 <outbound>
                     <strength>weak</strength>
                     <source>
