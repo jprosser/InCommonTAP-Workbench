@@ -27,21 +27,17 @@
         </property>
     </bean>
 
-    <!--
-    Default configuration, with default settings applied for all profiles, and enables
-    the attribute-release consent flow.
-    -->
+    <!-- Default configuration, with default settings applied for all profiles. -->
     <bean id="shibboleth.DefaultRelyingParty" parent="RelyingParty">
         <property name="profileConfigurations">
             <list>
                 <!-- SAML 1.1 and SAML 2.0 AttributeQuery are disabled by default. -->
                 <!--
-                <bean parent="Shibboleth.SSO" p:postAuthenticationFlows="attribute-release" />
+                <bean parent="Shibboleth.SSO" />
                 <ref bean="SAML1.AttributeQuery" />
                 <ref bean="SAML1.ArtifactResolution" />
                 -->
-				<bean parent="SAML2.SSO.MDDriven" p:postAuthenticationFlows="attribute-release"/>
-                <!--<bean parent="SAML2.SSO" p:postAuthenticationFlows="attribute-release" />-->
+                <bean parent="SAML2.SSO.MDDriven" />
                 <ref bean="SAML2.ECP" />
                 <ref bean="SAML2.Logout" />
                 <!--
@@ -61,8 +57,17 @@
         Override example that identifies a single RP by name and configures it
         for SAML 2 SSO without encryption. This is a common "vendor" scenario.
         -->
-        
-        <bean parent="RelyingPartyByName" c:relyingPartyIds="https://sp.example.org/shibui">
+        <!--
+        <bean id="ExampleSP" parent="RelyingPartyByName" c:relyingPartyIds="https://sp.example.org">
+            <property name="profileConfigurations">
+                <list>
+                    <bean parent="SAML2.SSO" p:encryptAssertions="false" />
+                </list>
+            </property>
+        </bean>
+        -->
+
+        <bean id="ShibUI" parent="RelyingPartyByName" c:relyingPartyIds="https://sp.example.org/shibui">
             <property name="profileConfigurations">
                 <list>
                     <bean parent="SAML2.SSO" p:encryptionOptional="true" />
@@ -73,3 +78,4 @@
     </util:list>
 
 </beans>
+
