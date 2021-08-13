@@ -223,23 +223,26 @@ services:
      - CREATE_NEW_DATABASE=if_needed
 
   midpoint_data:
-    image: tier/mariadb:mariadb10
+    image: postgres:11
+    environment:
+     - POSTGRES_PASSWORD_FILE=/run/secrets/mp_database_password.txt
+     - POSTGRES_USER=midpoint
+     - POSTGRES_INITDB_ARGS=--lc-collate=en_US.utf8 --lc-ctype=en_US.utf8
     ports:
-     - 33306:3306
+     - 5432:5432
     networks:
       net:
         aliases:
          - midpoint-data
+    secrets:
+     - mp_database_password.txt
     healthcheck:
-      test: curl -s 127.0.0.1:3306
+      test: /usr/bin/pg_isready
       interval: 30s
       timeout: 30s
       retries: 3
     volumes:
-     - midpoint_mysql:/var/lib/mysql
-     - midpoint_data:/var/lib/mysqlmounted
-    environment:
-     - CREATE_NEW_DATABASE=if_needed
+     - midpoint_data:/var/lib/postgresql/data
 
   midpoint_server:
     build: 
@@ -255,12 +258,12 @@ services:
     environment:
      - ENV
      - USERTOKEN
-     - REPO_DATABASE_TYPE
+     - REPO_DATABASE_TYPE=postgresql
+     - REPO_HOST=midpoint_data
      - REPO_JDBC_URL
-     - REPO_HOST
-     - REPO_PORT
-     - REPO_DATABASE
-     - REPO_USER
+     - REPO_PORT=5432
+     - REPO_DATABASE=midpoint
+     - REPO_USER=midpoint
      - REPO_MISSING_SCHEMA_ACTION
      - REPO_UPGRADEABLE_SCHEMA_ACTION
      - REPO_SCHEMA_VERSION_IF_MISSING
