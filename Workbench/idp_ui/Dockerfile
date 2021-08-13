@@ -1,4 +1,4 @@
-FROM tier/shib-idp-ui:1.7.0
+FROM i2incommon/shib-idp-ui:1.8.0
 
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
