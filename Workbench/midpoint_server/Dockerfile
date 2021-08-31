@@ -1,4 +1,5 @@
-FROM tier/midpoint:latest
+FROM tier/midpoint:4.3.2-SNAPSHOT
+#FROM tier/midpoint:latest
 
 MAINTAINER info@evolveum.com
 
