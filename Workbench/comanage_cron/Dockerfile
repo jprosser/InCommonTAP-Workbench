@@ -21,7 +21,7 @@ ENV COMANAGE_REGISTRY_EMAIL_HOST=smtp.example.edu
 #ENV SHIBBOLETH_SP_METADATA_PROVIDER_XML=sdf
 #ENV SHIBBOLETH_SP_SAMLDS_URL=thing
 
-RUN apt-get update
+RUN apt-get update --allow-releaseinfo-change && apt-get update
 
 ARG maintainer=my
 ARG imagename=comanage
