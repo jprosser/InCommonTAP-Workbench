@@ -223,7 +223,7 @@ services:
      - CREATE_NEW_DATABASE=if_needed
 
   midpoint_data:
-    image: postgres:11
+    image: postgres:12
     environment:
      - POSTGRES_PASSWORD_FILE=/run/secrets/mp_database_password.txt
      - POSTGRES_USER=midpoint
