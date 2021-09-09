@@ -13,15 +13,15 @@
     </md:Extensions>
     <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.0:protocol urn:oasis:names:tc:SAML:1.1:protocol">
         <md:Extensions>
-            <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=Saml2Client"/>
+            <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=shibUIAuthClient"/>
         </md:Extensions>
         <md:KeyDescriptor use="signing" />
         <md:KeyDescriptor use="encryption" />
-        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=Saml2Client&amp;idplogoutrequest=true"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=shibUIAuthClient&amp;idplogoutrequest=true"/>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
-        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=Saml2Client" index="0"/>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=shibUIAuthClient" index="0"/>
     </md:SPSSODescriptor>
 </md:EntityDescriptor>
