@@ -6,6 +6,9 @@ ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 
 COPY shibboleth-idp/ /opt/shibboleth-idp/
+#rather than copying metadata files included in above folder and including in config, instead upload these files to the IdP UI
+#  API info here: https://documenter.getpostman.com/view/446764/TzzHmCkn
+
 
 RUN mkdir -p /opt/shibboleth-idp/metadata/generated && mkdir -p /opt/shibboleth-idp/conf/generated
 

@@ -1,4 +1,5 @@
-FROM tier/midpoint:latest
+FROM tier/midpoint:4.3.2-SNAPSHOT
+#FROM tier/midpoint:latest
 
 MAINTAINER info@evolveum.com
 
@@ -23,6 +24,7 @@ COPY container_files/system/setservername.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/setservername.sh
 #set hostname
 RUN /usr/local/bin/setservername.sh
+RUN yum install -y graphviz
 
 #COPY container_files/supervisor/supervisord.conf /etc/supervisor/
 
