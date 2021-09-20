@@ -87,9 +87,11 @@ services:
      - type: bind
        source: ./configs-and-secrets/grouper/shibboleth/shibboleth2.xml
        target: /etc/shibboleth/shibboleth2.xml
+       # Note: due to a bug in https://github.internet2.edu/docker/grouper/blob/2.5.57/container_files/usr-local-bin/librarySetupFilesForProcess.sh#L72
+       # This file had to be mounted as shib2.conf, instead of shib.conf (bind mounts don't want to be moved)
      - type: bind
        source: ./configs-and-secrets/grouper/httpd/shib.conf
-       target: /etc/httpd/conf.d/shib.conf
+       target: /etc/httpd/conf.d/shib2.conf
      - type: bind
        source: ./configs-and-secrets/grouper/httpd/host-cert.pem
        target: /etc/pki/tls/certs/host-cert.pem
