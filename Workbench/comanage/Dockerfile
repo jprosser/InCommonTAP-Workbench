@@ -1,4 +1,4 @@
-FROM i2incommon/comanage-registry:3.3.2-20210318
+FROM i2incommon/comanage-registry:3.3.4-20210712
 
 ENV COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Anderson
 ENV COMANAGE_REGISTRY_ADMIN_USERNAME=banderson
