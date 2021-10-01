@@ -95,7 +95,7 @@
 
 
     <!-- workbench SPs -->
-    <AttributeFilterPolicy id="grouper">
+<!--    <AttributeFilterPolicy id="grouper">
         <PolicyRequirementRule xsi:type="Requester" value="https://grouperdemo/shibboleth" />
         <AttributeRule attributeID="eduPersonPrincipalName" permitAny="true" />
         <AttributeRule attributeID="uid" permitAny="true" />
@@ -126,7 +126,7 @@
         <AttributeRule attributeID="eduPersonPrincipalName" permitAny="true" />
         <AttributeRule attributeID="uid" permitAny="true" />
         <AttributeRule attributeID="mail" permitAny="true" />
-    </AttributeFilterPolicy>
+    </AttributeFilterPolicy> -->
 
     <AttributeFilterPolicy id="shibui">
         <PolicyRequirementRule xsi:type="Requester" value="https://sp.example.org/shibui" />

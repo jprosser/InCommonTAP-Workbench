@@ -1,0 +1,1 @@
+00c34830-9028-418c-976c-624a61578c8f,{bcrypt}$2a$10$V1jeTIc0b2u7Y3yU.LqkXOPRVTBFc7SW07QaJR4KrBAmWGgTcO9H.,first,last,ROLE_ADMIN,user1@example.org

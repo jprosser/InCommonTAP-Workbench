@@ -3,7 +3,7 @@ FROM tier/shibboleth_sp:latest
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 
-RUN yum -y install cronie php composer php-bcmath
+RUN yum -y install cronie php composer php-bcmath jq
 RUN composer require php-amqplib/php-amqplib
 RUN composer install
 RUN mkdir -p /var/www/html/refresh
@@ -28,6 +28,17 @@ RUN chmod 755 /usr/local/bin/setservername.sh
 
 RUN mkdir -p /signalreload
 
+RUN mkdir -p /mdload
+COPY container_files/system/startWithMDLoad.sh /usr/local/bin/
+COPY container_files/mdload/ /mdload/
+RUN chmod 755 /usr/local/bin/startWithMDLoad.sh && chmod 755 /mdload/*.sh
+
+#install updated curl (for --data-raw)
+RUN rpm -Uvh http://www.city-fan.org/ftp/contrib/yum-repo/city-fan.org-release-2-1.rhel7.noarch.rpm
+RUN yum-config-manager --enable city-fan.org
+RUN yum update curl -y
+
+
 # fix httpd logging for ssl logs
 RUN sed -i 's/TransferLog logs\/ssl_access_log/TransferLog \/tmp\/logpipe/g' /etc/httpd/conf.d/ssl.conf \
     && sed -i 's/ErrorLog logs\/ssl_error_log/ErrorLog \/tmp\/logpipe/g' /etc/httpd/conf.d/ssl.conf
@@ -37,3 +48,6 @@ RUN /usr/local/bin/setservername.sh
 
 HEALTHCHECK --interval=1m --timeout=30s \
   CMD curl -k -f -u csp:workbench https://127.0.0.1/Shibboleth.sso/Status || exit 1
+
+CMD ["/usr/local/bin/startWithMDLoad.sh"]
+

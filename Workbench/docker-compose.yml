@@ -301,7 +301,6 @@ services:
         - CSPHOSTNAME
     depends_on:
      - directory
-     - idp_ui
     environment:
      - JETTY_MAX_HEAP=64m
      - JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=password
@@ -327,6 +326,25 @@ services:
      - 8080:8080
     healthcheck:
       test: curl -k -f https://127.0.0.1:8443/idpui/login || exit 1
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    volumes:
+     - generated-metadata:/generated-metadata
+     - generated-config:/generated-config
+
+  idp_ui_api:
+    build:
+      context: ./idp_ui_api/
+      args:
+        - CSPHOSTNAME
+    depends_on:
+     - idp_ui_data
+     - idp_ui
+    networks:
+     - net
+    healthcheck:
+      test: curl -k -s https://127.0.0.1:8443/idpui-api
       interval: 30s
       timeout: 30s
       retries: 3
@@ -380,6 +398,8 @@ services:
         - CSPHOSTNAME
     networks:
      - net
+    depends_on:
+      - idp_ui_api
     ports:
      - 443:443
      

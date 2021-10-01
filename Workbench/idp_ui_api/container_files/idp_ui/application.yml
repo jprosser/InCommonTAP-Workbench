@@ -1,0 +1,36 @@
+server:
+  context-path: /idpui-api
+  servlet:
+    context-path: /idpui-api
+  tomcat:
+    redirect-context-root: false
+  ssl:
+    enabled: true
+    key-store: /opt/shibui/shibui-test.p12
+    key-store-password: testing
+    key-store-type: pkcs12
+    key-password: testing
+  port: 8443
+shibui:
+  default-password: "{noop}letmein7"
+  metadataProviders:
+    target: "file:/generated-config/shibui-metadata-providers.xml"
+  metadata-dir: "/generated-metadata"
+  beacon-enabled: true
+  pac4j-enabled: true
+  pac4j:
+    type-of-auth: HEADER
+    authentication-header: IDPUI_API_KEY
+spring:
+  datasource:
+    username: shibui
+    password: secret
+    url: jdbc:mariadb://idpui-data:3306/shibui
+    driverClassName: org.mariadb.jdbc.Driver
+    platform: mariadb
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    hibernate:
+      ddl-auto: update
+
+     
