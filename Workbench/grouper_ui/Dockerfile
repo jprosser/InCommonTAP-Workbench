@@ -1,4 +1,5 @@
-FROM i2incommon/grouper:2.5.37.1
+FROM i2incommon/grouper:2.6.0
+
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>"
 
 ARG CSPHOSTNAME=localhost
