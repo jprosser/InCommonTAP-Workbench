@@ -24,6 +24,9 @@ ENV COMANAGE_REGISTRY_EMAIL_ACCOUNT_PASSWORD=BNAp6WlvsI4iXK3ush8pwPD2QKHDYQ09ti+
 #ENV SHIBBOLETH_SP_METADATA_PROVIDER_XML=sdf
 #ENV SHIBBOLETH_SP_SAMLDS_URL=thing
 
+#temp - override upstream shib SP repo
+COPY container_files/shibboleth/shibboleth.repo /etc/yum.repos.d/security:shibboleth.repo
+
 RUN yum -y update && yum -y install --setopt=tsflags=nodocs epel-release python-pip && pip install awscli && pip install --upgrade pip
 
 ARG maintainer=my
@@ -43,8 +46,5 @@ RUN chmod 755 /usr/local/bin/setservername.sh && rm -f /etc/httpd/conf.d/ssl.con
 
 #set hostname
 RUN /usr/local/bin/setservername.sh
-
-#temp - override upstream shib SP repo
-COPY container_files/shibboleth/shibboleth.repo /etc/yum.repos.d/security:shibboleth.repo
 
 ENV LD_LIBRARY_PATH=/opt/shibboleth/lib64
