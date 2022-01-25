@@ -44,5 +44,7 @@ RUN chmod 755 /usr/local/bin/setservername.sh && rm -f /etc/httpd/conf.d/ssl.con
 #set hostname
 RUN /usr/local/bin/setservername.sh
 
+#temp - override upstream shib SP repo
+COPY container_files/shibboleth/shibboleth.repo /etc/yum.repos.d/security:shibboleth.repo
 
 ENV LD_LIBRARY_PATH=/opt/shibboleth/lib64
