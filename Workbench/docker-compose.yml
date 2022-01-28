@@ -224,52 +224,85 @@ services:
     environment:
      - CREATE_NEW_DATABASE=if_needed
 
-  midpoint_data:
-    image: postgres:12
+
+
+  data_init:
+    image: i2incommon/midpoint:4.4
+    command: >
+        bash -c "
+        chmod 777 /opt/mp-pw/ ;
+        touch /opt/mp-pw/db_init_in_progress ;
+        echo -e '#!/bin/sh\ntouch /opt/mp-pw/db_init' >/opt/db-init/000-start.sh ;
+        echo -e '#!/bin/sh\necho DB structure init process has finished...\nrm -f /opt/mp-pw/db_init_in_progress /opt/mp-pw/db_init' > /opt/db-init/999-finish.sh ;
+        /opt/midpoint/bin/midpoint.sh init-native
+        "
     environment:
-     - POSTGRES_PASSWORD_FILE=/run/secrets/mp_database_password.txt
+     - MP_INIT_DB_CONCAT=/opt/db-init/init.sql
+     - MP_DB_PW=/opt/mp-pw/dbpassword
+     - MP_PW_DEF=/opt/mp-pw/keystorepw
+    volumes:
+     - db_init:/opt/db-init
+     - mp_pw:/opt/mp-pw
+
+  midpoint_data:
+    image: postgres:13-alpine
+    command: >
+        bash -c "
+        rm -f /var/lib/postgresql/data/postmaster.pid ;
+        while [ ! -s /opt/mp-pw/dbpassword -o -e /opt/mp-pw/init_in_progress ] ; do
+         echo 'Waiting to the end of the init process...';
+         sleep 1;
+        done ;
+        {
+         sleep 2 ;
+         if [ ! -e /opt/mp-pw/db_init -a -e /opt/mp-pw/db_init_in_progress ] ;
+          then echo 'DB init did not start...' ;
+          rm -f /opt/mp-pw/db_ini*;
+          echo 'The lock files has been removed...';
+         fi ;
+        } &
+        docker-entrypoint.sh postgres
+        "
+    user: "70:70"
+    depends_on:
+     - data_init
+    environment:
+     - POSTGRES_PASSWORD_FILE=/opt/mp-pw/dbpassword
      - POSTGRES_USER=midpoint
      - POSTGRES_INITDB_ARGS=--lc-collate=en_US.utf8 --lc-ctype=en_US.utf8
     ports:
      - 5432:5432
     networks:
-      net:
-        aliases:
-         - midpoint-data
-    secrets:
-     - mp_database_password.txt
-    healthcheck:
-      test: /usr/bin/pg_isready
-      interval: 30s
-      timeout: 30s
-      retries: 3
+     - net
     volumes:
      - midpoint_data:/var/lib/postgresql/data
+     - db_init:/docker-entrypoint-initdb.d/
+     - mp_pw:/opt/mp-pw
 
   midpoint_server:
-    build: 
+    build:
       context: ./midpoint_server/
       args:
         - CSPHOSTNAME
-    command: /usr/local/bin/startup.sh
     depends_on:
+     - data_init
      - midpoint_data
     ports:
      - 10443:443
-    command: /usr/local/bin/startup.sh
     environment:
      - ENV
      - USERTOKEN
      - REPO_DATABASE_TYPE=postgresql
-     - REPO_HOST=midpoint_data
-     - REPO_JDBC_URL
-     - REPO_PORT=5432
-     - REPO_DATABASE=midpoint
-     - REPO_USER=midpoint
-     - REPO_MISSING_SCHEMA_ACTION
-     - REPO_UPGRADEABLE_SCHEMA_ACTION
-     - REPO_SCHEMA_VERSION_IF_MISSING
-     - REPO_SCHEMA_VARIANT
+     - MP_SET_midpoint_repository_jdbcUsername=midpoint
+     - MP_SET_midpoint_repository_jdbcPassword_FILE=/opt/mp-pw/dbpassword
+     - MP_SET_midpoint_repository_jdbcUrl=jdbc:postgresql://midpoint_data:5432/midpoint
+     - MP_SET_midpoint_keystore_keyStorePassword_FILE=/opt/mp-pw/keystorepw
+     - MP_SET_server_tomcat_ajp_enabled=true
+     - MP_SET_server_tomcat_ajp_port=9090
+     - MP_SET_server_tomcat_ajp_secret=s3cr3t
+     - MP_SET_logging_path=/tmp/logtomcat
+     - MP_UNSET_midpoint_repository_hibernateHbm2ddl=1
+     - MP_NO_ENV_COMPAT=1
      - MP_MEM_MAX
      - MP_MEM_INIT
      - MP_JAVA_OPTS
@@ -280,8 +313,6 @@ services:
         aliases:
          - midpoint-server
     secrets:
-     - mp_database_password.txt
-     - mp_keystore_password.txt
      - mp_host-key.pem
      - mp_shibboleth_sp_keys.jks
     volumes:
@@ -295,6 +326,7 @@ services:
      - type: bind
        source: ./midpoint_server/container_files/csv/source-hr.csv
        target: /opt/midpoint/csv/source-hr.csv
+     - mp_pw:/opt/mp-pw
 
   idp:
     build: 
@@ -523,10 +555,6 @@ secrets:
 # midPoint
   mp_host-key.pem:
     file: ./configs-and-secrets/midpoint/httpd/host-key.pem
-  mp_database_password.txt:
-    file: ./configs-and-secrets/midpoint/application/database_password.txt
-  mp_keystore_password.txt:
-    file: ./configs-and-secrets/midpoint/application/keystore_password.txt    
   mp_shibboleth_sp_keys.jks:
     file: ./configs-and-secrets/midpoint/shibboleth/shibboleth_sp_keys.jks
 # COmanage
@@ -541,8 +569,9 @@ volumes:
   source_mysql:
   target_data:
   ldap:
+  db_init:
+  mp_pw:
   midpoint_data:
-  midpoint_mysql:
   midpoint_home:
   mq:
   wordpress_data:

@@ -20,19 +20,15 @@
             <importFolder>${midpoint.home}/import</importFolder>
         </webApplication>
         <repository>
-            <repositoryServiceFactoryClass>com.evolveum.midpoint.repo.sql.SqlRepositoryFactory</repositoryServiceFactoryClass>
-            <baseDir>${midpoint.home}</baseDir>
-            <asServer>true</asServer>
-            <enableIndexOnlyItems>true</enableIndexOnlyItems>
-            <enableNoFetchExtensionValuesInsertion>true</enableNoFetchExtensionValuesInsertion>
-            <enableNoFetchExtensionValuesDeletion>true</enableNoFetchExtensionValuesDeletion>
+            <type>native</type>
+            <jdbcUrl>jdbc:postgresql://localhost:5432/midpoint</jdbcUrl>
         </repository>
         <audit>
             <auditService>
                 <auditServiceFactoryClass>com.evolveum.midpoint.audit.impl.LoggerAuditServiceFactory</auditServiceFactoryClass>
             </auditService>
             <auditService>
-                <auditServiceFactoryClass>com.evolveum.midpoint.repo.sql.SqlAuditServiceFactory</auditServiceFactoryClass>
+                <auditServiceFactoryClass>com.evolveum.midpoint.repo.sqale.audit.SqaleAuditServiceFactory</auditServiceFactoryClass>
             </auditService>
         </audit>
         <icf>
