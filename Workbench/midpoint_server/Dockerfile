@@ -1,7 +1,4 @@
-FROM tier/midpoint:4.3.2-SNAPSHOT
-#FROM tier/midpoint:latest
-
-MAINTAINER info@evolveum.com
+FROM i2incommon/midpoint:4.4
 
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
@@ -26,7 +23,4 @@ RUN chmod 755 /usr/local/bin/setservername.sh
 RUN /usr/local/bin/setservername.sh
 RUN yum install -y graphviz
 
-#COPY container_files/supervisor/supervisord.conf /etc/supervisor/
 
-#set shib auth in apache
-#RUN mv /etc/httpd/conf.d/midpoint.conf /etc/httpd/conf.d/midpoint.conf.default && mv /etc/httpd/conf.d/midpoint.conf.auth.shibboleth /etc/httpd/conf.d/midpoint.conf
