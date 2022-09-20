@@ -11,4 +11,4 @@ Please see a detailed description [here](https://spaces.at.internet2.edu/x/VhLtB
 
 NOTE: There is basic auth setup on the home page.  The username is csp and the password is workbench.
 
-NOTE: This environment works with Docker for Windows CE, but before cloning this repository, ensure that your git client on Windows does not translate LF line endings into CRLF line endings or the mq and grouper_daemon contains will not start.  This can be done using the command: 'git config --global core.autocrlf false'
+NOTE: This environment works with Docker Desktop for Windows, but before cloning this repository, ensure that your git client on Windows does not translate LF line endings into CRLF line endings or the mq and grouper_daemon contains will not start.  This can be done using the command: 'git config --global core.autocrlf false'
