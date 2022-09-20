@@ -23,14 +23,15 @@ shibui:
     authentication-header: IDPUI_API_KEY
 spring:
   datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://idpui-data:5432/shibui
     username: shibui
     password: secret
-    url: jdbc:mariadb://idpui-data:3306/shibui
-    driverClassName: org.mariadb.jdbc.Driver
-    platform: mariadb
   jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
-    hibernate:
-      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        format_sql: true
 
-     
