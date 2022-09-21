@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
-	xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
-	xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3">
-	<securityPolicy xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" oid="00000000-0000-0000-0000-000000000120" version="2">
+  xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+  xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3">
+  <securityPolicy xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" oid="00000000-0000-0000-0000-000000000120" version="2">
     <name>Default Security Policy</name>
     <authentication>
         <modules>
@@ -17,55 +17,35 @@
             <saml2>
                 <name>mySamlSso</name>
                 <description>My internal enterprise SAML-based SSO system.</description>
-                <network>
-                    <readTimeout>10000</readTimeout>
-                    <connectTimeout>5000</connectTimeout>
-                </network>
                 <serviceProvider>
                     <entityId>midpointdemo-shibboleth</entityId>
                     <signRequests>true</signRequests>
-                    <wantAssertionsSigned>true</wantAssertionsSigned>
-                    <singleLogoutEnabled>true</singleLogoutEnabled>
-                    <nameId>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</nameId>
                     <keys>
-			<activeKeyStoreKey>
-    				<keyStorePath>/etc/pki/mp/sp-shibboleth-keys.jks</keyStorePath>
-    				<keyStorePassword>
-        				<t:clearValue>changeit</t:clearValue>
-    				</keyStorePassword>
-    				<keyAlias>signing-key</keyAlias>
-    				<keyPassword>
-        				<t:clearValue>password</t:clearValue>
-    				</keyPassword>
-			</activeKeyStoreKey>
-                        <standByKeyStoreKey>
-    				<keyStorePath>/etc/pki/mp/sp-shibboleth-keys.jks</keyStorePath>
-    				<keyStorePassword>
-        				<t:clearValue>changeit</t:clearValue>
-    				</keyStorePassword>
-    				<keyAlias>encrypt-key</keyAlias>
-    				<keyPassword>
-        				<t:clearValue>password</t:clearValue>
-    				</keyPassword>
-				<type>encryption</type>
-			</standByKeyStoreKey>
+                      <activeKeyStoreKey>
+                        <keyStorePath>/etc/pki/mp/sp-shibboleth-keys.jks</keyStorePath>
+                        <keyStorePassword>
+                          <t:clearValue>changeit</t:clearValue>
+                        </keyStorePassword>
+                        <keyAlias>signing-key</keyAlias>
+                        <keyPassword>
+                          <t:clearValue>password</t:clearValue>
+                        </keyPassword>
+                      </activeKeyStoreKey>
                     </keys>
-                    <provider>
-                        <entityId>https://idptestbed/idp/shibboleth</entityId>
-                        <alias>idp-shibboleth</alias>
+                    <identityProvider>
+                      <entityId>https://idptestbed/idp/shibboleth</entityId>
                         <metadata>
                             <pathToFile>/etc/shibboleth/idp-metadata.xml</pathToFile>
                         </metadata>
-                        <skipSslValidation>true</skipSslValidation>
                         <linkText>Shibboleth</linkText>
                         <authenticationRequestBinding>urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST</authenticationRequestBinding>
                         <nameOfUsernameAttribute>uid</nameOfUsernameAttribute>
-                    </provider>
+                    </identityProvider>
                 </serviceProvider>
             </saml2>
             <httpHeader>
               <name>httpHeader</name>
-              <logoutUrl>https://__CSPHOSTNAME__/MPSSO/Shibboleth.sso/Logout</logoutUrl>
+	      <logoutUrl>https://__CSPHOSTNAME__/MPSSO/Shibboleth.sso/Logout</logoutUrl>
               <usernameHeader>REMOTE_USER</usernameHeader>
             </httpHeader>
         </modules>
@@ -99,7 +79,7 @@
             </requireAssignmentTarget>
             <module>
                 <name>internalLoginForm</name>
-                <order>40</order>
+                <order>30</order>
                 <necessity>sufficient</necessity>
             </module>
         </sequence>
@@ -151,8 +131,8 @@
                 <necessity>sufficient</necessity>
             </module>
         </sequence>
-	<ignoredLocalPath>/actuator</ignoredLocalPath>
-    	<ignoredLocalPath>/actuator/health</ignoredLocalPath>
+        <ignoredLocalPath>/actuator</ignoredLocalPath>
+        <ignoredLocalPath>/actuator/health</ignoredLocalPath>
     </authentication>
     <credentials>
         <password>
