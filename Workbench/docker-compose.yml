@@ -224,10 +224,8 @@ services:
     environment:
      - CREATE_NEW_DATABASE=if_needed
 
-
-
   data_init:
-    image: i2incommon/midpoint:4.4
+    image: i2incommon/midpoint:4.5
     command: >
         bash -c "
         chmod 777 /opt/mp-pw/ ;
@@ -390,28 +388,27 @@ services:
     volumes:
      - generated-metadata:/generated-metadata
      - generated-config:/generated-config
-
+ 
   idp_ui_data:
-    image: tier/mariadb:mariadb10.2
-    ports:
-     - 33366:3306
+    image: postgres
     environment:
-      MYSQL_USER: shibui
-      MYSQL_PASSWORD: secret
-      MYSQL_DATABASE: shibui
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      POSTGRES_USER: shibui
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: shibui
     networks:
       net:
         aliases:
          - idpui-data
+    ports:
+      - 15432:5432
     healthcheck:
-      test: curl -s 127.0.0.1:3306
+      test: /usr/bin/pg_isready
       interval: 30s
       timeout: 30s
       retries: 3
     volumes:
-    - mariadb-data:/var/lib/mysql
-    
+     - idpui_data:/var/lib/postgresql/data
+
   mq:
     build: ./mq/
     environment:
@@ -437,8 +434,6 @@ services:
         - CSPHOSTNAME
     networks:
      - net
-    depends_on:
-      - idp_ui_api
     ports:
      - 443:443
      
@@ -584,3 +579,4 @@ volumes:
   generated-config:
   generated-metadata:
   mariadb-data:
+  idpui_data:
