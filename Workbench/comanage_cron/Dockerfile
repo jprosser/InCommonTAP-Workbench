@@ -1,8 +1,8 @@
-FROM i2incommon/comanage-registry-cron:3.3.4-20210712
+FROM i2incommon/comanage-registry:4.0.2-20220223
 
 ENV COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Anderson
 ENV COMANAGE_REGISTRY_ADMIN_USERNAME=banderson
-ENV COMANAGE_REGISTRY_DATASOURCE=Database/Mysql
+ENV COMANAGE_REGISTRY_DATASOURCE=Database/Postgres
 ENV COMANAGE_REGISTRY_DATABASE=registry
 ENV COMANAGE_REGISTRY_DATABASE_HOST=comanage-data
 ENV COMANAGE_REGISTRY_DATABASE_USER=registry_user
@@ -21,11 +21,13 @@ ENV COMANAGE_REGISTRY_EMAIL_HOST=smtp.example.edu
 #ENV SHIBBOLETH_SP_METADATA_PROVIDER_XML=sdf
 #ENV SHIBBOLETH_SP_SAMLDS_URL=thing
 
-RUN apt-get update --allow-releaseinfo-change && apt-get update
+#RUN apt-get update --allow-releaseinfo-change && apt-get update
+RUN yum -y update
+RUN yum -y install nc
 
 ARG maintainer=my
 ARG imagename=comanage
-ARG version=3.3.1
+ARG version=4.0.2
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 ENV COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=$CSPHOSTNAME
@@ -34,10 +36,9 @@ LABEL Version=$version
 ENV VERSION=$version
 
 COPY container_files/system/runcomangejob.sh /usr/local/bin/
-COPY --chown=www-data:www-data container_files/system/root-crontab /usr/local/etc
+COPY container_files/system/root-crontab /usr/local/etc
 RUN chmod 755 /usr/local/bin/runcomangejob.sh && \
-    mkdir -p /srv/comanage-registry/app/tmp && \
-    chown -R www-data:www-data /srv/comanage-registry/app/tmp
+    mkdir -p /srv/comanage-registry/app/tmp
 #&& \
 #    /usr/bin/crontab -u root /usr/local/etc/root-crontab
 

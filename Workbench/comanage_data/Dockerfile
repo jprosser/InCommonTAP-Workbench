@@ -1,9 +1,5 @@
-FROM tier/mariadb:mariadb10
+FROM postgres:12
 
+RUN mkdir -p /seed-data/
 COPY container_files/seed-data/ /seed-data/
 
-ENV MYSQL_DATABASE registry
-ENV MYSQL_USER registry_user
-ENV MYSQL_PASSWORD 123321
-ENV MYSQL_DATADIR /var/lib/mysqlmounted
-ENV AFTER_FIRST_TIME_SQL /seed-data/comanage-bootstrap.sql

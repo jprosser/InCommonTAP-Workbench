@@ -206,23 +206,44 @@ services:
      - CREATE_NEW_DATABASE=if_needed
 
   comanage_data:
-    build: ./comanage_data
-    ports:
-     - 23306:3306
+    build: ./comanage_data/
+    environment:
+      POSTGRES_USER: registry_user
+      POSTGRES_PASSWORD: 123321
+      POSTGRES_DB: registry
     networks:
       net:
         aliases:
          - comanage-data
+    ports:
+      - 25432:5432
     healthcheck:
-      test: curl -s 127.0.0.1:3306
+      test: /usr/bin/pg_isready
       interval: 30s
       timeout: 30s
       retries: 3
     volumes:
-     - comanage_mysql:/var/lib/mysql
-     - comanage_data:/var/lib/mysqlmounted
+     - comanage_data:/var/lib/postgresql/data
+
+  comanage_midpoint_data:
+    image: postgres:12
     environment:
-     - CREATE_NEW_DATABASE=if_needed
+      POSTGRES_USER: comanage_midpoint_loader
+      POSTGRES_PASSWORD: 123321
+      POSTGRES_DB: comanage_midpoint_loader
+    networks:
+      net:
+        aliases:
+         - comanage-midpoint-data
+    ports:
+      - 35432:5432
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    volumes:
+     - comanage_midpoint_data:/var/lib/postgresql/data
 
   data_init:
     image: i2incommon/midpoint:4.5
@@ -520,7 +541,7 @@ services:
      - source: c_sp-key.pem
        target: shib_sp-key.pem
 
-  comanage-cron:
+  comanage_cron:
     build: 
       context: ./comanage_cron/
       args:
@@ -528,7 +549,7 @@ services:
     depends_on:
      - comanage
     healthcheck:
-      test: curl -s comanage_data:3306
+      test: echo 'QUIT' | nc -w 10 comanage-data 5432
       interval: 30s
       timeout: 30s
       retries: 3
@@ -536,7 +557,9 @@ services:
      - ENV
      - USERTOKEN
     networks:
-     - net
+      net:
+        aliases:
+          - comanage-cron
 
 networks:
   net:    
@@ -565,6 +588,7 @@ volumes:
   grouper_data:
   source_data:
   comanage_data:
+  comanage_midpoint_data:
   comanage_mysql:
   source_mysql:
   target_data:
