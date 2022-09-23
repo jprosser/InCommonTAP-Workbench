@@ -1,4 +1,4 @@
-FROM i2incommon/comanage-registry:4.0.2-20220223
+FROM i2incommon/comanage-registry-cron:4.0.2-20220223
 
 ENV COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Anderson
 ENV COMANAGE_REGISTRY_ADMIN_USERNAME=banderson
@@ -22,8 +22,10 @@ ENV COMANAGE_REGISTRY_EMAIL_HOST=smtp.example.edu
 #ENV SHIBBOLETH_SP_SAMLDS_URL=thing
 
 #RUN apt-get update --allow-releaseinfo-change && apt-get update
-RUN yum -y update
-RUN yum -y install nc
+#RUN yum -y update
+#RUN yum -y install nc
+#RUN apt-get install -y nc
+RUN apt-get install -y sendmail
 
 ARG maintainer=my
 ARG imagename=comanage
@@ -35,13 +37,25 @@ ENV COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=$CSPHOSTNAME
 LABEL Version=$version
 ENV VERSION=$version
 
+#COPY container_files/system/runcomangejob.sh /usr/local/bin/
+#COPY container_files/system/root-crontab /usr/local/etc
+#RUN chmod 755 /usr/local/bin/runcomangejob.sh && \
+#    mkdir -p /srv/comanage-registry/app/tmp
+##&& \
+##    /usr/bin/crontab -u root /usr/local/etc/root-crontab
+#
+#ENV COMANAGE_REGISTRY_CRONTAB=/usr/local/etc/root-crontab
+
+# activate SQL provisioning plugin
+RUN mkdir -p /srv/comanage-registry/local/Plugin/
+RUN ln -s /srv/comanage-registry/app/AvailablePlugin/SqlProvisioner /srv/comanage-registry/local/Plugin/
+
+
+COPY container_files/system/setupcroncomanage.sh /usr/local/bin/setupcroncomanage.sh
 COPY container_files/system/runcomangejob.sh /usr/local/bin/
-COPY container_files/system/root-crontab /usr/local/etc
+COPY --chown=www-data:www-data container_files/system/root-crontab /usr/local/etc
 RUN chmod 755 /usr/local/bin/runcomangejob.sh && \
-    mkdir -p /srv/comanage-registry/app/tmp
-#&& \
-#    /usr/bin/crontab -u root /usr/local/etc/root-crontab
-
+    /usr/bin/crontab -u www-data /usr/local/etc/root-crontab
+    
 ENV COMANAGE_REGISTRY_CRONTAB=/usr/local/etc/root-crontab
-
 

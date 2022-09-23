@@ -1,5 +1,6 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 * * * * *  /usr/local/bin/runcomangejob.sh 1
 * * * * *  /usr/local/bin/runcomangejob.sh 2
-* * * * *  /usr/local/bin/runcomangejob.sh 3
 # Deprecated job to run expirations, syncorgsources, and groupvalidity tasks (until Registry v4.0.0)
 0 * * * *  /usr/local/bin/runcomangejob.sh
