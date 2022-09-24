@@ -226,7 +226,7 @@ services:
      - comanage_data:/var/lib/postgresql/data
 
   comanage_midpoint_data:
-    image: postgres:12
+    build: ./comanage_midpoint_data/
     environment:
       POSTGRES_USER: comanage_midpoint_loader
       POSTGRES_PASSWORD: 123321
