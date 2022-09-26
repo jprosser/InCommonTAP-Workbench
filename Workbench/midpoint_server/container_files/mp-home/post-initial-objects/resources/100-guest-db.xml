@@ -1,0 +1,317 @@
+<resource xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="edb9e47b-e8ad-48b7-9127-ae7b8911a8f2" version="6">
+    <name>COmanage Guests</name>
+    <description>Guests from COmanage via SQL</description>
+    <iteration>0</iteration>
+    <iterationToken/>
+    <connectorRef type="c:ConnectorType">
+        <filter>
+            <q:equal>
+                <q:path>c:connectorType</q:path>
+                <q:value>org.identityconnectors.databasetable.DatabaseTableConnector</q:value>
+            </q:equal>
+        </filter> 
+    </connectorRef>
+    <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
+        <icfc:configurationProperties xmlns:gen605="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-databasetable/org.identityconnectors.databasetable.DatabaseTableConnector">
+            <gen605:host>comanage-midpoint-data</gen605:host>
+            <gen605:port>5432</gen605:port>
+            <gen605:user>comanage_midpoint_loader</gen605:user>
+            <gen605:password>
+				<clearValue>123321</clearValue>
+            </gen605:password>
+            <gen605:database>comanage_midpoint_loader</gen605:database>
+            <gen605:table>vwPersons</gen605:table>
+            <gen605:keyColumn>coperson_id</gen605:keyColumn>
+            <gen605:jdbcDriver>org.postgresql.Driver</gen605:jdbcDriver>
+            <gen605:jdbcUrlTemplate xmlns="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-databasetable/org.identityconnectors.databasetable.DatabaseTableConnector">jdbc:postgresql://%h:%p/%d?keepalives=1&amp;amp;keepalives_idle=120&amp;amp;useUnicode=true&amp;amp;characterEncoding=utf8&amp;amp;connectionCollation=utf8_bin</gen605:jdbcUrlTemplate>
+            <gen605:enableEmptyString>false</gen605:enableEmptyString>
+            <gen605:rethrowAllSQLExceptions>true</gen605:rethrowAllSQLExceptions>
+            <gen605:nativeTimestamps>false</gen605:nativeTimestamps>
+            <gen605:allNative>true</gen605:allNative>
+            <gen605:changeLogColumn>last_modified</gen605:changeLogColumn>
+        </icfc:configurationProperties>
+    </connectorConfiguration>
+    <schema>
+        <cachingMetadata>
+            <retrievalTimestamp>2022-09-24T15:43:25.804Z</retrievalTimestamp>
+            <serialNumber>c3d65d1eececbd38-c51aa65f935f8cf1</serialNumber>
+        </cachingMetadata>
+        <definition>
+            <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:a="http://prism.evolveum.com/xml/ns/public/annotation-3" xmlns:ra="http://midpoint.evolveum.com/xml/ns/public/resource/annotation-3" xmlns:tns="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" elementFormDefault="qualified" targetNamespace="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3">
+                <xsd:import namespace="http://prism.evolveum.com/xml/ns/public/annotation-3"/>
+                <xsd:import namespace="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3"/>
+                <xsd:import namespace="http://midpoint.evolveum.com/xml/ns/public/resource/annotation-3"/>
+                <xsd:complexType name="AccountObjectClass">
+                    <xsd:annotation>
+                        <xsd:appinfo>
+                            <a:container/>
+                            <ra:resourceObject/>
+                            <ra:identifier>icfs:uid</ra:identifier>
+                            <ra:secondaryIdentifier>icfs:name</ra:secondaryIdentifier>
+                            <ra:displayNameAttribute>icfs:name</ra:displayNameAttribute>
+                            <ra:namingAttribute>icfs:name</ra:namingAttribute>
+                            <ra:nativeObjectClass>__ACCOUNT__</ra:nativeObjectClass>
+                            <ra:default>true</ra:default>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="description" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayOrder>120</a:displayOrder>
+                                    <ra:frameworkAttributeName>description</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="emailaddress" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayOrder>130</a:displayOrder>
+                                    <ra:frameworkAttributeName>emailaddress</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element ref="icfs:name">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>ConnId Name</a:displayName>
+                                    <a:displayOrder>110</a:displayOrder>
+                                    <ra:frameworkAttributeName>__NAME__</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="fullname" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayOrder>140</a:displayOrder>
+                                    <ra:frameworkAttributeName>fullname</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="givenname" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayOrder>150</a:displayOrder>
+                                    <ra:frameworkAttributeName>givenname</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="familyname" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayOrder>160</a:displayOrder>
+                                    <ra:frameworkAttributeName>familyname</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="name" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayOrder>170</a:displayOrder>
+                                    <ra:frameworkAttributeName>name</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" ref="icfs:uid">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>ConnId UID</a:displayName>
+                                    <a:displayOrder>100</a:displayOrder>
+                                    <a:access>read</a:access>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:schema>
+        </definition>
+    </schema>
+    <schemaHandling>
+        <objectType id="2">
+            <displayName>Normal User Account</displayName>
+            <default>true</default>
+            <objectClass>ri:AccountObjectClass</objectClass>
+            <attribute id="3">
+                <ref>ri:givenname</ref>
+                <displayName>First name</displayName>
+                <description>Firstname attribute</description>
+                <inbound id="9">
+                    <target>
+                        <path>$user/givenName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="4">
+                <ref>ri:familyname</ref>
+                <displayName>Last name</displayName>
+                <description>Lastname attribute</description>
+                <inbound id="10">
+                    <target>
+                        <path>$user/familyName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="5">
+                <ref>ri:fullname</ref>
+                <displayName>Full name</displayName>
+                <description>Fullname attribute</description>
+                <inbound id="11">
+                    <target>
+                        <path>$user/fullName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="6">
+                <ref>ri:name</ref>
+                <displayName>Guest ID</displayName>
+                <description>Guest Identifier</description>
+                <inbound id="12">
+                    <target>
+                        <path>$user/name</path>
+                    </target>
+                </inbound>
+                <inbound id="34">
+                    <target>
+                        <path>extension/Guest_ID</path>
+                    </target>
+                </inbound>
+                <inbound id="35">
+                    <description>Assignment of Guest SOR archetype</description>
+                    <strength>strong</strength>
+                    <expression>
+                        <assignmentTargetSearch>
+                            <targetType>c:ArchetypeType</targetType>
+                            <oid>3d290ffd-35d6-40d5-9b20-964f891f569c</oid>
+                        </assignmentTargetSearch>
+                    </expression>
+                    <target>
+                        <path>assignment</path>
+                    </target>
+                </inbound>
+                <inbound id="36">
+                    <description>Assignment of Guest SOR organization</description>
+                    <strength>strong</strength>
+                    <expression>
+                        <assignmentTargetSearch>
+                            <targetType>c:OrgType</targetType>
+                            <oid>55ced112-264c-4c77-a1bf-9e32d8a138b0</oid>
+                        </assignmentTargetSearch>
+                    </expression>
+                    <target>
+                        <path>assignment</path>
+                    </target>
+                </inbound>
+                <inbound id="37">
+                    <description>Assignment of role-ldap-basic role</description>
+                    <strength>strong</strength>
+                    <expression>
+                        <assignmentTargetSearch>
+                            <targetType>c:RoleType</targetType>
+                            <oid>c89f31dd-8d4f-4e0a-82cb-58ff9d8c1b2f</oid>
+                        </assignmentTargetSearch>
+                    </expression>
+                    <target>
+                        <path>assignment</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="7">
+                <ref>ri:emailaddress</ref>
+                <displayName>Email Address</displayName>
+                <description>Email Address attribute</description>
+                <inbound id="13">
+                    <target>
+                        <path>$user/emailAddress</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="8">
+                <ref>ri:description</ref>
+                <displayName>Display Name</displayName>
+                <description>Displayname attribute</description>
+                <inbound id="14">
+                    <target>
+                        <path>$user/description</path>
+                    </target>
+                </inbound>
+            </attribute>
+        </objectType>
+    </schemaHandling>
+    <capabilities>
+        <cachingMetadata>
+            <retrievalTimestamp>2022-09-24T15:43:25.798Z</retrievalTimestamp>
+            <serialNumber>20403063cb3af9c1-b86b2ecdab69ecca</serialNumber>
+        </cachingMetadata>
+        <native xmlns:cap="http://midpoint.evolveum.com/xml/ns/public/resource/capabilities-3">
+            <cap:schema/>
+            <cap:liveSync/>
+            <cap:testConnection/>
+            <cap:create/>
+            <cap:update>
+                <cap:addRemoveAttributeValues>true</cap:addRemoveAttributeValues>
+            </cap:update>
+            <cap:delete/>
+            <cap:script>
+                <cap:host>
+                    <cap:type>connector</cap:type>
+                </cap:host>
+            </cap:script>
+            <cap:read>
+                <cap:returnDefaultAttributesOption>false</cap:returnDefaultAttributesOption>
+            </cap:read>
+        </native>
+    </capabilities>
+    <synchronization>
+        <objectSynchronization id="15">
+            <objectClass>ri:AccountObjectClass</objectClass>
+            <enabled>true</enabled>
+            <correlation>
+                <q:equal>
+                    <q:path>c:name</q:path>
+                    <expression>
+                        <path>
+                                declare namespace icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3";
+                                $account/attributes/ri:name
+                            </path>
+                    </expression>
+                </q:equal>
+                <q:description>
+                        Correlation expression is a search query.
+                        Following search query will look for users that have "name"
+                        equal to the "name" attribute of the account. Simply speaking,
+                        it will look for match in usernames in the IDM and the resource.
+                        The correlation rule always looks for users, so it will not match
+                        any other object type.
+                    </q:description>
+            </correlation>
+            <reaction>
+                <situation>deleted</situation>
+                <action>
+                    <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#unlinkAccount</handlerUri>
+                </action>
+            </reaction>
+            <reaction>
+                <situation>unlinked</situation>
+                <action>
+                    <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#linkAccount</handlerUri>
+                </action>
+            </reaction>
+            <reaction>
+                <situation>linked</situation>
+                <objectTemplateRef oid="8098b124-c20c-4965-8adf-e528abedf7a4" xsi:type="c:ObjectReferenceType"/>
+                <action>
+                    <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#modifyUser</handlerUri>
+                </action>
+            </reaction>
+            <reaction>
+                <situation>unmatched</situation>
+                <objectTemplateRef oid="8098b124-c20c-4965-8adf-e528abedf7a4" xsi:type="c:ObjectReferenceType"/>
+                <action>
+                    <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#addUser</handlerUri>
+                </action>
+            </reaction>
+        </objectSynchronization>
+    </synchronization>
+</resource>
+
