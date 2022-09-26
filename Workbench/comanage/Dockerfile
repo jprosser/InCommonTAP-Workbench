@@ -1,10 +1,11 @@
-FROM i2incommon/comanage-registry:3.3.4-20210712
+FROM i2incommon/comanage-registry:4.0.2-20220223
 
 ENV COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Anderson
 ENV COMANAGE_REGISTRY_ADMIN_USERNAME=banderson
-ENV COMANAGE_REGISTRY_DATASOURCE=Database/Mysql
+ENV COMANAGE_REGISTRY_DATASOURCE=Database/Postgres
 ENV COMANAGE_REGISTRY_DATABASE=registry
 ENV COMANAGE_REGISTRY_DATABASE_HOST=comanage-data
+ENV COMANAGE_REGISTRY_DATABASE_PORT=5432
 ENV COMANAGE_REGISTRY_DATABASE_USER=registry_user
 ENV COMANAGE_REGISTRY_DATABASE_USER_PASSWORD=123321
 ENV COMANAGE_REGISTRY_EMAIL_FROM=noreply@workbench.incommon.org
@@ -31,7 +32,7 @@ RUN yum -y update && yum -y install --setopt=tsflags=nodocs epel-release python-
 
 ARG maintainer=my
 ARG imagename=comanage
-ARG version=3.3.1
+ARG version=4.0.2
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 ENV COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=$CSPHOSTNAME
@@ -40,6 +41,12 @@ LABEL Version=$version
 ENV VERSION=$version
 
 COPY container_files/shibboleth/* /etc/shibboleth/
+
+# activate SQL plugin
+RUN mkdir -p /srv/comanage-registry/local/Plugin/
+RUN ln -s /srv/comanage-registry/app/AvailablePlugin/SqlProvisioner /srv/comanage-registry/local/Plugin/
+
+COPY container_files/httpd/ /etc/httpd/conf.d/
 
 COPY container_files/system/setservername.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/setservername.sh && rm -f /etc/httpd/conf.d/ssl.conf

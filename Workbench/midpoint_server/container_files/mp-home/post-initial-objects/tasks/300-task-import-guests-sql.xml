@@ -6,7 +6,7 @@
       xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3"
       xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3"
       oid="9ddfc0ff-6293-4f34-8eb7-5a049c21480f">
-   <name>Import from Guest LDAP</name>
+   <name>Import Guests from COmanage SQL</name>
    <extension xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:type="c:ExtensionType">
@@ -20,18 +20,19 @@
    <assignment>
       <targetRef oid="00000000-0000-0000-0000-000000000503" type="ArchetypeType" /> <!--Import task-->
    </assignment>
-   <taskIdentifier>df940655-2167-455d-a735-a5e8c234e289</taskIdentifier>
+   <taskIdentifier>fe3c15a4-71be-4aac-8bc9-65a61b6e8d77</taskIdentifier>
    <ownerRef oid="00000000-0000-0000-0000-000000000002"
              relation="org:default"
              type="c:UserType"><!-- administrator --></ownerRef>
    <executionStatus>runnable</executionStatus>
    <category>ImportingAccounts</category>
-   <objectRef oid="7b40819f-2fec-4243-9d5d-355300acd312"
+   <objectRef oid="edb9e47b-e8ad-48b7-9127-ae7b8911a8f2"
               relation="org:default"
-              type="c:ResourceType"><!-- Guest LDAP --></objectRef>
+              type="c:ResourceType"><!-- Guests from COmanage DB --></objectRef>
    <recurrence>recurring</recurrence>
    <schedule>
      <interval>60</interval>
    </schedule>
    <binding>loose</binding>
 </task>
+
