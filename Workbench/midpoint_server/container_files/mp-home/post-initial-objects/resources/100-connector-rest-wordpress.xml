@@ -1,5 +1,6 @@
 <resource xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" oid="dd683dd5-b7b0-414c-a1d9-7039340ad70b" version="34">
-    <name>wordpress</name>
+    <name>Target: Wordpress</name>
+    <description>Wordpress system</description>
     <metadata>
         <modifyTimestamp>2019-03-29T16:22:22.388Z</modifyTimestamp>
         <modifierRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType"/>

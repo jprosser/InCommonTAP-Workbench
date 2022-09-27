@@ -19,8 +19,8 @@
     xmlns:mr="http://prism.evolveum.com/xml/ns/public/matching-rule-3"
     xmlns:cap="http://midpoint.evolveum.com/xml/ns/public/resource/capabilities-3">
 
-	<c:name>SQL SIS persons (sources)</c:name>
-
+	<c:name>Source: SIS DB</c:name>
+	<c:description>Students/Faculty from SIS via SQL</c:description>
 	<connectorRef type="ConnectorType">
 		<filter>
 			<q:equal>

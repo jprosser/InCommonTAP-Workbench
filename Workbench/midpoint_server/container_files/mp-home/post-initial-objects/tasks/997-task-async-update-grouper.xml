@@ -18,7 +18,7 @@
 	  xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
 	  xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3"
 	  oid="47fc57bd-8c34-4555-9b9f-7087ff179860">
-	<name>Grouper async updates</name>
+	<name>Groups: Live updates</name>
 	<extension xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3">
 		<mext:workerThreads>1</mext:workerThreads>
 	</extension>

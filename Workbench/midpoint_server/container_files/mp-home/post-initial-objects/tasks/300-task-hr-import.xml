@@ -6,7 +6,7 @@
       xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3"
       xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3"
       oid="62b23d51-8b36-454a-af39-45e078a4563f">
-   <name>Import from HR DB</name>
+   <name>HR: Full Import</name>
    <extension xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:type="c:ExtensionType">

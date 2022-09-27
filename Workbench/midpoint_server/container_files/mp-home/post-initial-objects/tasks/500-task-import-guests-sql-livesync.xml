@@ -1,0 +1,28 @@
+<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+      xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      oid="5a821505-7318-4364-9a2f-501b8bf30b44">
+    <name>Guests: Livesync</name>
+    <description>COmanage SQL live synchronization task. It will poll changelog and pull in changes</description>
+    <ownerRef oid="00000000-0000-0000-0000-000000000002"/>
+    <executionState>running</executionState>
+    <indestructible>true</indestructible>
+    <objectRef oid="edb9e47b-e8ad-48b7-9127-ae7b8911a8f2" type="c:ResourceType"/>
+    <binding>tight</binding>
+    <schedule>
+        <recurrence>recurring</recurrence>
+        <interval>5</interval>
+    </schedule>
+    <activity>
+        <work>
+            <liveSynchronization>
+                <resourceObjects>
+                    <resourceRef oid="edb9e47b-e8ad-48b7-9127-ae7b8911a8f2"/>
+                    <objectclass>AccountObjectClass</objectclass>
+                </resourceObjects>
+            </liveSynchronization>
+        </work>
+    </activity>
+</task>
+

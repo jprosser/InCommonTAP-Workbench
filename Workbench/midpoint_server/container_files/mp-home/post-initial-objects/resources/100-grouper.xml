@@ -18,7 +18,8 @@
           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <name>Grouper Resource</name>
+    <name>Source: Groups</name>
+    <description>Groups from Grouper</description>
     <connectorRef type="c:ConnectorType">
         <filter>
             <q:equal>
