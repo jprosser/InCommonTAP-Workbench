@@ -6,7 +6,7 @@
       xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3"
       xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3"
       oid="9ddfc0ff-6293-4f34-8eb7-5a049c21480f">
-   <name>Import Guests from COmanage SQL</name>
+   <name>Guests: Full Import</name>
    <extension xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:type="c:ExtensionType">
@@ -31,7 +31,7 @@
               type="c:ResourceType"><!-- Guests from COmanage DB --></objectRef>
    <recurrence>recurring</recurrence>
    <schedule>
-     <interval>60</interval>
+     <interval>1800</interval>
    </schedule>
    <binding>loose</binding>
 </task>

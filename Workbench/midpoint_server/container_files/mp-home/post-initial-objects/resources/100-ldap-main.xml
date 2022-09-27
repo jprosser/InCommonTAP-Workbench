@@ -16,7 +16,8 @@
 	xmlns:mr="http://prism.evolveum.com/xml/ns/public/matching-rule-3"
 	xmlns:cap="http://midpoint.evolveum.com/xml/ns/public/resource/capabilities-3">
 
-	<name>LDAP (directory)</name>
+        <name>Target: LDAP directory</name>
+        <description>Main LDAP directory</description>
 
 	<connectorRef type="ConnectorType">
 		<filter>

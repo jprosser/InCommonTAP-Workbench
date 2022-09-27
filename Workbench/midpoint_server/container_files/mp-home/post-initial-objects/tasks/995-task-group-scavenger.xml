@@ -21,7 +21,7 @@ Looks for groups with the lifecycleState of 'retired' and completes their deleti
 	  xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3"
 	  xmlns:scext="http://midpoint.evolveum.com/xml/ns/public/model/scripting/extension-3"
 	  oid="1d7bef40-953e-443e-8e9a-ec6e313668c4">
-	<name>Group Scavenger</name>
+	<name>Groups: Group Scavenger</name>
 	<extension>
 		<scext:executeScript>
 			<s:action>

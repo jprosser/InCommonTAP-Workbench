@@ -19,7 +19,7 @@
 	  xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3"
 	  xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3"
 	  oid="605a0127-a313-442a-9d5e-151eac8b0745">
-	<name>Grouper reconciliation (groups)</name>
+	<name>Groups: Full Reconciliation</name>
 	<extension xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3">
 		<mext:objectclass>ri:Group</mext:objectclass>
 	</extension>
