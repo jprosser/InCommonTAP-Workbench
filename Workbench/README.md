@@ -7,7 +7,7 @@ $ docker-compose up --build -d
 
 NOTE: The workbench requires that an environment variable named CSPHOSTNAME be set.  Just set it to 'localhost' for a local build.
 
-Please see a detailed description [here](https://spaces.at.internet2.edu/x/VhLtBw).
+Please see a detailed description [here](https://spaces.at.internet2.edu/display/TAPW).
 
 NOTE: There is basic auth setup on the home page.  The username is csp and the password is workbench.
 
