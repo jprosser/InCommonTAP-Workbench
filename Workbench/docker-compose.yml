@@ -246,7 +246,7 @@ services:
      - comanage_midpoint_data:/var/lib/postgresql/data
 
   data_init:
-    image: i2incommon/midpoint:4.5
+    image: i2incommon/midpoint:4.6
     command: >
         bash -c "
         chmod 777 /opt/mp-pw/ ;

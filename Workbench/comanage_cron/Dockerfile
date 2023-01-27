@@ -1,4 +1,5 @@
-FROM i2incommon/comanage-registry-cron:4.0.2-20220223
+FROM i2incommon/comanage-registry-cron:4.1.0-20230117
+#FROM i2incommon/comanage-registry-cron:4.0.2-20220223
 
 ENV COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Anderson
 ENV COMANAGE_REGISTRY_ADMIN_USERNAME=banderson
