@@ -148,7 +148,6 @@
                     <path>displayName</path>
                 </target>
             </mapping>
-
             <mapping>
                 <name>lifecycle state</name>
                 <description>This mapping sets org lifecycle state to be either "active" or "retired", depending on
@@ -162,12 +161,13 @@
                             import com.evolveum.midpoint.schema.*
                             import com.evolveum.midpoint.xml.ns._public.common.common_3.*
                             import com.evolveum.midpoint.model.common.expression.ModelExpressionThreadLocalHolder
+                            import com.evolveum.midpoint.model.api.context.ProjectionContextKey
 
                             GROUPER_RESOURCE_OID = '1eff65de-5bb6-483d-9edf-8cc2c2ee0233'
 
                             modelContext = ModelExpressionThreadLocalHolder.lensContext
-                            rsd = new ResourceShadowDiscriminator(GROUPER_RESOURCE_OID, ShadowKindType.ENTITLEMENT, 'group', null, false)
-                            if (modelContext.findProjectionContext(rsd) != null) {
+
+                            if (modelContext.findProjectionContextByKeyExact(ProjectionContextKey.classified(GROUPER_RESOURCE_OID, ShadowKindType.ENTITLEMENT, 'group', null)) != null) {
                                 log.info('Projection context for Grouper group found, marking as "active"')
                                 'active'
                             } else {
