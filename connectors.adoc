@@ -1,4 +1,5 @@
 === connectors.adoc
+
 SEE workbench.adoc +
 permalink: https://github.internet2.edu/internet2/iam-knowledge-bits/blob/main/connectors.adoc +
 next] LDAP/AD provisioning with midPoint
@@ -227,19 +228,5 @@ COPY ../Workbench/midpoint_server/container_files/mp-home/   /opt/midpoint/var/
 └── Dockerfile
 ```
 
-uid	validFrom	validTo	mail	phoneNumber	department	orgUnit	password	name	description	firstname	lastname	fullName	artisticName	empNum
-
 - - -
-_2023-02-24 10:00:00 graphana connector to mP discussion with Provision IAM_
 
-- - -
-_2023-02-08 11:38:56 database table connector configuration_
-
-*- Use SIWG workbench instance, midPoint Collective, guest resource, dbTable connector for a full working example -*
-
-demo in browser:
-
-` resource, guest db, configuration in UI, in XML +
-` import task, operation statistics
-
-.
