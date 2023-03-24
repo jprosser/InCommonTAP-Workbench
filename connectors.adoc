@@ -97,7 +97,7 @@ docker-compose down -v
 ...
 docker-compose up -d
 ```
-*- working tmnt resource def -*
+*- working tmnt resource def -* +
 ~/opt/kh.wb/objects/resources/SourceTMNTSystem.xml
 
 - - -
