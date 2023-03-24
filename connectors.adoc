@@ -81,6 +81,7 @@ cd $MIDPOINT_HOME
 - - -
 
 next: replicate artist/hr resource on MBProMax:midpoint-4.6
+
 - - -
 _2023-03-22 14:36:48 csv connector, resource configuration_
 
