@@ -46,11 +46,11 @@ ls -la usertype_export.csv
 
 ` fill in the essential parameter definitions section by section:
 
-` Connector section
-` Schema section
-` Schema Handling section
-` Capabilities section
-` Synchronization section
+` Connector section +
+` Schema section +
+` Schema Handling section +
+` Capabilities section +
+` Synchronization section +
 
 *- The Artist Collective resource config goes into MIDPOINT_HOME/objects/resources on the Workbench host -*
 
