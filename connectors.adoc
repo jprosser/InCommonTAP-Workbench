@@ -134,11 +134,9 @@ COPY ../Workbench/midpoint_server/container_files/mp-home/   /opt/midpoint/var/
 │   │   │   ├── connector-grouper-rest-0.7.jar
 │   │   │   ├── connector-rest-wordpress-.23-SNAPSHOT.jar
 │   │   │   ├── connector-sympa-1.0.2-connector.jar
-│   │   │   └── net.tirasa.connid.bundles.db.scriptedsql-2.2.
-..-SNAPSHOT.jar
+│   │   │   └── net.tirasa.connid.bundles.db.scriptedsql-2.2.-SNAPSHOT.jar
 │   │   ├── lib
-│   │   │   ├── mariadb-java-client-3.0.
-...jar
+│   │   │   ├── mariadb-java-client-3.0.jar
 │   │   │   └── mysql-connector-java-8.0.30.jar
 │   │   ├── mailing-lists.csv
 │   │   ├── post-initial-objects
