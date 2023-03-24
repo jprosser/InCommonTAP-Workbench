@@ -41,7 +41,7 @@ ls -la usertype_export.csv
 
 *- Complete the Artists' Collective resource definition, 100-mnt0.xml -*
 
-` Edit resource definition file on local computer: 
+` Edit resource definition file on local computer: +
 ` ~/opt/kh-wb/objects/resources/100-mnt0.xml
 
 ` fill in the essential parameter definitions section by section:
@@ -54,14 +54,14 @@ ls -la usertype_export.csv
 
 *- The Artist Collective resource config goes into MIDPOINT_HOME/objects/resources on the Workbench host -*
 
-` Use MidPoint Studio to connect to the workbench host and upload the above files to their proper locations 
+` Use MidPoint Studio to connect to the workbench host and upload the above files to their proper locations +
 
 *- Once the files are in place, Open the Workbench UI and select Midpoint -*
 
 ` go to Resources / Import Resource Definition, Browse to 100-mnt0.xml on local host +
 ` click Import +
 
-` Back to 'All Resources / TMNT System', select Accounts, scroll down and press the Import button
+` Back to 'All Resources / TMNT System', select Accounts, scroll down and press the Import button +
 ` Open 'Accounts' on the new resource, Scroll down to the list of users and select one for viewing
 
 *- Now browse to the Users tab, scroll to 2nd page and note that Cesare Borgia from the Artists' Collective is now recognized as a User in midPoint
@@ -70,8 +70,8 @@ ls -la usertype_export.csv
 
 *- TBD: native install -*
 
-` replicate artist/hr resource on MBProMax: ~/opt/midpoint-4.6
-` ~/Users/khazelton/opt/midpoint-4.6 <- MIDPOINT_HOME 
+` replicate artist/hr resource on MBProMax: ~/opt/midpoint-4.6 +
+` ~/Users/khazelton/opt/midpoint-4.6 <- MIDPOINT_HOME +
 ` MIDPOINT_HOME/bin <- All the start/stop/etc scripts 
 
 ```
