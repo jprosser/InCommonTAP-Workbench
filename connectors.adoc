@@ -110,8 +110,7 @@ Workbench/midpoint_server/container_files/mp-home
 COPY ../Workbench/midpoint_server/container_files/mp-home/   /opt/midpoint/var/
                      |                                             |
                 base in container host                      base inside connector
-
- ```
+```
  *- in the container -*
 
 ```
