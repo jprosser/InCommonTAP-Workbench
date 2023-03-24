@@ -41,7 +41,7 @@ ls -la usertype_export.csv
 
 *- Complete the Artists' Collective resource definition, 100-mnt0.xml -*
 
-` Edit resource definitioon file on local computer: 
+` Edit resource definition file on local computer: 
 ` ~/opt/kh-wb/objects/resources/100-mnt0.xml
 
 ` fill in the essential parameter definitions section by section:
