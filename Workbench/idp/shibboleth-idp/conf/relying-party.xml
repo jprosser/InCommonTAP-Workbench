@@ -67,6 +67,7 @@
         </bean>
         -->
 
+	<!--
         <bean id="ShibUI" parent="RelyingPartyByName" c:relyingPartyIds="https://sp.example.org/shibui">
             <property name="profileConfigurations">
                 <list>
@@ -74,7 +75,7 @@
                 </list>
             </property>
         </bean>
-        
+	-->
     </util:list>
 
 </beans>
