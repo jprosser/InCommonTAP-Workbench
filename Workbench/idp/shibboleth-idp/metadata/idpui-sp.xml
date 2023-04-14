@@ -15,8 +15,60 @@
         <md:Extensions>
             <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=shibUIAuthClient"/>
         </md:Extensions>
-        <md:KeyDescriptor use="signing" />
-        <md:KeyDescriptor use="encryption" />
+	<md:KeyDescriptor use="signing">
+	    <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+	        <ds:X509Data>
+		    <ds:X509Certificate>
+MIIDgzCCAmugAwIBAgIEcPqhyTANBgkqhkiG9w0BAQsFADByMQswCQYDVQQGEwJV
+UzERMA8GA1UECBMITWljaGlnYW4xEjAQBgNVBAcTCUFubiBBcmJvcjESMBAGA1UE
+ChMJSW50ZXJuZXQyMQwwCgYDVQQLEwNkZXYxGjAYBgNVBAMTEWlkcHVpLmV4YW1w
+bGUub3JnMB4XDTIwMTIxNTIyMjE1MloXDTMwMTIxMzIyMjE1MlowcjELMAkGA1UE
+BhMCVVMxETAPBgNVBAgTCE1pY2hpZ2FuMRIwEAYDVQQHEwlBbm4gQXJib3IxEjAQ
+BgNVBAoTCUludGVybmV0MjEMMAoGA1UECxMDZGV2MRowGAYDVQQDExFpZHB1aS5l
+eGFtcGxlLm9yZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIYkcjUA
+B9RePxkLMOKc+he23yY1m9YocYwkcJOJnPt9+L/2laIYJzxgAtDmxZ+YcpJxI0Px
+QJ6kQJVhEbMYEOnbfqxgphrUxYHkVyXHVVtNInydAawWWrT9DrA1HRzq8RXTqLit
++8OeKjsiRHAiR2/g2CmuLvo3KhQbpe4FUJbIC2Eo3BHtlMElHGtubBfnY7S4zULY
+vZXCiTBJSFX4S/8Sk8DirHCKK47CDGMLbuvXYYpk+rnegVQudYprNy70Yx0xH2gl
+I3WyL4/sPgPPJg5FbA0nF5WDlVkMKQq6kYbT2PuIu67lCAeMlNgihp95e3L0xYUg
+qiukTAIIk+CDHskCAwEAAaMhMB8wHQYDVR0OBBYEFK1cSS3HdqLZyGW2+9H9gDkP
+dl7wMA0GCSqGSIb3DQEBCwUAA4IBAQBiOi+h2/Xg6Yr53mvQqcFJxd/jDTfBob9L
+h21cCr3tv0ZldgZN5WYobw6pX8VRCZMc91bCEqI1XrlueRDM785iLHcYYFt1RM7m
+Ly+F0lsvn5VdTN+L/sOypU1Eco+3SxiSItk2VBXG1U+gkJWvmpOTE+W93y6W6Lyl
+hoixs3MTdn7IZrKeBUgBtiho/+QRjm74Y4DSveGIOt521GLYmiP9CW5wIvnh1z2c
+gr6gaui1XfGQA/1DqGz9FIcnr+39hIbXA3qgVub7H5x30e6nSA5Dc+UkVZ7I+75u
+sCw582pAQy6p2Vy3unUExYINbXima4SuEYsTBLsjuH4LiaNSWwB/
+		    </ds:X509Certificate>
+		</ds:X509Data>
+            </ds:KeyInfo>
+	</md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+MIIDgzCCAmugAwIBAgIEcPqhyTANBgkqhkiG9w0BAQsFADByMQswCQYDVQQGEwJV
+UzERMA8GA1UECBMITWljaGlnYW4xEjAQBgNVBAcTCUFubiBBcmJvcjESMBAGA1UE
+ChMJSW50ZXJuZXQyMQwwCgYDVQQLEwNkZXYxGjAYBgNVBAMTEWlkcHVpLmV4YW1w
+bGUub3JnMB4XDTIwMTIxNTIyMjE1MloXDTMwMTIxMzIyMjE1MlowcjELMAkGA1UE
+BhMCVVMxETAPBgNVBAgTCE1pY2hpZ2FuMRIwEAYDVQQHEwlBbm4gQXJib3IxEjAQ
+BgNVBAoTCUludGVybmV0MjEMMAoGA1UECxMDZGV2MRowGAYDVQQDExFpZHB1aS5l
+eGFtcGxlLm9yZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIYkcjUA
+B9RePxkLMOKc+he23yY1m9YocYwkcJOJnPt9+L/2laIYJzxgAtDmxZ+YcpJxI0Px
+QJ6kQJVhEbMYEOnbfqxgphrUxYHkVyXHVVtNInydAawWWrT9DrA1HRzq8RXTqLit
++8OeKjsiRHAiR2/g2CmuLvo3KhQbpe4FUJbIC2Eo3BHtlMElHGtubBfnY7S4zULY
+vZXCiTBJSFX4S/8Sk8DirHCKK47CDGMLbuvXYYpk+rnegVQudYprNy70Yx0xH2gl
+I3WyL4/sPgPPJg5FbA0nF5WDlVkMKQq6kYbT2PuIu67lCAeMlNgihp95e3L0xYUg
+qiukTAIIk+CDHskCAwEAAaMhMB8wHQYDVR0OBBYEFK1cSS3HdqLZyGW2+9H9gDkP
+dl7wMA0GCSqGSIb3DQEBCwUAA4IBAQBiOi+h2/Xg6Yr53mvQqcFJxd/jDTfBob9L
+h21cCr3tv0ZldgZN5WYobw6pX8VRCZMc91bCEqI1XrlueRDM785iLHcYYFt1RM7m
+Ly+F0lsvn5VdTN+L/sOypU1Eco+3SxiSItk2VBXG1U+gkJWvmpOTE+W93y6W6Lyl
+hoixs3MTdn7IZrKeBUgBtiho/+QRjm74Y4DSveGIOt521GLYmiP9CW5wIvnh1z2c
+gr6gaui1XfGQA/1DqGz9FIcnr+39hIbXA3qgVub7H5x30e6nSA5Dc+UkVZ7I+75u
+sCw582pAQy6p2Vy3unUExYINbXima4SuEYsTBLsjuH4LiaNSWwB/
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
         <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://__CSPHOSTNAME__/idpui/callback?client_name=shibUIAuthClient&amp;idplogoutrequest=true"/>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
