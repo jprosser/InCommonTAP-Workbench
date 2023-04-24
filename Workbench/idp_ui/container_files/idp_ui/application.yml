@@ -22,7 +22,8 @@ shibui:
   beacon-enabled: true
   pac4j-enabled: true
   pac4j:
-    keystorePath: "/opt/shibui/saml/samlkeystore.jks"
+    keystorePath: "/opt/shibui/saml/samlcert.p12"
+    keystoreType: "PKCS12"
     keystorePassword: "changeit"
     privateKeyPassword: "changeit"
     serviceProviderEntityId: "https://sp.example.org/shibui"
