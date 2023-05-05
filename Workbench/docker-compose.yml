@@ -176,8 +176,10 @@ services:
 
   directory:
     build: ./directory/
+    links:
+     - "ad:ad"
     ports:
-     - 389:389
+     - 1389:389
     networks:
      - net
     healthcheck:
@@ -561,6 +563,33 @@ services:
         aliases:
           - comanage-cron
 
+  ad:
+    build:
+      context: ./ad/
+    environment:
+     - DOMAIN=ad.example.edu
+     - DOMAINPASS=Supersecret1!
+    networks:
+      net:
+    volumes:
+     - ad_samba_data:/var/lib/samba
+     - ad_samba_cfg:/etc/samba/external
+    ports:
+      - 53:53
+      - 53:53/udp
+      - 88:88
+      - 88:88/udp
+      - 135:135
+      - 137-138:137-138/udp
+      - 139:139
+      - 389:389
+      - 389:389/udp
+      - 445:445
+      - 464:464
+      - 464:464/udp
+      - 636:636
+      - 3268-3269:3268-3269
+
 networks:
   net:    
     driver: bridge
@@ -604,3 +633,5 @@ volumes:
   generated-metadata:
   mariadb-data:
   idpui_data:
+  ad_samba_data:
+  ad_samba_cfg:

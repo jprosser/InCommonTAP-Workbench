@@ -1,0 +1,61 @@
+<resource xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="6597e333-3f18-478d-84e7-58521a5eec2b" version="1">
+    <name>Target: AD</name>
+    <iteration>0</iteration>
+    <iterationToken/>
+    <connectorRef type="ConnectorType">
+        <filter>
+            <q:equal>
+            <q:path>c:connectorType</q:path>
+                <q:value>com.evolveum.polygon.connector.ldap.ad.AdLdapConnector</q:value>
+            </q:equal>
+        </filter>
+    </connectorRef>
+    <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
+        <icfc:configurationProperties xmlns:gen475="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-ldap/com.evolveum.polygon.connector.ldap.ad.AdLdapConnector">
+            <gen475:host>ad</gen475:host>
+            <gen475:port>636</gen475:port>
+            <gen475:connectionSecurity>ssl</gen475:connectionSecurity>
+            <gen475:authenticationType>simple</gen475:authenticationType>
+            <gen475:bindDn>CN=Administrator,CN=Users,DC=ad,DC=example,DC=edu</gen475:bindDn>
+            <gen475:bindPassword>
+                <t:clearValue>Supersecret1!</t:clearValue>
+            </gen475:bindPassword>
+            <gen475:baseContext>DC=ad,DC=example,DC=edu</gen475:baseContext>
+            <gen475:readSchema>true</gen475:readSchema>
+            <gen475:allowUntrustedSsl>true</gen475:allowUntrustedSsl>
+        </icfc:configurationProperties>
+    </connectorConfiguration>
+    <capabilities>
+        <native xmlns:cap="http://midpoint.evolveum.com/xml/ns/public/resource/capabilities-3">
+            <cap:schema/>
+            <cap:discoverConfiguration/>
+            <cap:activation>
+                <cap:status/>
+            </cap:activation>
+            <cap:credentials>
+                <cap:password>
+                    <cap:returnedByDefault>false</cap:returnedByDefault>
+                </cap:password>
+            </cap:credentials>
+            <cap:liveSync/>
+            <cap:create/>
+            <cap:read>
+                <cap:returnDefaultAttributesOption>true</cap:returnDefaultAttributesOption>
+            </cap:read>
+            <cap:update>
+                <cap:delta>true</cap:delta>
+                <cap:addRemoveAttributeValues>true</cap:addRemoveAttributeValues>
+            </cap:update>
+            <cap:delete/>
+            <cap:testConnection/>
+            <cap:script>
+                <cap:host id="1">
+                    <cap:type>connector</cap:type>
+                </cap:host>
+            </cap:script>
+            <cap:pagedSearch/>
+            <cap:auxiliaryObjectClasses/>
+        </native>
+    </capabilities>
+</resource>
+
