@@ -533,17 +533,17 @@ $servers->setValue('login','attr','dn');
  * your other LDAP servers.                                               *
  **************************************************************************/
 
-/*
 $servers->newServer('ldap_pla');
-$servers->setValue('server','name','LDAP Server');
-$servers->setValue('server','host','127.0.0.1');
-$servers->setValue('server','port',389);
-$servers->setValue('server','base',array(''));
+$servers->setValue('server','name','AD Server');
+$servers->setValue('server','host','ldaps://ad/');
+$servers->setValue('server','port',636);
+$servers->setValue('server','base',array('dc=ad,dc=example,dc=edu'));
 $servers->setValue('login','auth_type','cookie');
-$servers->setValue('login','bind_id','');
-$servers->setValue('login','bind_pass','');
+$servers->setValue('login','bind_id','AD\Administrator');
+$servers->setValue('login','bind_pass','Supersecret1!');
 $servers->setValue('server','tls',false);
 
+/*
 # SASL auth
 $servers->setValue('login','auth_type','sasl');
 $servers->setValue('sasl','mech','GSSAPI');
