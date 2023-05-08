@@ -569,8 +569,11 @@ services:
     environment:
      - DOMAIN=ad.example.edu
      - DOMAINPASS=Supersecret1!
+    hostname: dc1
     networks:
       net:
+        aliases:
+          - dc1.ad.example.edu
     volumes:
      - ad_samba_data:/var/lib/samba
      - ad_samba_cfg:/etc/samba/external

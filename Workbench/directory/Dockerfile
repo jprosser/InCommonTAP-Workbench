@@ -11,6 +11,8 @@ RUN yum install -y epel-release \
 COPY container_files/seed-data/ /seed-data/
 COPY container_files/httpd/* /etc/httpd/conf.d/
 COPY container_files/etc/ /etc/
+COPY container_files/misc/ldap.conf /etc/openldap/
+COPY container_files/misc/ad-ca-cert.pem /
 
 RUN useradd ldapadmin \
     && rm -fr /var/lock /usr/lib/systemd/system \

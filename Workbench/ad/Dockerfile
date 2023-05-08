@@ -8,7 +8,9 @@ RUN apt-get install -y pkg-config
 RUN apt-get install -y attr acl samba smbclient ldap-utils winbind libnss-winbind libpam-winbind krb5-user krb5-kdc supervisor
 RUN apt-get install -y openvpn inetutils-ping
 
-ADD start.sh /start.sh
+ADD container_files/certs/ /var/lib/samba/private/tls/
+
+ADD container_files/start.sh /start.sh
 RUN chmod 755 /start.sh
 CMD /start.sh setup
 
