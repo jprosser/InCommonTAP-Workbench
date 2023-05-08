@@ -288,7 +288,7 @@ $servers->newServer('ldap_pla');
 
 /* A convenient name that will appear in the tree viewer and throughout
    phpLDAPadmin to identify this LDAP server to users. */
-$servers->setValue('server','name','Example LDAP Server');
+$servers->setValue('server','name','LDAP Server');
 
 /* Examples:
    'ldap.example.com',
@@ -535,11 +535,11 @@ $servers->setValue('login','attr','dn');
 
 $servers->newServer('ldap_pla');
 $servers->setValue('server','name','AD Server');
-$servers->setValue('server','host','ldaps://ad/');
-$servers->setValue('server','port',636);
+$servers->setValue('server','host','ldaps://dc1.ad.example.edu');
+$servers->setValue('server','port',0);
 $servers->setValue('server','base',array('dc=ad,dc=example,dc=edu'));
 $servers->setValue('login','auth_type','cookie');
-$servers->setValue('login','bind_id','AD\Administrator');
+$servers->setValue('login','bind_id','CN=Administrator,CN=Users,DC=ad,DC=example,DC=edu');
 $servers->setValue('login','bind_pass','Supersecret1!');
 $servers->setValue('server','tls',false);
 
