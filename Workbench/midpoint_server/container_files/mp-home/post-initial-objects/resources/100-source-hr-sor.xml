@@ -109,6 +109,19 @@
                             <path>assignment</path>
                         </target>
                     </inbound>
+                    <inbound>
+                        <description>Assignment of role-ad-basic role</description>
+                        <strength>strong</strength>
+                        <expression>
+                            <assignmentTargetSearch>
+                                <targetType>c:RoleType</targetType>
+                                <oid>94a5b1b1-b7be-4ee5-a231-3f044d953448</oid>
+                            </assignmentTargetSearch>
+                        </expression>
+                        <target>
+                            <path>assignment</path>
+                        </target>
+                    </inbound>
                 </attribute>
                 <attribute>
                     <ref>ri:department</ref>

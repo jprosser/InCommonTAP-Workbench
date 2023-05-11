@@ -140,7 +140,7 @@
             <lockoutMaxFailedAttempts>3</lockoutMaxFailedAttempts>
             <lockoutFailedAttemptsDuration>PT3M</lockoutFailedAttemptsDuration>
             <lockoutDuration>PT15M</lockoutDuration>
-            <valuePolicyRef xmlns:tns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" oid="00000000-0000-0000-0000-000000000003" relation="org:default" type="tns:ValuePolicyType">
+            <valuePolicyRef xmlns:tns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" oid="e9d96c61-261a-428d-b21a-d4bc359ea9df" relation="org:default" type="tns:ValuePolicyType">
             </valuePolicyRef>
         </password>
     </credentials>
