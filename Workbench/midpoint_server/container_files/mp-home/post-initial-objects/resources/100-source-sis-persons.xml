@@ -79,7 +79,7 @@
 				<ref>ri:uid</ref>
 				<displayName>UID</displayName>
                 <inbound id="34">
-				    <strength>strong</strength>
+		    <strength>strong</strength>
                     <target>
                         <c:path xmlns:incommon="http://grouper-demo.tier.internet2.edu">c:extension/incommon:SIS_ID</c:path>
                     </target>
@@ -95,6 +95,30 @@
                             </assignmentProperties>
                         </assignmentTargetSearch>
                     </expression>                            
+                    <target>
+                        <path>assignment</path>
+                        <set>
+                            <condition>
+                                <script>
+                                    <code>
+                                        assignment.subtype.contains('grouper-basic')
+                                    </code>
+                                </script>
+                            </condition>
+                        </set>
+                    </target>
+                </inbound>
+                <inbound>
+                    <strength>strong</strength>
+                    <expression>
+                        <assignmentTargetSearch>
+                            <targetType>RoleType</targetType>
+                            <oid>94a5b1b1-b7be-4ee5-a231-3f044d953448</oid>     <!--  role-ad-basic -->
+                            <assignmentProperties>
+                                <subtype>grouper-basic</subtype>
+                            </assignmentProperties>
+                        </assignmentTargetSearch>
+                    </expression>
                     <target>
                         <path>assignment</path>
                         <set>
