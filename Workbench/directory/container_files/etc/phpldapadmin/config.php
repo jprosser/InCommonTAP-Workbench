@@ -540,7 +540,7 @@ $servers->setValue('server','port',0);
 $servers->setValue('server','base',array('dc=ad,dc=example,dc=edu'));
 $servers->setValue('login','auth_type','cookie');
 $servers->setValue('login','bind_id','CN=Administrator,CN=Users,DC=ad,DC=example,DC=edu');
-$servers->setValue('login','bind_pass','Supersecret1!');
+$servers->setValue('login','bind_pass','Password1');
 $servers->setValue('server','tls',false);
 
 /*

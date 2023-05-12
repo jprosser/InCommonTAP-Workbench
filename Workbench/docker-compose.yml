@@ -566,9 +566,11 @@ services:
   ad:
     build:
       context: ./ad/
+    cap_add:
+      - CAP_SYS_ADMIN
     environment:
      - DOMAIN=ad.example.edu
-     - DOMAINPASS=Supersecret1!
+     - DOMAINPASS=Password1
     hostname: dc1
     networks:
       net:

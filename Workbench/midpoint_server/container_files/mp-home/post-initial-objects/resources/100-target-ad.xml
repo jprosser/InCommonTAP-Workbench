@@ -27,7 +27,7 @@
             <gen475:authenticationType>simple</gen475:authenticationType>
             <gen475:bindDn>CN=Administrator,CN=Users,DC=ad,DC=example,DC=edu</gen475:bindDn>
             <gen475:bindPassword>
-                <t:clearValue>Supersecret1!</t:clearValue>
+                <t:clearValue>Password1</t:clearValue>
             </gen475:bindPassword>
             <gen475:baseContext>DC=ad,DC=example,DC=edu</gen475:baseContext>
             <gen475:readSchema>true</gen475:readSchema>

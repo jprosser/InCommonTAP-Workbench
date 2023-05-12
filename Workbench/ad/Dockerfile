@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:22.04
 # based on work at https://github.com/Fmstrat/samba-domain
 
 ENV DEBIAN_FRONTEND noninteractive
