@@ -9,6 +9,7 @@ RUN apt-get install -y attr acl samba smbclient ldap-utils winbind libnss-winbin
 RUN apt-get install -y openvpn inetutils-ping
 
 ADD container_files/certs/ /var/lib/samba/private/tls/
+RUN chmod 600 /var/lib/samba/private/tls/key.pem
 
 ADD container_files/start.sh /start.sh
 RUN chmod 755 /start.sh
