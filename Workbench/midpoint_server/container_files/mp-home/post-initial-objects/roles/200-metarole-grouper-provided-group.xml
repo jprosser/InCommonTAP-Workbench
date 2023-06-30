@@ -91,64 +91,6 @@
             </mapping>
 
             <mapping>
-                <name>name</name>
-                <description>This mapping fills-in org name (e.g. 'affiliation_member') from identifier (e.g. 'member').
-                It uses extension/midPointNamePrefix information from the archetype (e.g. 'affiliation_' defined in affiliation archetype)</description>
-                <strength>strong</strength>
-                <source>
-                    <path>identifier</path>
-                </source>
-                <expression>
-                    <script>
-                        <code>
-                            if (identifier == null) {
-                                null
-                            } else {
-                                // e.g. identifier = 'member'
-                                archetype = assignmentPath[-2].source         // e.g. affiliation archetype
-                                if (archetype == null) {
-                                    throw new IllegalStateException('No archetype in assignment path: ' + assignmentPath)
-                                }
-                                prefix = basic.getExtensionPropertyValue(archetype, 'midPointNamePrefix')        // e.g. 'affiliation_'
-                                prefix + identifier                                                             // e.g. 'affiliation_member'
-                            }
-                        </code>
-                    </script>
-                </expression>
-                <target>
-                    <path>name</path>
-                </target>
-            </mapping>
-            
-            <mapping>
-                <name>displayName</name>
-                <description>This mapping fills-in org displayName (e.g. 'Affiliation: member') from identifier (e.g. 'member').
-                It uses extension/midPointDisplayNamePrefix information from the archetype (e.g. 'Affiliation: ' defined in affiliation archetype)</description>
-                <strength>strong</strength>
-                <source>
-                    <path>identifier</path>
-                </source>
-                <expression>
-                    <script>
-                        <code>
-                            if (identifier == null) {
-                                null
-                            } else {
-                                archetype = assignmentPath[-2].source                                                        // e.g. affiliation archetype
-                                if (archetype == null) {
-                                    throw new IllegalStateException('No archetype in assignment path: ' + assignmentPath)
-                                }
-                                prefix = basic.getExtensionPropertyValue(archetype, 'midPointDisplayNamePrefix')         // e.g. 'Affiliation: '
-                                prefix + identifier                                                                     // e.g. 'Affiliation: member'
-                            }
-                        </code>
-                    </script>
-                </expression>
-                <target>
-                    <path>displayName</path>
-                </target>
-            </mapping>
-            <mapping>
                 <name>lifecycle state</name>
                 <description>This mapping sets org lifecycle state to be either "active" or "retired", depending on
                     whether Grouper group for this org still exists. Orgs in the latter state are on the way to deletion:
@@ -163,7 +105,7 @@
                             import com.evolveum.midpoint.model.common.expression.ModelExpressionThreadLocalHolder
                             import com.evolveum.midpoint.model.api.context.ProjectionContextKey
 
-                            GROUPER_RESOURCE_OID = '1eff65de-5bb6-483d-9edf-8cc2c2ee0233'
+                            GROUPER_RESOURCE_OID = 'fb0bbf07-e33f-4ddd-85a1-16a7edc237f2'
 
                             modelContext = ModelExpressionThreadLocalHolder.lensContext
 

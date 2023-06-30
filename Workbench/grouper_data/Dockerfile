@@ -10,8 +10,7 @@ RUN yum install -y epel-release \
 
 COPY container_files/conf/ /opt/grouper/grouperWebapp/WEB-INF/classes/
 COPY container_files/bootstrap/ /tmp/
-COPY container_files/mysql/createDBforMP.sql /
-COPY container_files/mysql/setupDBforMP.sql /
+COPY container_files/mysql/createSQLuser.sql /
 
 RUN ln -s /usr/bin/resolveip /usr/libexec/resolveip
 
@@ -27,8 +26,7 @@ RUN mysql_install_db \
     && echo "mysqladmin --silent --wait=30 ping || exit 1" >> /tmp/config \
     && echo "mysql -e 'GRANT ALL PRIVILEGES ON *.* TO \"root\"@\"%\" WITH GRANT OPTION;'" >> /tmp/config \
     && echo "mysql -e 'CREATE DATABASE grouper CHARACTER SET utf8 COLLATE utf8_bin;'" >> /tmp/config \
-    && echo "mysql < /createDBforMP.sql" >> /tmp/config \
-    && echo "mysql -u grouper -p'password' grouper_to_midpoint < /setupDBforMP.sql" >> /tmp/config \
+    && echo "mysql < /createSQLuser.sql" >> /tmp/config \
     && bash /tmp/config \
     && rm -f /tmp/config
 
