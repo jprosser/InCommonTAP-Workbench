@@ -323,7 +323,8 @@
                 <cap:host>
                     <cap:type>connector</cap:type>
                 </cap:host>
-            </cap:script>
+	    </cap:script>
+	    <cap:liveSync/>
         </native>
     </capabilities>
 </resource>

@@ -9,8 +9,16 @@ addStem("", "org", "org")
 addStem("", "test", "test")
 
 addRootStem("ref", "ref")
-addStem("ref", "course", "course")
-addStem("ref", "affiliation", "affiliation")
+addStem("ref", "course", "Course")
+addStem("ref", "dept", "Department")
+addStem("ref", "affiliation", "Affiliation")
+
+new GroupSave().assignName("ref:affiliation:alum").assignDisplayName("Alumni").assignCreateParentStemsIfNotExist(true).save();
+new GroupSave().assignName("ref:affiliation:community").assignDisplayName("Community").assignCreateParentStemsIfNotExist(true).save();
+new GroupSave().assignName("ref:affiliation:faculty").assignDisplayName("Faculty").assignCreateParentStemsIfNotExist(true).save();
+new GroupSave().assignName("ref:affiliation:member").assignDisplayName("Member").assignCreateParentStemsIfNotExist(true).save();
+new GroupSave().assignName("ref:affiliation:staff").assignDisplayName("Staff").assignCreateParentStemsIfNotExist(true).save();
+new GroupSave().assignName("ref:affiliation:student").assignDisplayName("Student").assignCreateParentStemsIfNotExist(true).save();
 
 group = GroupFinder.findByName(gs, "etc:sysadmingroup", true)
 group.getAttributeDelegate().assignAttribute(LoaderLdapUtils.grouperLoaderLdapAttributeDefName()).getAttributeAssign()

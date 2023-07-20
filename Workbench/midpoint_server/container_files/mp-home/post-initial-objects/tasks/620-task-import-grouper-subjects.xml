@@ -42,13 +42,15 @@
     <ownerRef oid="e897468f-20bd-419c-8fc5-1fe60e2600de" relation="org:default" type="c:UserType">
         <!-- banderson -->
     </ownerRef>
-    <executionState>suspended</executionState>
-    <schedulingState>suspended</schedulingState>
+    <executionStatus>runnable</executionStatus>
     <category>ImportingAccounts</category>
     <objectRef oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2" relation="org:default" type="c:ResourceType">
         <!-- Source: Groups-New -->
     </objectRef>
     <binding>loose</binding>
+    <schedule>
+        <interval>600</interval>
+    </schedule>
     <activity>
         <work>
             <import>
