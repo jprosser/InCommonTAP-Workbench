@@ -9,7 +9,7 @@ def setProvOnStem(grouperSession,provisioner_name,folder_name) {
   new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningDoProvision").addValue(provisioner_name).save();
   new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningStemScope").addValue("sub").save();
   new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningTarget").addValue(provisioner_name).save();
-  new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningMetadataJson").addValue("{\"md_trim_prefix\":\"whatever\",\"md_entityId\":\"theEntityId\"}").save();
+  new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningMetadataJson").addValue("{\"destination\":\"midpoint\",\"actor\":\"initial load\"}").save();
 
 }
 
@@ -20,7 +20,7 @@ def setProvOnGroup(grouperSession,provisioner_name,group_name) {
   new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningDoProvision").addValue(provisioner_name).save();
   new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningStemScope").addValue("sub").save();
   new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningTarget").addValue(provisioner_name).save();
-  new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningMetadataJson").addValue("{\"md_trim_prefix\":\"whatever\",\"md_entityId\":\"theEntityId\"}").save();
+  new AttributeAssignSave(grouperSession).assignOwnerAttributeAssign(attributeAssignMarker).assignNameOfAttributeDefName("etc:provisioning:provisioningMetadataJson").addValue("{\"destination\":\"midpoint\",\"actor\":\"initial load\"}").save();
 
 }
 
