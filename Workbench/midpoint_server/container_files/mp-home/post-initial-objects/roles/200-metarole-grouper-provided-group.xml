@@ -90,39 +90,6 @@
                 </target>
             </mapping>
 
-            <mapping>
-                <name>lifecycle state</name>
-                <description>This mapping sets org lifecycle state to be either "active" or "retired", depending on
-                    whether Grouper group for this org still exists. Orgs in the latter state are on the way to deletion:
-                    their members are unassigned and after no members are there, the org is automatically deleted.</description>
-                <strength>strong</strength>
-                <expression>
-                    <script>
-                        <code>
-                            import com.evolveum.midpoint.model.impl.expr.*
-                            import com.evolveum.midpoint.schema.*
-                            import com.evolveum.midpoint.xml.ns._public.common.common_3.*
-                            import com.evolveum.midpoint.model.common.expression.ModelExpressionThreadLocalHolder
-                            import com.evolveum.midpoint.model.api.context.ProjectionContextKey
-
-                            GROUPER_RESOURCE_OID = 'fb0bbf07-e33f-4ddd-85a1-16a7edc237f2'
-
-                            modelContext = ModelExpressionThreadLocalHolder.lensContext
-
-                            if (modelContext.findProjectionContextByKeyExact(ProjectionContextKey.classified(GROUPER_RESOURCE_OID, ShadowKindType.ENTITLEMENT, 'group', null)) != null) {
-                                log.info('Projection context for Grouper group found, marking as "active"')
-                                'active'
-                            } else {
-                                log.info('No projection context for Grouper group, marking as "retired"')
-                                'retired'
-                            }
-                        </code>
-                    </script>
-                </expression>
-                <target>
-                    <path>lifecycleState</path>
-                </target>
-            </mapping>
         </focusMappings>
         
         <!-- 

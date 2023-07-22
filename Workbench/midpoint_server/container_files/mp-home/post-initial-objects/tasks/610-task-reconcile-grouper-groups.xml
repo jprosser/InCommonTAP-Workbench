@@ -1,0 +1,51 @@
+<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="22625b6c-e9a7-4151-88f8-013abb1cc158" version="410">
+    <name>Groups: Reconcile groups/entitlements</name>
+
+    <assignment id="1">
+        <targetRef oid="00000000-0000-0000-0000-000000000501" relation="org:default" type="c:ArchetypeType">
+            <!-- Reconciliation task -->
+        </targetRef>
+        <activation>
+            <effectiveStatus>enabled</effectiveStatus>
+        </activation>
+    </assignment>
+    <iteration>0</iteration>
+    <iterationToken/>
+    <archetypeRef oid="00000000-0000-0000-0000-000000000501" relation="org:default" type="c:ArchetypeType">
+        <!-- Reconciliation task -->
+    </archetypeRef>
+    <roleMembershipRef oid="00000000-0000-0000-0000-000000000501" relation="org:default" type="c:ArchetypeType">
+        <!-- Reconciliation task -->
+    </roleMembershipRef>
+    <taskIdentifier>1689973935302-20962-1</taskIdentifier>
+    <ownerRef oid="e897468f-20bd-419c-8fc5-1fe60e2600de" relation="org:default" type="c:UserType">
+        <!-- banderson -->
+    </ownerRef>
+    <executionState>runnable</executionState>
+    <schedulingState>ready</schedulingState>
+    <category>Reconciliation</category>
+    <resultStatus>success</resultStatus>
+    <objectRef oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2" relation="org:default" type="c:ResourceType">
+        <!-- Source: Groups-New -->
+    </objectRef>
+    <progress>33</progress>
+    <binding>loose</binding>
+    <schedule>
+        <interval>600</interval>
+    </schedule>
+    <activity>
+        <work>
+            <reconciliation>
+                <resourceObjects>
+                    <resourceRef oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2" relation="org:default" type="c:ResourceType">
+                        <!-- Source: Groups-New -->
+                    </resourceRef>
+                    <kind>entitlement</kind>
+                    <intent>group</intent>
+                    <objectclass>ri:GroupObjectClass</objectclass>
+                </resourceObjects>
+            </reconciliation>
+        </work>
+    </activity>
+</task>
+

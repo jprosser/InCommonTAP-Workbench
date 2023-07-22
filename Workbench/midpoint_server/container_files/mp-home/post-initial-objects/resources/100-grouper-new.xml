@@ -303,6 +303,14 @@
                         <synchronize/>
                     </actions>
                 </reaction>
+                <reaction>
+                    <situation>deleted</situation>
+		    <actions>
+		        <deleteFocus>
+		            <synchronize>true</synchronize>
+			</deleteFocus>
+                    </actions>
+                </reaction>
             </synchronization>
         </objectType>
 
