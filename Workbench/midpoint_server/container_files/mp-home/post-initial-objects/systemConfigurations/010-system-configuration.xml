@@ -8,6 +8,7 @@
 <systemConfiguration oid="00000000-0000-0000-0000-000000000001" version="0"
                      xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
                      xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+                     xmlns:s="http://midpoint.evolveum.com/xml/ns/public/model/scripting-3"
                      xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3"
                      xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3"
                      xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3"
@@ -129,6 +130,45 @@
             </state>
         </lifecycleStateModel>
     </defaultObjectPolicyConfiguration>
+    <globalPolicyRule>
+        <focusSelector>
+            <type>OrgType</type>
+        </focusSelector>
+        <name>unassign-children-on-org-deletion</name>
+        <documentation>
+            Unassigns members when an org is deleted.
+        </documentation>
+        <policyConstraints>
+            <modification>
+                <operation>delete</operation>
+            </modification>
+        </policyConstraints>
+        <policyActions>
+            <scriptExecution>
+                <object>
+                    <linkSource/> <!-- all objects linked to the current focus -->
+                </object>
+                <executeScript>
+                    <s:unassign>
+                        <s:filter>
+                            <q:ref>
+                                <!-- all assignments targeting the current focus -->
+                                <q:path>targetRef</q:path>
+                                <expression>
+                                    <script>
+                                        <code>
+                                            import com.evolveum.midpoint.schema.util.ObjectTypeUtil
+                                            ObjectTypeUtil.createObjectRef(focus.oid)
+                                        </code>
+                                    </script>
+                                </expression>
+                            </q:ref>
+                        </s:filter>
+                    </s:unassign>
+                </executeScript>
+            </scriptExecution>
+        </policyActions>
+    </globalPolicyRule>
     <cleanupPolicy>
         <auditRecords>
             <maxAge>P3M</maxAge>

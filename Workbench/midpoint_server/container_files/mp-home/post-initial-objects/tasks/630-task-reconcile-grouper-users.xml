@@ -1,0 +1,64 @@
+<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="95539396-14ce-4787-aaa8-c93e2aacfbc0" version="125">
+    <name>Groups: Reconcile Users/accounts</name>
+    <assignment id="1">
+        <metadata>
+            <requestTimestamp>2023-07-21T21:12:58.938Z</requestTimestamp>
+            <requestorRef oid="e897468f-20bd-419c-8fc5-1fe60e2600de" relation="org:default" type="c:UserType">
+                <!-- banderson -->
+            </requestorRef>
+            <createTimestamp>2023-07-21T21:12:58.953Z</createTimestamp>
+            <creatorRef oid="e897468f-20bd-419c-8fc5-1fe60e2600de" relation="org:default" type="c:UserType">
+                <!-- banderson -->
+            </creatorRef>
+            <createChannel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</createChannel>
+        </metadata>
+        <targetRef oid="00000000-0000-0000-0000-000000000501" relation="org:default" type="c:ArchetypeType">
+            <!-- Reconciliation task -->
+        </targetRef>
+        <activation>
+            <effectiveStatus>enabled</effectiveStatus>
+        </activation>
+    </assignment>
+    <iteration>0</iteration>
+    <iterationToken/>
+    <archetypeRef oid="00000000-0000-0000-0000-000000000501" relation="org:default" type="c:ArchetypeType">
+        <!-- Reconciliation task -->
+    </archetypeRef>
+    <roleMembershipRef oid="00000000-0000-0000-0000-000000000501" relation="org:default" type="c:ArchetypeType">
+        <!-- Reconciliation task -->
+    </roleMembershipRef>
+    <taskIdentifier>1689973978954-20962-1</taskIdentifier>
+    <ownerRef oid="e897468f-20bd-419c-8fc5-1fe60e2600de" relation="org:default" type="c:UserType">
+        <!-- banderson -->
+    </ownerRef>
+    <executionState>runnable</executionState>
+    <schedulingState>ready</schedulingState>
+    <category>Reconciliation</category>
+    <resultStatus>success</resultStatus>
+    <objectRef oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2" relation="org:default" type="c:ResourceType">
+        <!-- Source: Groups-New -->
+    </objectRef>
+    <lastRunStartTimestamp>2023-07-21T22:20:16.993Z</lastRunStartTimestamp>
+    <lastRunFinishTimestamp>2023-07-21T22:20:33.812Z</lastRunFinishTimestamp>
+    <completionTimestamp>2023-07-21T21:15:14.922Z</completionTimestamp>
+    <progress>98</progress>
+    <binding>loose</binding>
+    <schedule>
+	<interval>900</interval>
+    </schedule>
+    <activity>
+        <work>
+            <reconciliation>
+                <resourceObjects>
+                    <resourceRef oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2" relation="org:default" type="c:ResourceType">
+                        <!-- Source: Groups-New -->
+                    </resourceRef>
+                    <kind>account</kind>
+                    <intent>default</intent>
+                    <objectclass>ri:CustomSubjectObjectClass</objectclass>
+                </resourceObjects>
+            </reconciliation>
+        </work>
+    </activity>
+</task>
+
