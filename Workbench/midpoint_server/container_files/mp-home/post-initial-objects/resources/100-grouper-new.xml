@@ -24,7 +24,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2">
 
-    <name>Source: Groups-New</name>
+    <name>Source: Groups</name>
 
     <!--
 <abstract>true</abstract>
@@ -205,11 +205,6 @@
             <attribute>
                 <ref>ri:group_name</ref>
                 <inbound>
-                    <target>
-                        <path>$focus/displayName</path>
-                    </target>
-                </inbound>
-                <inbound>
                     <strength>strong</strength>
                     <target>
                         <path>extension/grouperName</path>
@@ -251,6 +246,11 @@
                 <inbound>
                     <target>
                         <path>extension/grouperDisplayName</path>
+                    </target>
+		</inbound>
+                <inbound>
+                    <target>
+                        <path>$focus/displayName</path>
                     </target>
                 </inbound>
             </attribute>
