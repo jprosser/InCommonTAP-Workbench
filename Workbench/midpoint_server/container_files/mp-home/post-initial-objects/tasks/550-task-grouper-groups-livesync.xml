@@ -1,0 +1,31 @@
+<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+      xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      oid="5a821505-7318-4364-9a2f-501b8bf30b44">
+    <name>Groups: Group Livesync</name>
+    <description>Grouper live synchronization task for groups. It will poll changelog and pull in changes</description>
+    <taskIdentifier>1494860533840-0-1</taskIdentifier>
+    <ownerRef oid="00000000-0000-0000-0000-000000000002"/>
+    <dependent>1494860534232132-0-1</dependent>
+    <executionStatus>running</executionStatus>
+    <category>Recomputation</category>
+    <indestructible>true</indestructible>
+    <objectRef oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2" type="c:ResourceType"/>
+    <binding>tight</binding>
+    <schedule>
+        <recurrence>recurring</recurrence>
+        <interval>5</interval>
+    </schedule>
+    <activity>
+        <work>
+            <liveSynchronization>
+                <resourceObjects>
+                    <resourceRef oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2"/>
+                    <objectclass>GroupObjectClass</objectclass>
+                </resourceObjects>
+            </liveSynchronization>
+        </work>
+    </activity>
+</task>
+

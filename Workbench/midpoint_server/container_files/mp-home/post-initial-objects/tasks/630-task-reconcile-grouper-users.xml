@@ -44,7 +44,7 @@
     <progress>98</progress>
     <binding>loose</binding>
     <schedule>
-        <interval>650</interval>
+	<interval>900</interval>
     </schedule>
     <activity>
         <work>
