@@ -2,16 +2,13 @@
       xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-      oid="1c59ebd0-39e4-4ed4-9779-4c29f56b3d6d">
-    <name>Groups: User Livesync</name>
-    <description>Grouper live synchronization task for users. It will poll changelog and pull in changes</description>
-    <taskIdentifier>1494860534232132-0-1</taskIdentifier>
+      oid="552112fc-9546-4e63-a170-339d99a3455e">
+    <name>Grouper Livesync</name>
+    <description>Grouper live synchronization task for groups and users. It will poll changelog and pull in changes</description>
     <ownerRef oid="00000000-0000-0000-0000-000000000002"/>
-    <executionStatus>waiting</executionStatus>
-    <waitingReason>otherTasks</waitingReason>
+    <executionStatus>runnable</executionStatus>
     <category>Recomputation</category>
     <indestructible>true</indestructible>
-    <objectRef oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2" type="c:ResourceType"/>
     <binding>tight</binding>
     <schedule>
         <recurrence>recurring</recurrence>
@@ -22,10 +19,8 @@
             <liveSynchronization>
                 <resourceObjects>
                     <resourceRef oid="fb0bbf07-e33f-4ddd-85a1-16a7edc237f2"/>
-                    <objectclass>CustomSubjectObjectClass</objectclass>
                 </resourceObjects>
             </liveSynchronization>
         </work>
     </activity>
 </task>
-

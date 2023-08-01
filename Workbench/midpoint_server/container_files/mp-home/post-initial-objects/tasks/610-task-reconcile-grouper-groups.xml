@@ -31,7 +31,7 @@
     <progress>33</progress>
     <binding>loose</binding>
     <schedule>
-        <interval>900</interval>
+        <interval>1200</interval>
     </schedule>
     <activity>
         <work>
