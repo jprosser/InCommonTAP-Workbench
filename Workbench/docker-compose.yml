@@ -165,14 +165,14 @@ services:
         aliases:
          - grouper-data
     ports:
-     - 3306:3306
+     - 45432:5432
     healthcheck:
-      test: curl -s 127.0.0.1:3306
+      test: /usr/bin/pg_isready
       interval: 30s
       timeout: 30s
       retries: 3
     volumes:
-     - grouper_data:/var/lib/mysql  
+     - grouper_data:/var/lib/pgsql/data/
 
   directory:
     build: ./directory/
@@ -620,6 +620,7 @@ secrets:
 
 volumes:
   grouper_data:
+  grouper_data_2:
   source_data:
   comanage_data:
   comanage_midpoint_data:
