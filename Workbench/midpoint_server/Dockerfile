@@ -1,4 +1,4 @@
-FROM i2incommon/midpoint:4.6
+FROM i2incommon/midpoint:4.7.1
 
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME

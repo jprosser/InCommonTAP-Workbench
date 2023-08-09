@@ -1,4 +1,4 @@
-FROM i2incommon/grouper:4.4.0
+FROM i2incommon/grouper:4.5.2
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>"
 
@@ -21,10 +21,12 @@ RUN sudo -u postgres initdb -D /var/lib/pgsql/data/ --username=postgres --pwfile
 #create grouper DB
 RUN sudo -u postgres pg_ctl start -D /var/lib/pgsql/data/ \
     && psql -U postgres -f /createSQLuser.sql \
-    && /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh -registry -check -runscript -noprompt && \
-    /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh /tmp/initialize.gsh && \
-    /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh /tmp/set-prov.gsh
+    && /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh -registry -check -runscript -noprompt \
+    && /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh /tmp/initialize.gsh \
+    && /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh /tmp/set-prov.gsh
+
+RUN echo "host    all             all             0.0.0.0/0            trust" >> /var/lib/pgsql/data/pg_hba.conf
 
 EXPOSE 5432
 
-CMD sudo -u postgres postgres -D /var/lib/pgsql/data/
+CMD sudo -u postgres postgres -c listen_addresses='*' -D /var/lib/pgsql/data/

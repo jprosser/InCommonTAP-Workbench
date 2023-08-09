@@ -3,7 +3,7 @@ version: "3.3"
 services:
   grouper_daemon:
     build: ./grouper_daemon/
-    command: bash -c "while ! curl -s grouper_data:3306 > /dev/null; do echo waiting for mysql on grouper_data to start; sleep 3; done; while ! curl -s ldap://directory:389 > /dev/null; do echo waiting for ldap on directory to start; sleep 3; done; exec daemon"
+    command: bash -c "while ! nc -z grouper-data 5432; do echo waiting for pgsql on grouper_data to start; sleep 3; done; while ! nc -z directory 389 > /dev/null; do echo waiting for ldap on directory to start; sleep 3; done; exec daemon"
     depends_on:
      - grouper_data
      - directory
@@ -48,7 +48,7 @@ services:
       context: ./grouper_ui/
       args:
         - CSPHOSTNAME
-    command: bash -c "while ! curl -s grouper_data:3306 > /dev/null; do echo waiting for mysql on grouper_data to start; sleep 3; done; while ! curl -s ldap://directory:389 > /dev/null; do echo waiting for ldap on directory to start; sleep 3; done; exec ui"
+    command: bash -c "while ! nc -z grouper-data 5432; do echo waiting for pgsql on grouper_data to start; sleep 3; done; while ! nc -z directory 389 > /dev/null; do echo waiting for ldap on directory to start; sleep 3; done; exec ui"
     depends_on:
      - grouper_data
      - directory
@@ -109,7 +109,7 @@ services:
        target: /opt/grouper/grouperWebapp/WEB-INF/classes/subject.properties
   grouper_ws:
     build: ./grouper_ws/
-    command: bash -c "while ! curl -s grouper_data:3306 > /dev/null; do echo waiting for mysql to start; sleep 3; done; while ! curl -s ldap://directory:389 > /dev/null; do echo waiting for ldap to start; sleep 3; done; exec ws"
+    command: bash -c "while ! nc -z grouper_data 5432; do echo waiting for pgsql to start; sleep 3; done; while ! nc -z directory 389; do echo waiting for ldap to start; sleep 3; done; exec ws"
     depends_on:
      - grouper_data
      - directory
@@ -248,7 +248,7 @@ services:
      - comanage_midpoint_data:/var/lib/postgresql/data
 
   data_init:
-    image: i2incommon/midpoint:4.6
+    image: i2incommon/midpoint:4.7.1
     command: >
         bash -c "
         chmod 777 /opt/mp-pw/ ;
