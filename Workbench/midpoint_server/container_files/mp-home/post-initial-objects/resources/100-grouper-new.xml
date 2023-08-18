@@ -58,7 +58,6 @@
             <icfc:enableFilteredResultsHandler>false</icfc:enableFilteredResultsHandler>
             <icfc:enableAttributesToGetSearchResultsHandler>false</icfc:enableAttributesToGetSearchResultsHandler>
 	</icfc:resultsHandlerConfiguration>
-        <icfc:legacySchema>true</icfc:legacySchema>
     </connectorConfiguration>
 
     <schemaHandling>
@@ -67,7 +66,7 @@
             <intent>default</intent>
             <displayName>Default Account</displayName>
             <default>true</default>
-            <objectClass>ri:CustomSubjectObjectClass</objectClass>
+            <objectClass>ri:subject</objectClass>
 
             <focus>
                 <type>c:UserType</type>
@@ -95,9 +94,10 @@
                 <ref>ri:member_of</ref>
                 <fetchStrategy>explicit</fetchStrategy>
             </attribute>
-            <association>
+	    <association>
                 <ref>ri:group</ref>
-                <inbound>
+		<inbound>
+		    <strength>strong</strength>
                     <expression>
                         <assignmentTargetSearch>
                             <targetType>c:OrgType</targetType>
@@ -128,10 +128,29 @@
                                     </expression>
                                 </q:equal>
                             </filter>
+                            <populate>
+                                <populateItem>
+                                    <expression>
+                                        <value>grouper-group</value>
+                                    </expression>
+                                    <target>
+                                        <path>subtype</path>
+                                    </target>
+                                </populateItem>
+                            </populate>
                         </assignmentTargetSearch>
                     </expression>
                     <target>
                         <path>assignment</path>
+                        <set>
+                            <condition>
+                                <script>
+                                    <code>
+                                        assignment?.subtype?.contains('grouper-group')
+                                    </code>
+                                </script>
+                            </condition>
+                        </set>
                     </target>
                 </inbound>
                 <kind>entitlement</kind>
@@ -187,7 +206,7 @@
             <intent>group</intent>
             <displayName>Group</displayName>
             <default>true</default>
-            <objectClass>ri:GroupObjectClass</objectClass>
+            <objectClass>ri:group</objectClass>
 
             <focus>
                 <type>c:OrgType</type>

@@ -55,7 +55,7 @@
                     </resourceRef>
                     <kind>account</kind>
                     <intent>default</intent>
-                    <objectclass>ri:CustomSubjectObjectClass</objectclass>
+                    <objectclass>ri:subject</objectclass>
                 </resourceObjects>
             </reconciliation>
         </work>
