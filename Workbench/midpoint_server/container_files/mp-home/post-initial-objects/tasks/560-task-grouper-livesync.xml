@@ -6,7 +6,8 @@
     <name>Grouper Livesync</name>
     <description>Grouper live synchronization task for groups and users. It will poll changelog and pull in changes</description>
     <ownerRef oid="00000000-0000-0000-0000-000000000002"/>
-    <executionStatus>runnable</executionStatus>
+    <executionState>running</executionState>
+    <schedulingState>ready</schedulingState>
     <category>Recomputation</category>
     <indestructible>true</indestructible>
     <binding>tight</binding>

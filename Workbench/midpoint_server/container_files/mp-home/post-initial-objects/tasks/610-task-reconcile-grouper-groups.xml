@@ -42,7 +42,7 @@
                     </resourceRef>
                     <kind>entitlement</kind>
                     <intent>group</intent>
-                    <objectclass>ri:GroupObjectClass</objectclass>
+                    <objectclass>ri:group</objectclass>
                 </resourceObjects>
             </reconciliation>
         </work>
