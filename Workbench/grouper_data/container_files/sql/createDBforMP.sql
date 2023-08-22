@@ -1,5 +1,4 @@
-CREATE DATABASE grouper_to_midpoint WITH ENCODING=utf8;
-CREATE USER grouper WITH PASSWORD 'password';
+CREATE DATABASE grouper_to_midpoint;
 GRANT ALL PRIVILEGES ON DATABASE grouper_to_midpoint TO grouper;
 
 \connect grouper_to_midpoint;

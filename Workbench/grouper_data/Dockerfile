@@ -12,6 +12,7 @@ RUN yum install -y epel-release \
 COPY container_files/conf/ /opt/grouper/grouperWebapp/WEB-INF/classes/
 COPY container_files/bootstrap/ /tmp/
 COPY container_files/sql/createSQLuser.sql /
+COPY container_files/sql/createDBforMP.sql /
 
 #setup DB
 RUN chown -R postgres:postgres /var/lib/pgsql/ 
@@ -21,6 +22,7 @@ RUN sudo -u postgres initdb -D /var/lib/pgsql/data/ --username=postgres --pwfile
 #create grouper DB
 RUN sudo -u postgres pg_ctl start -D /var/lib/pgsql/data/ \
     && psql -U postgres -f /createSQLuser.sql \
+    && psql -U postgres -f /createDBforMP.sql \
     && /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh -registry -check -runscript -noprompt \
     && /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh /tmp/initialize.gsh \
     && /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh /tmp/set-prov.gsh
