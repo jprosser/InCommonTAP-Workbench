@@ -47,7 +47,7 @@
     </connectorRef>
     <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
         <icfc:configurationProperties xmlns:grpconf="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector.connector-grouper/com.evolveum.polygon.connector.grouper.GrouperConnector">
-            <grpconf:host>comanage_midpoint_data</grpconf:host>
+            <grpconf:host>grouper_data</grpconf:host>
             <grpconf:port>5432</grpconf:port>
             <grpconf:userName>grouper</grpconf:userName>
             <grpconf:password>password</grpconf:password>
