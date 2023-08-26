@@ -36,9 +36,9 @@ RUN mkdir -p /srv/comanage-registry/local/Plugin/
 RUN ln -s /srv/comanage-registry/app/AvailablePlugin/SqlProvisioner /srv/comanage-registry/local/Plugin/
 
 COPY container_files/system/setupcroncomanage.sh /usr/local/bin/setupcroncomanage.sh
-COPY container_files/system/runcomangejob.sh /usr/local/bin/
+COPY container_files/system/runcomanagejob.sh /usr/local/bin/
 COPY --chown=www-data:www-data container_files/system/root-crontab /usr/local/etc
-RUN chmod 755 /usr/local/bin/runcomangejob.sh && \
+RUN chmod 755 /usr/local/bin/runcomanagejob.sh && \
     /usr/bin/crontab -u www-data /usr/local/etc/root-crontab
     
 ENV COMANAGE_REGISTRY_CRONTAB=/usr/local/etc/root-crontab
