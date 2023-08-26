@@ -7,15 +7,15 @@
     <authentication>
         <modules>
             <loginForm>
-                <name>internalLoginForm</name>
+                <identifier>internalLoginForm</identifier>
                 <description>Internal username/password authentication, default user password, login form</description>
             </loginForm>
             <httpBasic>
-                <name>internalBasic</name>
+                <identifier>internalBasic</identifier>
                 <description>Internal username/password authentication, using HTTP basic auth</description>
             </httpBasic>
             <saml2>
-                <name>mySamlSso</name>
+                <identifier>mySamlSso</identifier>
                 <description>My internal enterprise SAML-based SSO system.</description>
                 <serviceProvider>
                     <entityId>midpointdemo-shibboleth</entityId>
@@ -44,13 +44,13 @@
                 </serviceProvider>
             </saml2>
             <httpHeader>
-              <name>httpHeader</name>
+              <identifier>httpHeader</identifier>
 	      <logoutUrl>https://__CSPHOSTNAME__/MPSSO/Shibboleth.sso/Logout</logoutUrl>
               <usernameHeader>REMOTE_USER</usernameHeader>
             </httpHeader>
         </modules>
         <sequence>
-            <name>admin-gui-saml-internal</name>
+            <identifier>admin-gui-saml-internal</identifier>
             <description>
                 Internal SAML2 GUI authentication sequence.
             </description>
@@ -60,13 +60,13 @@
                 <urlSuffix>saml-internal</urlSuffix>
             </channel>
             <module>
-                <name>mySamlSso</name>
+                <identifier>mySamlSso</identifier>
                 <order>30</order>
                 <necessity>sufficient</necessity>
             </module>
         </sequence>
         <sequence>
-            <name>admin-gui-emergency</name>
+            <identifier>admin-gui-emergency</identifier>
             <description>
                 Special GUI authentication sequence that is using just the internal user password.
             </description>
@@ -78,13 +78,13 @@
             <requireAssignmentTarget oid="00000000-0000-0000-0000-000000000004" relation="org:default" type="c:RoleType">
             </requireAssignmentTarget>
             <module>
-                <name>internalLoginForm</name>
+                <identifier>internalLoginForm</identifier>
                 <order>30</order>
                 <necessity>sufficient</necessity>
             </module>
         </sequence>
         <sequence>
-            <name>admin-gui-default</name>
+            <identifier>admin-gui-default</identifier>
             <description>
                 Special GUI authentication sequence that is using Shibboleth SP
             </description>
@@ -94,13 +94,13 @@
                 <urlSuffix>shib</urlSuffix>
             </channel>
             <module>
-                <name>httpHeader</name>
+                <identifier>httpHeader</identifier>
                 <order>30</order>
                 <necessity>sufficient</necessity>
             </module>
         </sequence>
         <sequence>
-            <name>rest</name>
+            <identifier>rest</identifier>
             <description>
                 Authentication sequence for REST service.
             </description>
@@ -110,13 +110,13 @@
                 <urlSuffix>rest-default</urlSuffix>
             </channel>
             <module>
-                <name>internalBasic</name>
+                <identifier>internalBasic</identifier>
                 <order>10</order>
                 <necessity>sufficient</necessity>
             </module>
         </sequence>
         <sequence>
-            <name>actuator</name>
+            <identifier>actuator</identifier>
             <description>
                 Authentication sequence for actuator.
             </description>
@@ -126,7 +126,7 @@
                 <urlSuffix>actuator-default</urlSuffix>
             </channel>
             <module>
-                <name>internalBasic</name>
+                <identifier>internalBasic</identifier>
                 <order>10</order>
                 <necessity>sufficient</necessity>
             </module>
