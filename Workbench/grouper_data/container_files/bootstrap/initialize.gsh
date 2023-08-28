@@ -95,3 +95,4 @@ gs = GrouperSession.startRootSession()
 addGroups(gs, StemFinder.findByName(gs, 'ref:course'), cs, /CS.*/)
 
 System.out.println("************** initialize.gsh done.")
+

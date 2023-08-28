@@ -10,3 +10,4 @@ rabbitmqadmin declare queue name=sampleQueue
 rabbitmqctl change_password guest password
 echo "Done"
 touch $RABBITMQ_INIT_DONE_FILE
+

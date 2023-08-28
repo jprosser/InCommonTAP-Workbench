@@ -1,5 +1,0 @@
-Uses TIER Grouper Container and adds in configuration file.
-
-docker-compose spins up LDAP (for subject source), database (mysql) for Grouper's DB, and API, WS, UI container.
-
-TODO: use common db container

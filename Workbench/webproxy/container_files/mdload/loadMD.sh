@@ -52,3 +52,4 @@ $DIR/addAttrRel.sh $ID
 rm $DIR/output.txt
 
 popd
+

@@ -6,3 +6,4 @@ else
     echo "RabbitMQ was already initialized"
 fi
 /usr/local/bin/entrypoint.sh "$@"
+

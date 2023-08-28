@@ -1,1 +1,0 @@
-docker exec complex2_mq_1 rabbitmqctl list_queues

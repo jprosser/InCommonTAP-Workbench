@@ -10,3 +10,4 @@ pushd /mdload
                                          ./loadMD.sh COmanageSP /mdload/comanage-sp.xml 0
 popd
 wait
+

@@ -12,3 +12,4 @@ sed -i 's/RewriteRule \. \/index\.php \[L\]/RewriteCond %{REQUEST_URI} !\\\.sso\
 sed -i 's/AllowOverride None/AllowOverride All/'  /etc/httpd/conf/httpd.conf
 sed -i 's/IncludeOptional conf.d\/\*.conf/IncludeOptional conf.d\/\*.conf\nHttpProtocolOptions Unsafe/' /etc/httpd/conf/httpd.conf
 mysql -h wordpress_data -u wordpress --password=54y6RxN7GfC7aes3 wordpress < /root/config-shibb.sql
+
