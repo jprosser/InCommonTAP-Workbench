@@ -51,7 +51,9 @@
             <grpconf:port>5432</grpconf:port>
             <grpconf:userName>grouper</grpconf:userName>
             <grpconf:password>password</grpconf:password>
-            <grpconf:databaseName>grouper_to_midpoint</grpconf:databaseName>
+	    <grpconf:databaseName>grouper_to_midpoint</grpconf:databaseName>
+	    <grpconf:attrsToHaveInAllSearch>members</grpconf:attrsToHaveInAllSearch>
+	    <grpconf:attrsToHaveInAllSearch>member_of</grpconf:attrsToHaveInAllSearch>
         </icfc:configurationProperties>
         <icfc:resultsHandlerConfiguration>
             <icfc:enableNormalizingResultsHandler>false</icfc:enableNormalizingResultsHandler>
