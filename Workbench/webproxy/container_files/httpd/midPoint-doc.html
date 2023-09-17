@@ -595,7 +595,7 @@ $(addBlockSwitches);
 <div class="details">
 <span id="author" class="author">Evolveum, s.r.o.</span><br>
 <span id="revnumber">version 0.1,</span>
-<span id="revdate">2022-10-04</span>
+<span id="revdate">2023-09-16</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -606,7 +606,6 @@ $(addBlockSwitches);
 <ul class="sectlevel3">
 <li><a href="#_iterator_specification">1.1.1. Iterator Specification</a></li>
 <li><a href="#_items">1.1.2. Items</a></li>
-<li><a href="#_mappings">1.1.3. Mappings</a></li>
 </ul>
 </li>
 </ul>
@@ -618,12 +617,8 @@ $(addBlockSwitches);
 <li><a href="#_basic_information">2.1.1. Basic Information</a></li>
 <li><a href="#_object_types">2.1.2. Object Types</a>
 <ul class="sectlevel4">
-<li><a href="#_entitlementgroup">ENTITLEMENT/group</a></li>
-</ul>
-</li>
-<li><a href="#_synchronization">2.1.3. Synchronization</a>
-<ul class="sectlevel4">
-<li><a href="#_entitlementgroup_2">ENTITLEMENT/group</a></li>
+<li><a href="#_default_account_accountdefault">Default Account, ACCOUNT/default</a></li>
+<li><a href="#_group_entitlementgroup">Group, ENTITLEMENT/group</a></li>
 </ul>
 </li>
 </ul>
@@ -636,7 +631,7 @@ $(addBlockSwitches);
 <li><a href="#_normal_user_account">Normal User Account</a></li>
 </ul>
 </li>
-<li><a href="#_synchronization_2">2.2.3. Synchronization</a>
+<li><a href="#_synchronization">2.2.3. Synchronization</a>
 <ul class="sectlevel4">
 <li><a href="#_account">ACCOUNT</a></li>
 </ul>
@@ -648,12 +643,12 @@ $(addBlockSwitches);
 <li><a href="#_basic_information_3">2.3.1. Basic Information</a></li>
 <li><a href="#_object_types_3">2.3.2. Object Types</a>
 <ul class="sectlevel4">
-<li><a href="#_default_account_accountdefault">Default Account, ACCOUNT/default</a></li>
+<li><a href="#_default_account_accountdefault_2">Default Account, ACCOUNT/default</a></li>
 </ul>
 </li>
-<li><a href="#_synchronization_3">2.3.3. Synchronization</a>
+<li><a href="#_synchronization_2">2.3.3. Synchronization</a>
 <ul class="sectlevel4">
-<li><a href="#_default_account_accountdefault_2">Default account, ACCOUNT/default</a></li>
+<li><a href="#_default_account_accountdefault_3">Default account, ACCOUNT/default</a></li>
 </ul>
 </li>
 </ul>
@@ -666,84 +661,101 @@ $(addBlockSwitches);
 <li><a href="#_normal_account_account">Normal Account, ACCOUNT</a></li>
 </ul>
 </li>
-<li><a href="#_synchronization_4">2.4.3. Synchronization</a>
+<li><a href="#_synchronization_3">2.4.3. Synchronization</a>
 <ul class="sectlevel4">
 <li><a href="#_account_2">ACCOUNT</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_target_computer_science_portal_csv">2.5. Target: Computer science portal (CSV)</a>
+<li><a href="#_target_ad">2.5. Target: AD</a>
 <ul class="sectlevel3">
 <li><a href="#_basic_information_5">2.5.1. Basic Information</a></li>
 <li><a href="#_object_types_5">2.5.2. Object Types</a>
 <ul class="sectlevel4">
+<li><a href="#_default_account_account">Default Account, ACCOUNT</a></li>
+<li><a href="#_ad_group_entitlementgroup">AD Group, ENTITLEMENT/group</a></li>
+</ul>
+</li>
+<li><a href="#_synchronization_4">2.5.3. Synchronization</a>
+<ul class="sectlevel4">
+<li><a href="#_account_sync_accountdefault">Account sync, ACCOUNT/default</a></li>
+<li><a href="#_group_sync_entitlementgroup">Group sync, ENTITLEMENT/group</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_target_computer_science_portal_csv">2.6. Target: Computer science portal (CSV)</a>
+<ul class="sectlevel3">
+<li><a href="#_basic_information_6">2.6.1. Basic Information</a></li>
+<li><a href="#_object_types_6">2.6.2. Object Types</a>
+<ul class="sectlevel4">
 <li><a href="#_default_account">Default Account</a></li>
 </ul>
 </li>
-<li><a href="#_synchronization_5">2.5.3. Synchronization</a>
+<li><a href="#_synchronization_5">2.6.3. Synchronization</a>
 <ul class="sectlevel4">
 <li><a href="#_account_3">ACCOUNT</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_target_faculty_portal_csv">2.6. Target: Faculty portal (CSV)</a>
+<li><a href="#_target_faculty_portal_csv">2.7. Target: Faculty portal (CSV)</a>
 <ul class="sectlevel3">
-<li><a href="#_basic_information_6">2.6.1. Basic Information</a></li>
-<li><a href="#_object_types_6">2.6.2. Object Types</a>
+<li><a href="#_basic_information_7">2.7.1. Basic Information</a></li>
+<li><a href="#_object_types_7">2.7.2. Object Types</a>
 <ul class="sectlevel4">
 <li><a href="#_default_account_2">Default Account</a></li>
 </ul>
 </li>
-<li><a href="#_synchronization_6">2.6.3. Synchronization</a>
+<li><a href="#_synchronization_6">2.7.3. Synchronization</a>
 <ul class="sectlevel4">
 <li><a href="#_account_4">ACCOUNT</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_target_ldap_directory">2.7. Target: LDAP directory</a>
+<li><a href="#_target_ldap_directory">2.8. Target: LDAP directory</a>
 <ul class="sectlevel3">
-<li><a href="#_basic_information_7">2.7.1. Basic Information</a></li>
-<li><a href="#_object_types_7">2.7.2. Object Types</a>
+<li><a href="#_basic_information_8">2.8.1. Basic Information</a></li>
+<li><a href="#_object_types_8">2.8.2. Object Types</a>
 <ul class="sectlevel4">
 <li><a href="#_normal_account_account_2">Normal Account, ACCOUNT</a></li>
 <li><a href="#_ldap_group_entitlementgroup">LDAP Group, ENTITLEMENT/group</a></li>
 </ul>
 </li>
-<li><a href="#_synchronization_7">2.7.3. Synchronization</a>
+<li><a href="#_synchronization_7">2.8.3. Synchronization</a>
 <ul class="sectlevel4">
 <li><a href="#_account_5">ACCOUNT</a></li>
-<li><a href="#_group_sync_entitlementgroup">group sync, ENTITLEMENT/group</a></li>
+<li><a href="#_group_sync_entitlementgroup_2">group sync, ENTITLEMENT/group</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_target_mailing_lists_csv">2.8. Target: Mailing lists (CSV)</a>
+<li><a href="#_target_mailing_lists_csv">2.9. Target: Mailing lists (CSV)</a>
 <ul class="sectlevel3">
-<li><a href="#_basic_information_8">2.8.1. Basic Information</a></li>
-<li><a href="#_object_types_8">2.8.2. Object Types</a>
+<li><a href="#_basic_information_9">2.9.1. Basic Information</a></li>
+<li><a href="#_object_types_9">2.9.2. Object Types</a>
 <ul class="sectlevel4">
 <li><a href="#_default_account_3">Default Account</a></li>
 </ul>
 </li>
-<li><a href="#_synchronization_8">2.8.3. Synchronization</a>
+<li><a href="#_synchronization_8">2.9.3. Synchronization</a>
 <ul class="sectlevel4">
 <li><a href="#_account_6">ACCOUNT</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_target_wordpress">2.9. Target: Wordpress</a>
+<li><a href="#_target_wordpress">2.10. Target: Wordpress</a>
 <ul class="sectlevel3">
-<li><a href="#_basic_information_9">2.9.1. Basic Information</a></li>
-<li><a href="#_object_types_9">2.9.2. Object Types</a>
+<li><a href="#_basic_information_10">2.10.1. Basic Information</a></li>
+<li><a href="#_object_types_10">2.10.2. Object Types</a>
 <ul class="sectlevel4">
 <li><a href="#_accountdefault">ACCOUNT/default</a></li>
 </ul>
 </li>
-<li><a href="#_synchronization_9">2.9.3. Synchronization</a>
+<li><a href="#_synchronization_9">2.10.3. Synchronization</a>
 <ul class="sectlevel4">
 <li><a href="#_account_sync_policy_accountdefault">Account sync policy, ACCOUNT/default</a></li>
 </ul>
@@ -787,20 +799,25 @@ $(addBlockSwitches);
 <li><a href="#_metarole_wordpress_editor">5.4. Metarole Wordpress Editor</a></li>
 <li><a href="#_metarole_grouper_provided_group">5.5. metarole-grouper-provided-group</a></li>
 <li><a href="#_metarole_ldap_group">5.6. metarole-ldap-group</a></li>
-<li><a href="#_role_ldap_basic">5.7. role-ldap-basic</a></li>
+<li><a href="#_role_ad_basic">5.7. role-ad-basic</a></li>
+<li><a href="#_role_ldap_basic">5.8. role-ldap-basic</a></li>
 </ul>
 </li>
 <li><a href="#_tasks">6. Tasks</a>
 <ul class="sectlevel2">
-<li><a href="#_groups_full_reconciliation">6.1. Groups: Full Reconciliation</a></li>
-<li><a href="#_groups_group_scavenger">6.2. Groups: Group Scavenger</a></li>
-<li><a href="#_groups_live_updates">6.3. Groups: Live updates</a></li>
+<li><a href="#_grouper_livesync">6.1. Grouper Livesync</a></li>
+<li><a href="#_groups_reconcile_groupsentitlements">6.2. Groups: Reconcile groups/entitlements</a></li>
+<li><a href="#_groups_reconcile_usersaccounts">6.3. Groups: Reconcile Users/accounts</a></li>
 <li><a href="#_guests_full_import">6.4. Guests: Full Import</a></li>
 <li><a href="#_guests_livesync">6.5. Guests: Livesync</a></li>
 <li><a href="#_hr_full_import">6.6. HR: Full Import</a></li>
 <li><a href="#_sis_full_import">6.7. SIS: Full Import</a></li>
-<li><a href="#_trigger_scanner">6.8. Trigger Scanner</a></li>
-<li><a href="#_user_recomputation">6.9. User recomputation</a></li>
+<li><a href="#_user_recomputation">6.8. User recomputation</a></li>
+</ul>
+</li>
+<li><a href="#_users">7. Users</a>
+<ul class="sectlevel2">
+<li><a href="#_banderson">7.1. banderson</a></li>
 </ul>
 </li>
 </ul>
@@ -909,108 +926,6 @@ urn (nameunique &amp;&amp; uidunique)</code></pre>
 <h5 id="_name" class="discrete">name</h5>
 <h5 id="_employeenumber" class="discrete">employeeNumber</h5>
 </div>
-<div class="sect3">
-<h4 id="_mappings"><a class="link" href="#_mappings">1.1.3. Mappings</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<tbody>
-<tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
-<td class="tableblock halign-left valign-top" colspan="3"></td>
-</tr>
-<tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:  <strong>strong</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
-</tr>
-<tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p><code>employeeNumber</code><br></p>
-</div></div></td>
-<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p><code>assignment</code> <br></p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
-<div class="title">Script</div>
-<div class="content">
-<pre>Relativity:
-Include null inputs:</pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">Groovy</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import com.evolveum.midpoint.xml.ns._public.common.common_3.*
-import com.evolveum.midpoint.schema.constants.*
-import com.evolveum.midpoint.schema.*
-import javax.xml.namespace.*
-import com.evolveum.midpoint.util.*
-import com.evolveum.midpoint.prism.path.*
-
-GROUPER_RESOURCE_OID = '1eff65de-5bb6-483d-9edf-8cc2c2ee0233'
-MEMBER_NAME = new QName(MidPointConstants.NS_RI, 'member')
-
-memberDef = prismContext.definitionFactory().createPropertyDefinition(MEMBER_NAME, DOMUtil.XSD_STRING)
-memberDef.setMaxOccurs(-1)
-
-shadowQuery = prismContext.queryFor(ShadowType.class)
-    .item(ShadowType.F_RESOURCE_REF).ref(GROUPER_RESOURCE_OID)
-    .and().item(ShadowType.F_SYNCHRONIZATION_SITUATION).eq(SynchronizationSituationType.LINKED)
-    .and().item(ShadowType.F_KIND).eq(ShadowKindType.ENTITLEMENT)
-    .and().item(ShadowType.F_INTENT).eq('group')
-    .and().block().item(ShadowType.F_DEAD).isNull().or().item(ShadowType.F_DEAD).eq(false).endBlock()
-    .and().item(ItemPath.create(ShadowType.F_ATTRIBUTES, MEMBER_NAME), memberDef).eq(basic.stringify(employeeNumber))
-    .build()
-
-options = SelectorOptions.createCollection(GetOperationOptions.createNoFetch())
-shadows = midpoint.searchObjects(ShadowType.class, shadowQuery, options)
-
-orgNames = shadows.collect { basic.stringify(it.name) }            // todo - use attributes
-log.info('org names = {}', orgNames)
-
-if (!orgNames.isEmpty()) {
-    orgQueryBuilder = prismContext.queryFor(OrgType.class)
-
-    first = true
-    for (orgName in orgNames) {
-        if (first) {
-            first = false
-        } else {
-            orgQueryBuilder = orgQueryBuilder.or()
-        }
-        orgQueryBuilder = orgQueryBuilder.item(ItemPath.create(OrgType.F_EXTENSION, 'grouperName')).eq(orgName)
-    }
-
-    orgQuery = orgQueryBuilder.build()
-    //log.info('org query:\n', orgQuery.debugDump())
-
-    orgs = midpoint.searchObjects(OrgType.class, orgQuery, null)
-    log.info('orgs found: {}', orgs)
-
-    orgs.collect {
-        new AssignmentType(prismContext)
-            .subtype('grouper-group')
-            .targetRef(it.oid, OrgType.COMPLEX_TYPE)
-    }
-} else {
-    null
-}</code></pre>
-</div>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 </div>
 </div>
@@ -1033,8 +948,8 @@ if (!orgNames.isEmpty()) {
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Source: Groups</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Groups from Grouper</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1eff65de-5bb6-483d-9edf-8cc2c2ee0233</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fb0bbf07-e33f-4ddd-85a1-16a7edc237f2</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Source: Guest DB</p></td>
@@ -1050,6 +965,11 @@ if (!orgNames.isEmpty()) {
 <td class="tableblock halign-left valign-top"><p class="tableblock">Source: SIS DB</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Students/Faculty from SIS via SQL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">4d70a0da-02dd-41cf-b0a1-00e75d3eaa15</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target: AD</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6597e333-3f18-478d-84e7-58521a5eec2b</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Target: Computer science portal (CSV)</p></td>
@@ -1080,28 +1000,25 @@ if (!orgNames.isEmpty()) {
 </table>
 <div class="sect2">
 <h3 id="_source_groups"><a class="link" href="#_source_groups">2.1. Source: Groups</a></h3>
-<div class="paragraph">
-<p>Groups from Grouper</p>
-</div>
 <div class="sect3">
 <h4 id="_basic_information"><a class="link" href="#_basic_information">2.1.1. Basic Information</a></h4>
 <h5 id="_connector" class="discrete">Connector</h5>
 <div class="paragraph">
-<p>Resource uses GrouperConnector connector. Artifact details:</p>
+<p>Resource uses  connector. Artifact details:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Connector type:</strong> com.evolveum.polygon.connector.grouper.rest.GrouperConnector</p>
+<p><strong>Connector type:</strong></p>
 </li>
 <li>
-<p><strong>Connector version:</strong> 0.7</p>
+<p><strong>Connector version:</strong></p>
 </li>
 <li>
-<p><strong>Connector bundle:</strong> com.evolveum.polygon.connector-grouper-rest</p>
+<p><strong>Connector bundle:</strong></p>
 </li>
 <li>
-<p><strong>Namespace:</strong> <a href="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-grouper-rest/com.evolveum.polygon.connector.grouper.rest.GrouperConnector" class="bare">http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-grouper-rest/com.evolveum.polygon.connector.grouper.rest.GrouperConnector</a></p>
+<p><strong>Namespace:</strong></p>
 </li>
 </ul>
 </div>
@@ -1121,63 +1038,38 @@ if (!orgNames.isEmpty()) {
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">baseUrl</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://grouper-ws:443" class="bare">https://grouper-ws:443</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">host</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grouper_data</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">username</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">banderson</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">port</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5432</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">userName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grouper</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">password</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">XML</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">password</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ignoreSslValidation</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">databaseName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">grouper_to_midpoint</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">baseStem</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">attrsToHaveInAllSearch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">members</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">groupIncludePattern</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">app:.*</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">groupIncludePattern</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">test:.*</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">groupIncludePattern</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ref:.*</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">groupExcludePattern</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">.*_(includes</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">excludes</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">systemOfRecord</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">systemOfRecordAndIncludes)</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">subjectSource</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ldap</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testStem</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">attrsToHaveInAllSearch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">member_of</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
@@ -1201,7 +1093,7 @@ if (!orgNames.isEmpty()) {
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">enableFilteredResultsHandler</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">enableNormalizingResultsHandler</p></td>
@@ -1222,42 +1114,12 @@ if (!orgNames.isEmpty()) {
 <th class="tableblock halign-left valign-top">Options</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schema</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@6a49e1a2[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
 </table>
 </div>
 <div class="sect3">
 <h4 id="_object_types"><a class="link" href="#_object_types">2.1.2. Object Types</a></h4>
 <div class="sect4">
-<h5 id="_entitlementgroup"><a class="link" href="#_entitlementgroup">ENTITLEMENT/group</a></h5>
+<h5 id="_default_account_accountdefault"><a class="link" href="#_default_account_accountdefault">Default Account, ACCOUNT/default</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1273,12 +1135,12 @@ if (!orgNames.isEmpty()) {
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">member</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">member_of</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">subject_id</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1287,10 +1149,191 @@ if (!orgNames.isEmpty()) {
 <div class="sect5">
 <h6 id="_attribute_details"><a class="link" href="#_attribute_details">Attribute Details</a></h6>
 <div class="paragraph">
-<p><strong>member</strong></p>
+<p><strong>member_of</strong></p>
 </div>
 <div class="paragraph">
-<p><strong>name</strong></p>
+<p><strong>subject_id</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Inbounds</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>$user/name</code> <br></p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_association"><a class="link" href="#_association">Association</a></h6>
+
+</div>
+</div>
+<div class="sect4">
+<h5 id="_group_entitlementgroup"><a class="link" href="#_group_entitlementgroup">Group, ENTITLEMENT/group</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">display_name</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">group_name</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">members</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="sect5">
+<h6 id="_attribute_details_2"><a class="link" href="#_attribute_details_2">Attribute Details</a></h6>
+<div class="paragraph">
+<p><strong>description</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Inbounds</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>$focus/description</code> <br></p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>display_name</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Inbounds</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>extension/grouperDisplayName</code> <br></p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>$focus/displayName</code> <br></p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>group_name</strong></p>
 </div>
 <div class="paragraph">
 <p><span class="underline">Inbounds</span></p>
@@ -1380,6 +1423,15 @@ if (input == null) {
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p><strong>members</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>uid</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Inbounds</span></p>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -1394,7 +1446,7 @@ if (input == null) {
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:  <strong>strong</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
 </tr>
@@ -1403,83 +1455,16 @@ if (input == null) {
 <td class="tableblock halign-left valign-top"><div class="content"></div></td>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p><code>assignment</code> <br></p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
-<div class="title">AssignmentTargetSearch</div>
-<div class="content">
-<pre>Relativity:
-Include null inputs:</pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">XML</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;t:object xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="c:AssignmentTargetSearchExpressionEvaluatorType"&gt;
-    &lt;targetType&gt;RoleType&lt;/targetType&gt;
-    &lt;oid&gt;30082d24-0bea-4f22-b558-d0ee2a399c38&lt;/oid&gt;
-&lt;/t:object&gt;</code></pre>
-</div>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<tbody>
-<tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
-<td class="tableblock halign-left valign-top" colspan="3"></td>
-</tr>
-<tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:  <strong>strong</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
-</tr>
-<tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p><code>assignment</code> <br></p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
-<div class="title">AssignmentTargetSearch</div>
-<div class="content">
-<pre>Relativity:
-Include null inputs:</pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">XML</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;t:object xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="c:AssignmentTargetSearchExpressionEvaluatorType"&gt;
-    &lt;targetType&gt;RoleType&lt;/targetType&gt;
-    &lt;oid&gt;9e5a82fc-7969-4fd8-9f74-e0857969cdbb&lt;/oid&gt;
-&lt;/t:object&gt;</code></pre>
-</div>
+<p><code>$focus/name</code> <br></p>
 </div></div></td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_synchronization"><a class="link" href="#_synchronization">2.1.3. Synchronization</a></h4>
-<div class="sect4">
-<h5 id="_entitlementgroup_2"><a class="link" href="#_entitlementgroup_2">ENTITLEMENT/group</a></h5>
+<div class="sect5">
+<h6 id="_association_2"><a class="link" href="#_association_2">Association</a></h6>
 
+</div>
 </div>
 </div>
 </div>
@@ -1492,21 +1477,21 @@ Include null inputs:</pre>
 <h4 id="_basic_information_2"><a class="link" href="#_basic_information_2">2.2.1. Basic Information</a></h4>
 <h5 id="_connector_2" class="discrete">Connector</h5>
 <div class="paragraph">
-<p>Resource uses DatabaseTableConnector connector. Artifact details:</p>
+<p>Resource uses  connector. Artifact details:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Connector type:</strong> org.identityconnectors.databasetable.DatabaseTableConnector</p>
+<p><strong>Connector type:</strong></p>
 </li>
 <li>
-<p><strong>Connector version:</strong> 1.4.9.1</p>
+<p><strong>Connector version:</strong></p>
 </li>
 <li>
-<p><strong>Connector bundle:</strong> com.evolveum.polygon.connector-databasetable</p>
+<p><strong>Connector bundle:</strong></p>
 </li>
 <li>
-<p><strong>Namespace:</strong> <a href="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-databasetable/org.identityconnectors.databasetable.DatabaseTableConnector" class="bare">http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-databasetable/org.identityconnectors.databasetable.DatabaseTableConnector</a></p>
+<p><strong>Namespace:</strong></p>
 </li>
 </ul>
 </div>
@@ -1610,58 +1595,6 @@ Include null inputs:</pre>
 <th class="tableblock halign-left valign-top">Options</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schema</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liveSync</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>addRemoveAttributeValues: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@54bfb612[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
 </table>
 </div>
 <div class="sect3">
@@ -1715,7 +1648,7 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect5">
-<h6 id="_attribute_details_2"><a class="link" href="#_attribute_details_2">Attribute Details</a></h6>
+<h6 id="_attribute_details_3"><a class="link" href="#_attribute_details_3">Attribute Details</a></h6>
 <div class="paragraph">
 <p><strong>description</strong>  <strong>(Display Name)</strong></p>
 </div>
@@ -2098,11 +2031,61 @@ Include null inputs:</pre>
 </tr>
 </tbody>
 </table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Description</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock">Assignment of role-ad-basic role</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:  <strong>strong</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>assignment</code> <br></p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
+<div class="title">AssignmentTargetSearch</div>
+<div class="content">
+<pre>Relativity:
+Include null inputs:</pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;t:object xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="c:AssignmentTargetSearchExpressionEvaluatorType"&gt;
+    &lt;targetType&gt;c:RoleType&lt;/targetType&gt;
+    &lt;oid&gt;94a5b1b1-b7be-4ee5-a231-3f044d953448&lt;/oid&gt;
+&lt;/t:object&gt;</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_synchronization_2"><a class="link" href="#_synchronization_2">2.2.3. Synchronization</a></h4>
+<h4 id="_synchronization"><a class="link" href="#_synchronization">2.2.3. Synchronization</a></h4>
 <div class="sect4">
 <h5 id="_account"><a class="link" href="#_account">ACCOUNT</a></h5>
 
@@ -2118,21 +2101,21 @@ Include null inputs:</pre>
 <h4 id="_basic_information_3"><a class="link" href="#_basic_information_3">2.3.1. Basic Information</a></h4>
 <h5 id="_connector_3" class="discrete">Connector</h5>
 <div class="paragraph">
-<p>Resource uses CsvConnector connector. Artifact details:</p>
+<p>Resource uses  connector. Artifact details:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Connector type:</strong> com.evolveum.polygon.connector.csv.CsvConnector</p>
+<p><strong>Connector type:</strong></p>
 </li>
 <li>
-<p><strong>Connector version:</strong> 2.4</p>
+<p><strong>Connector version:</strong></p>
 </li>
 <li>
-<p><strong>Connector bundle:</strong> com.evolveum.polygon.connector-csv</p>
+<p><strong>Connector bundle:</strong></p>
 </li>
 <li>
-<p><strong>Namespace:</strong> <a href="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-csv/com.evolveum.polygon.connector.csv.CsvConnector" class="bare">http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-csv/com.evolveum.polygon.connector.csv.CsvConnector</a></p>
+<p><strong>Namespace:</strong></p>
 </li>
 </ul>
 </div>
@@ -2152,23 +2135,8 @@ Include null inputs:</pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">fieldDelimiter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">,</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">quote</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">"</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">filePath</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/csv/source-hr.csv</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">readOnly</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -2177,8 +2145,13 @@ Include null inputs:</pre>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ignoreSurroundingSpaces</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">quote</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fieldDelimiter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">,</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -2186,74 +2159,19 @@ Include null inputs:</pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uid</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">readOnly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ignoreSurroundingSpaces</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
 </tbody>
 </table>
 <h5 id="_capabilities_3" class="discrete">Capabilities</h5>
-<h6 id="_native_3" class="discrete">Native</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Capability</th>
-<th class="tableblock halign-left valign-top">Options</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schema</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liveSync</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>addRemoveAttributeValues: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@19ba87d8[language=&lt;null&gt;,type=RESOURCE], com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@b46b8a6[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
-</table>
 <h6 id="_configured" class="discrete">Configured</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -2266,61 +2184,12 @@ Include null inputs:</pre>
 <th class="tableblock halign-left valign-top">Options</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>enabled: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>enabled: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>enabled: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">countObjects</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>simulate:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>value: <strong>sequentialSearch</strong></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
 </table>
 </div>
 <div class="sect3">
 <h4 id="_object_types_3"><a class="link" href="#_object_types_3">2.3.2. Object Types</a></h4>
 <div class="sect4">
-<h5 id="_default_account_accountdefault"><a class="link" href="#_default_account_accountdefault">Default Account, ACCOUNT/default</a></h5>
+<h5 id="_default_account_accountdefault_2"><a class="link" href="#_default_account_accountdefault_2">Default Account, ACCOUNT/default</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2363,7 +2232,7 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect5">
-<h6 id="_attribute_details_3"><a class="link" href="#_attribute_details_3">Attribute Details</a></h6>
+<h6 id="_attribute_details_4"><a class="link" href="#_attribute_details_4">Attribute Details</a></h6>
 <div class="paragraph">
 <p><strong>department</strong>  <strong>(Department name)</strong></p>
 </div>
@@ -2730,6 +2599,56 @@ Include null inputs:</pre>
 </tr>
 </tbody>
 </table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Description</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock">Assignment of role-ad-basic role</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:  <strong>strong</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>assignment</code> <br></p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
+<div class="title">AssignmentTargetSearch</div>
+<div class="content">
+<pre>Relativity:
+Include null inputs:</pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;t:object xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="c:AssignmentTargetSearchExpressionEvaluatorType"&gt;
+    &lt;targetType&gt;c:RoleType&lt;/targetType&gt;
+    &lt;oid&gt;94a5b1b1-b7be-4ee5-a231-3f044d953448&lt;/oid&gt;
+&lt;/t:object&gt;</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect5">
 <h6 id="_credentials"><a class="link" href="#_credentials">Credentials</a></h6>
@@ -2738,9 +2657,9 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_synchronization_3"><a class="link" href="#_synchronization_3">2.3.3. Synchronization</a></h4>
+<h4 id="_synchronization_2"><a class="link" href="#_synchronization_2">2.3.3. Synchronization</a></h4>
 <div class="sect4">
-<h5 id="_default_account_accountdefault_2"><a class="link" href="#_default_account_accountdefault_2">Default account, ACCOUNT/default</a></h5>
+<h5 id="_default_account_accountdefault_3"><a class="link" href="#_default_account_accountdefault_3">Default account, ACCOUNT/default</a></h5>
 
 </div>
 </div>
@@ -2754,21 +2673,21 @@ Include null inputs:</pre>
 <h4 id="_basic_information_4"><a class="link" href="#_basic_information_4">2.4.1. Basic Information</a></h4>
 <h5 id="_connector_4" class="discrete">Connector</h5>
 <div class="paragraph">
-<p>Resource uses ScriptedSQLConnector connector. Artifact details:</p>
+<p>Resource uses  connector. Artifact details:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Connector type:</strong> net.tirasa.connid.bundles.db.scriptedsql.ScriptedSQLConnector</p>
+<p><strong>Connector type:</strong></p>
 </li>
 <li>
-<p><strong>Connector version:</strong> 2.2.6-SNAPSHOT</p>
+<p><strong>Connector version:</strong></p>
 </li>
 <li>
-<p><strong>Connector bundle:</strong> net.tirasa.connid.bundles.db.scriptedsql</p>
+<p><strong>Connector bundle:</strong></p>
 </li>
 <li>
-<p><strong>Namespace:</strong> <a href="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/net.tirasa.connid.bundles.db.scriptedsql/net.tirasa.connid.bundles.db.scriptedsql.ScriptedSQLConnector" class="bare">http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/net.tirasa.connid.bundles.db.scriptedsql/net.tirasa.connid.bundles.db.scriptedsql.ScriptedSQLConnector</a></p>
+<p><strong>Namespace:</strong></p>
 </li>
 </ul>
 </div>
@@ -2788,11 +2707,6 @@ Include null inputs:</pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">quoting</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">XML</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">host</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sources</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -2800,6 +2714,11 @@ Include null inputs:</pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">port</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">3306</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">quoting</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XML</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -2815,6 +2734,41 @@ Include null inputs:</pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">database</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sis</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">scriptingLanguage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GROOVY</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">searchScriptFileName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/var/res/sis-persons/SearchScript.groovy</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">testScriptFileName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/var/res/sis-persons/TestScript.groovy</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">schemaScriptFileName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/var/res/sis-persons/SchemaScript.groovy</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">reloadScriptOnExecution</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">validConnectionQuery</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XML</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">jndiProperties</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XML</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -2848,110 +2802,9 @@ Include null inputs:</pre>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">validConnectionQuery</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">XML</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">datasource</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">XML</p></td>
 <td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">scriptingLanguage</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GROOVY</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">jndiProperties</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">XML</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">reloadScriptOnExecution</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">searchScriptFileName</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/var/res/sis-persons/SearchScript.groovy</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schemaScriptFileName</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/var/res/sis-persons/SchemaScript.groovy</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testScriptFileName</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/var/res/sis-persons/TestScript.groovy</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<h5 id="_capabilities_4" class="discrete">Capabilities</h5>
-<h6 id="_native_4" class="discrete">Native</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Capability</th>
-<th class="tableblock halign-left valign-top">Options</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schema</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liveSync</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>addRemoveAttributeValues: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@3f0a0aee[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
 </tr>
 </tbody>
 </table>
@@ -3002,7 +2855,7 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect5">
-<h6 id="_attribute_details_4"><a class="link" href="#_attribute_details_4">Attribute Details</a></h6>
+<h6 id="_attribute_details_5"><a class="link" href="#_attribute_details_5">Attribute Details</a></h6>
 <div class="paragraph">
 <p><strong>fullName</strong>  <strong>(Full Name)</strong></p>
 </div>
@@ -3260,6 +3113,55 @@ Include null inputs:</pre>
 <div class="title">XML</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;t:object xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="c:AssignmentTargetSearchExpressionEvaluatorType"&gt;
+    &lt;targetType&gt;RoleType&lt;/targetType&gt;
+    &lt;oid&gt;94a5b1b1-b7be-4ee5-a231-3f044d953448&lt;/oid&gt;
+    &lt;assignmentProperties xsi:type="c:AssignmentPropertiesSpecificationType"&gt;
+        &lt;subtype&gt;grouper-basic&lt;/subtype&gt;
+    &lt;/assignmentProperties&gt;
+&lt;/t:object&gt;</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:  <strong>strong</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>assignment</code> <br></p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
+<div class="title">AssignmentTargetSearch</div>
+<div class="content">
+<pre>Relativity:
+Include null inputs:</pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;t:object xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="c:AssignmentTargetSearchExpressionEvaluatorType"&gt;
     &lt;targetType&gt;ArchetypeType&lt;/targetType&gt;
     &lt;oid&gt;958da09c-fefb-11e9-892d-975972472527&lt;/oid&gt;
     &lt;assignmentProperties xsi:type="c:AssignmentPropertiesSpecificationType"&gt;
@@ -3275,7 +3177,7 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_synchronization_4"><a class="link" href="#_synchronization_4">2.4.3. Synchronization</a></h4>
+<h4 id="_synchronization_3"><a class="link" href="#_synchronization_3">2.4.3. Synchronization</a></h4>
 <div class="sect4">
 <h5 id="_account_2"><a class="link" href="#_account_2">ACCOUNT</a></h5>
 
@@ -3283,26 +3185,26 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_target_computer_science_portal_csv"><a class="link" href="#_target_computer_science_portal_csv">2.5. Target: Computer science portal (CSV)</a></h3>
+<h3 id="_target_ad"><a class="link" href="#_target_ad">2.5. Target: AD</a></h3>
 <div class="sect3">
 <h4 id="_basic_information_5"><a class="link" href="#_basic_information_5">2.5.1. Basic Information</a></h4>
 <h5 id="_connector_5" class="discrete">Connector</h5>
 <div class="paragraph">
-<p>Resource uses CsvConnector connector. Artifact details:</p>
+<p>Resource uses  connector. Artifact details:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Connector type:</strong> com.evolveum.polygon.connector.csv.CsvConnector</p>
+<p><strong>Connector type:</strong></p>
 </li>
 <li>
-<p><strong>Connector version:</strong> 2.4</p>
+<p><strong>Connector version:</strong></p>
 </li>
 <li>
-<p><strong>Connector bundle:</strong> com.evolveum.polygon.connector-csv</p>
+<p><strong>Connector bundle:</strong></p>
 </li>
 <li>
-<p><strong>Namespace:</strong> <a href="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-csv/com.evolveum.polygon.connector.csv.CsvConnector" class="bare">http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-csv/com.evolveum.polygon.connector.csv.CsvConnector</a></p>
+<p><strong>Namespace:</strong></p>
 </li>
 </ul>
 </div>
@@ -3322,15 +3224,776 @@ Include null inputs:</pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">multivalueDelimiter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">host</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dc1.ad.example.edu</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">fieldDelimiter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">,</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">port</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">636</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">connectionSecurity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ssl</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">authenticationType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">simple</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bindDn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CN=Administrator,CN=Users,DC=ad,DC=example,DC=edu</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bindPassword</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XML</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">baseContext</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DC=ad,DC=example,DC=edu</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">readSchema</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">allowUntrustedSsl</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<h5 id="_results_handlers_configuration_2" class="discrete">Results Handlers Configuration</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enableAttributesToGetSearchResultsHandler</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enableFilteredResultsHandler</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enableNormalizingResultsHandler</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_object_types_5"><a class="link" href="#_object_types_5">2.5.2. Object Types</a></h4>
+<div class="sect4">
+<h5 id="_default_account_account"><a class="link" href="#_default_account_account">Default Account, ACCOUNT</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cn</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">createTimeStamp</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dn  (Distinguished Name)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">givenName</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">instanceType</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">nTSecurityDescriptor</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">objectCategory</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pwdLastSet</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sAMAccountName  (Login name)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sn</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">userPrincipalName</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="sect5">
+<h6 id="_attribute_details_6"><a class="link" href="#_attribute_details_6">Attribute Details</a></h6>
+<div class="paragraph">
+<p><strong>cn</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>$user/name</code><br></p>
+</div></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>createTimeStamp</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>dn</strong>  <strong>(Distinguished Name)</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>$user/name</code><br></p>
+</div></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
+<div class="title">Script</div>
+<div class="content">
+<pre>Relativity:
+Include null inputs:</pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Groovy</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">'CN=' + name + iterationToken + ',CN=Users,DC=ad,DC=example,DC=edu'</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>givenName</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>givenName</code><br></p>
+</div></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>instanceType</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>nTSecurityDescriptor</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>objectCategory</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
+<div class="title">Value</div>
+<div class="content">
+<pre>Relativity:
+Include null inputs:</pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">CN=Person,CN=Schema,CN=Configuration,DC=ad,DC=example,DC=edu</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>pwdLastSet</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
+<div class="title">Value</div>
+<div class="content">
+<pre>Relativity:
+Include null inputs:</pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">-1</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>sAMAccountName</strong>  <strong>(Login name)</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>$user/name</code><br></p>
+</div></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>sn</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>familyName</code><br></p>
+</div></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>userPrincipalName</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>$user/name</code><br></p>
+</div></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
+<div class="title">Script</div>
+<div class="content">
+<pre>Relativity:
+Include null inputs:</pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Groovy</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">name + iterationToken + '@ad.example.edu'</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_credentials_2"><a class="link" href="#_credentials_2">Credentials</a></h6>
+
+</div>
+<div class="sect5">
+<h6 id="_activation"><a class="link" href="#_activation">Activation</a></h6>
+
+</div>
+<div class="sect5">
+<h6 id="_association_3"><a class="link" href="#_association_3">Association</a></h6>
+
+</div>
+</div>
+<div class="sect4">
+<h5 id="_ad_group_entitlementgroup"><a class="link" href="#_ad_group_entitlementgroup">AD Group, ENTITLEMENT/group</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cn</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dn</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="sect5">
+<h6 id="_attribute_details_7"><a class="link" href="#_attribute_details_7">Attribute Details</a></h6>
+<div class="paragraph">
+<p><strong>cn</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Inbounds</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>name</code> <br></p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>$focus/name</code><br></p>
+</div></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>description</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Inbounds</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>description</code> <br></p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:  <strong>strong</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>description</code><br></p>
+</div></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>dn</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Outbound</span></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Name</p></th>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Options</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strength:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authoritative:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive:</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><code>$focus/name</code><br></p>
+</div></div></td>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><div class="content"><div class="listingblock primary">
+<div class="title">Script</div>
+<div class="content">
+<pre>Relativity:
+Include null inputs:</pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Groovy</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">'CN=' + name + ',CN=Users,DC=ad,DC=example,DC=edu'</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_synchronization_4"><a class="link" href="#_synchronization_4">2.5.3. Synchronization</a></h4>
+<div class="sect4">
+<h5 id="_account_sync_accountdefault"><a class="link" href="#_account_sync_accountdefault">Account sync, ACCOUNT/default</a></h5>
+
+</div>
+<div class="sect4">
+<h5 id="_group_sync_entitlementgroup"><a class="link" href="#_group_sync_entitlementgroup">Group sync, ENTITLEMENT/group</a></h5>
+
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_target_computer_science_portal_csv"><a class="link" href="#_target_computer_science_portal_csv">2.6. Target: Computer science portal (CSV)</a></h3>
+<div class="sect3">
+<h4 id="_basic_information_6"><a class="link" href="#_basic_information_6">2.6.1. Basic Information</a></h4>
+<h5 id="_connector_6" class="discrete">Connector</h5>
+<div class="paragraph">
+<p>Resource uses  connector. Artifact details:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Connector type:</strong></p>
+</li>
+<li>
+<p><strong>Connector version:</strong></p>
+</li>
+<li>
+<p><strong>Connector bundle:</strong></p>
+</li>
+<li>
+<p><strong>Namespace:</strong></p>
+</li>
+</ul>
+</div>
+<h5 id="_connector_configuration_6" class="discrete">Connector Configuration</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">filePath</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/var/cs-portal.csv</p></td>
@@ -3342,81 +4005,25 @@ Include null inputs:</pre>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fieldDelimiter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">,</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">multivalueDelimiter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uniqueAttribute</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">identifier</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
-<h5 id="_capabilities_5" class="discrete">Capabilities</h5>
-<h6 id="_native_5" class="discrete">Native</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Capability</th>
-<th class="tableblock halign-left valign-top">Options</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schema</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liveSync</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>addRemoveAttributeValues: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@d2b2c01[language=&lt;null&gt;,type=RESOURCE], com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@26286229[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect3">
-<h4 id="_object_types_5"><a class="link" href="#_object_types_5">2.5.2. Object Types</a></h4>
+<h4 id="_object_types_6"><a class="link" href="#_object_types_6">2.6.2. Object Types</a></h4>
 <div class="sect4">
 <h5 id="_default_account"><a class="link" href="#_default_account">Default Account</a></h5>
 <table class="tableblock frame-all grid-all stretch">
@@ -3456,7 +4063,7 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect5">
-<h6 id="_attribute_details_5"><a class="link" href="#_attribute_details_5">Attribute Details</a></h6>
+<h6 id="_attribute_details_8"><a class="link" href="#_attribute_details_8">Attribute Details</a></h6>
 <div class="paragraph">
 <p><strong>courses</strong></p>
 </div>
@@ -3566,7 +4173,7 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_synchronization_5"><a class="link" href="#_synchronization_5">2.5.3. Synchronization</a></h4>
+<h4 id="_synchronization_5"><a class="link" href="#_synchronization_5">2.6.3. Synchronization</a></h4>
 <div class="sect4">
 <h5 id="_account_3"><a class="link" href="#_account_3">ACCOUNT</a></h5>
 
@@ -3574,30 +4181,30 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_target_faculty_portal_csv"><a class="link" href="#_target_faculty_portal_csv">2.6. Target: Faculty portal (CSV)</a></h3>
+<h3 id="_target_faculty_portal_csv"><a class="link" href="#_target_faculty_portal_csv">2.7. Target: Faculty portal (CSV)</a></h3>
 <div class="sect3">
-<h4 id="_basic_information_6"><a class="link" href="#_basic_information_6">2.6.1. Basic Information</a></h4>
-<h5 id="_connector_6" class="discrete">Connector</h5>
+<h4 id="_basic_information_7"><a class="link" href="#_basic_information_7">2.7.1. Basic Information</a></h4>
+<h5 id="_connector_7" class="discrete">Connector</h5>
 <div class="paragraph">
-<p>Resource uses CsvConnector connector. Artifact details:</p>
+<p>Resource uses  connector. Artifact details:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Connector type:</strong> com.evolveum.polygon.connector.csv.CsvConnector</p>
+<p><strong>Connector type:</strong></p>
 </li>
 <li>
-<p><strong>Connector version:</strong> 2.4</p>
+<p><strong>Connector version:</strong></p>
 </li>
 <li>
-<p><strong>Connector bundle:</strong> com.evolveum.polygon.connector-csv</p>
+<p><strong>Connector bundle:</strong></p>
 </li>
 <li>
-<p><strong>Namespace:</strong> <a href="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-csv/com.evolveum.polygon.connector.csv.CsvConnector" class="bare">http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-csv/com.evolveum.polygon.connector.csv.CsvConnector</a></p>
+<p><strong>Namespace:</strong></p>
 </li>
 </ul>
 </div>
-<h5 id="_connector_configuration_6" class="discrete">Connector Configuration</h5>
+<h5 id="_connector_configuration_7" class="discrete">Connector Configuration</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3613,16 +4220,6 @@ Include null inputs:</pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">multivalueDelimiter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">;</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">fieldDelimiter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">,</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">filePath</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/var/faculty-portal.csv</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -3633,81 +4230,25 @@ Include null inputs:</pre>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fieldDelimiter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">,</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">multivalueDelimiter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uniqueAttribute</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uid</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
-<h5 id="_capabilities_6" class="discrete">Capabilities</h5>
-<h6 id="_native_6" class="discrete">Native</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Capability</th>
-<th class="tableblock halign-left valign-top">Options</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schema</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liveSync</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>addRemoveAttributeValues: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@ce53036[language=&lt;null&gt;,type=RESOURCE], com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@6723d56[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect3">
-<h4 id="_object_types_6"><a class="link" href="#_object_types_6">2.6.2. Object Types</a></h4>
+<h4 id="_object_types_7"><a class="link" href="#_object_types_7">2.7.2. Object Types</a></h4>
 <div class="sect4">
 <h5 id="_default_account_2"><a class="link" href="#_default_account_2">Default Account</a></h5>
 <table class="tableblock frame-all grid-all stretch">
@@ -3752,7 +4293,7 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect5">
-<h6 id="_attribute_details_6"><a class="link" href="#_attribute_details_6">Attribute Details</a></h6>
+<h6 id="_attribute_details_9"><a class="link" href="#_attribute_details_9">Attribute Details</a></h6>
 <div class="paragraph">
 <p><strong>familyName</strong></p>
 </div>
@@ -3927,7 +4468,7 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_synchronization_6"><a class="link" href="#_synchronization_6">2.6.3. Synchronization</a></h4>
+<h4 id="_synchronization_6"><a class="link" href="#_synchronization_6">2.7.3. Synchronization</a></h4>
 <div class="sect4">
 <h5 id="_account_4"><a class="link" href="#_account_4">ACCOUNT</a></h5>
 
@@ -3935,33 +4476,33 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_target_ldap_directory"><a class="link" href="#_target_ldap_directory">2.7. Target: LDAP directory</a></h3>
+<h3 id="_target_ldap_directory"><a class="link" href="#_target_ldap_directory">2.8. Target: LDAP directory</a></h3>
 <div class="paragraph">
 <p>Main LDAP directory</p>
 </div>
 <div class="sect3">
-<h4 id="_basic_information_7"><a class="link" href="#_basic_information_7">2.7.1. Basic Information</a></h4>
-<h5 id="_connector_7" class="discrete">Connector</h5>
+<h4 id="_basic_information_8"><a class="link" href="#_basic_information_8">2.8.1. Basic Information</a></h4>
+<h5 id="_connector_8" class="discrete">Connector</h5>
 <div class="paragraph">
-<p>Resource uses LdapConnector connector. Artifact details:</p>
+<p>Resource uses  connector. Artifact details:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Connector type:</strong> com.evolveum.polygon.connector.ldap.LdapConnector</p>
+<p><strong>Connector type:</strong></p>
 </li>
 <li>
-<p><strong>Connector version:</strong> 3.4</p>
+<p><strong>Connector version:</strong></p>
 </li>
 <li>
-<p><strong>Connector bundle:</strong> com.evolveum.polygon.connector-ldap</p>
+<p><strong>Connector bundle:</strong></p>
 </li>
 <li>
-<p><strong>Namespace:</strong> <a href="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-ldap/com.evolveum.polygon.connector.ldap.LdapConnector" class="bare">http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-ldap/com.evolveum.polygon.connector.ldap.LdapConnector</a></p>
+<p><strong>Namespace:</strong></p>
 </li>
 </ul>
 </div>
-<h5 id="_connector_configuration_7" class="discrete">Connector Configuration</h5>
+<h5 id="_connector_configuration_8" class="discrete">Connector Configuration</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3977,13 +4518,18 @@ Include null inputs:</pre>
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">port</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">389</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">host</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">directory</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">port</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">389</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">baseContext</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dc=internet2,dc=edu</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -3997,18 +4543,13 @@ Include null inputs:</pre>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">baseContext</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">dc=internet2,dc=edu</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uidAttribute</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">nsUniqueId</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">pagingStrategy</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">spr</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">uidAttribute</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">nsUniqueId</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -4028,7 +4569,7 @@ Include null inputs:</pre>
 </tr>
 </tbody>
 </table>
-<h5 id="_results_handlers_configuration_2" class="discrete">Results Handlers Configuration</h5>
+<h5 id="_results_handlers_configuration_3" class="discrete">Results Handlers Configuration</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -4055,103 +4596,9 @@ Include null inputs:</pre>
 </tr>
 </tbody>
 </table>
-<h5 id="_capabilities_7" class="discrete">Capabilities</h5>
-<h6 id="_native_7" class="discrete">Native</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Capability</th>
-<th class="tableblock halign-left valign-top">Options</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schema</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liveSync</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>addRemoveAttributeValues: <strong>true</strong></p>
-</li>
-<li>
-<p>delta: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@78b8ed4[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">credentials</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>password:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>returnedByDefault: <strong>false</strong></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">auxiliaryObjectClasses</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pagedSearch</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect3">
-<h4 id="_object_types_7"><a class="link" href="#_object_types_7">2.7.2. Object Types</a></h4>
+<h4 id="_object_types_8"><a class="link" href="#_object_types_8">2.8.2. Object Types</a></h4>
 <div class="sect4">
 <h5 id="_normal_account_account_2"><a class="link" href="#_normal_account_account_2">Normal Account, ACCOUNT</a></h5>
 <table class="tableblock frame-all grid-all stretch">
@@ -4226,7 +4673,7 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect5">
-<h6 id="_attribute_details_7"><a class="link" href="#_attribute_details_7">Attribute Details</a></h6>
+<h6 id="_attribute_details_10"><a class="link" href="#_attribute_details_10">Attribute Details</a></h6>
 <div class="paragraph">
 <p><strong>businessCategory</strong></p>
 </div>
@@ -4291,7 +4738,7 @@ Include null inputs:</pre>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p><code>employeeNumber</code><br></p>
+<p><code>name</code><br></p>
 </div></div></td>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
 <td class="tableblock halign-left valign-top"><div class="content"></div></td>
@@ -4307,7 +4754,7 @@ Include null inputs:</pre>
 <div class="listingblock secondary">
 <div class="title">Groovy</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">'uid=' + employeeNumber + ',ou=People,dc=internet2,dc=edu'</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">'uid=' + name + ',ou=People,dc=internet2,dc=edu'</code></pre>
 </div>
 </div></div></td>
 </tr>
@@ -4578,7 +5025,7 @@ Include null inputs:</pre>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Source</p></th>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p><code>employeeNumber</code><br></p>
+<p><code>name</code><br></p>
 </div></div></td>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Target</p></th>
 <td class="tableblock halign-left valign-top"><div class="content"></div></td>
@@ -4587,11 +5034,11 @@ Include null inputs:</pre>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_credentials_2"><a class="link" href="#_credentials_2">Credentials</a></h6>
+<h6 id="_credentials_3"><a class="link" href="#_credentials_3">Credentials</a></h6>
 
 </div>
 <div class="sect5">
-<h6 id="_association"><a class="link" href="#_association">Association</a></h6>
+<h6 id="_association_4"><a class="link" href="#_association_4">Association</a></h6>
 
 </div>
 </div>
@@ -4629,7 +5076,7 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect5">
-<h6 id="_attribute_details_8"><a class="link" href="#_attribute_details_8">Attribute Details</a></h6>
+<h6 id="_attribute_details_11"><a class="link" href="#_attribute_details_11">Attribute Details</a></h6>
 <div class="paragraph">
 <p><strong>cn</strong></p>
 </div>
@@ -4705,42 +5152,42 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_synchronization_7"><a class="link" href="#_synchronization_7">2.7.3. Synchronization</a></h4>
+<h4 id="_synchronization_7"><a class="link" href="#_synchronization_7">2.8.3. Synchronization</a></h4>
 <div class="sect4">
 <h5 id="_account_5"><a class="link" href="#_account_5">ACCOUNT</a></h5>
 
 </div>
 <div class="sect4">
-<h5 id="_group_sync_entitlementgroup"><a class="link" href="#_group_sync_entitlementgroup">group sync, ENTITLEMENT/group</a></h5>
+<h5 id="_group_sync_entitlementgroup_2"><a class="link" href="#_group_sync_entitlementgroup_2">group sync, ENTITLEMENT/group</a></h5>
 
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_target_mailing_lists_csv"><a class="link" href="#_target_mailing_lists_csv">2.8. Target: Mailing lists (CSV)</a></h3>
+<h3 id="_target_mailing_lists_csv"><a class="link" href="#_target_mailing_lists_csv">2.9. Target: Mailing lists (CSV)</a></h3>
 <div class="sect3">
-<h4 id="_basic_information_8"><a class="link" href="#_basic_information_8">2.8.1. Basic Information</a></h4>
-<h5 id="_connector_8" class="discrete">Connector</h5>
+<h4 id="_basic_information_9"><a class="link" href="#_basic_information_9">2.9.1. Basic Information</a></h4>
+<h5 id="_connector_9" class="discrete">Connector</h5>
 <div class="paragraph">
-<p>Resource uses CsvConnector connector. Artifact details:</p>
+<p>Resource uses  connector. Artifact details:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Connector type:</strong> com.evolveum.polygon.connector.csv.CsvConnector</p>
+<p><strong>Connector type:</strong></p>
 </li>
 <li>
-<p><strong>Connector version:</strong> 2.4</p>
+<p><strong>Connector version:</strong></p>
 </li>
 <li>
-<p><strong>Connector bundle:</strong> com.evolveum.polygon.connector-csv</p>
+<p><strong>Connector bundle:</strong></p>
 </li>
 <li>
-<p><strong>Namespace:</strong> <a href="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-csv/com.evolveum.polygon.connector.csv.CsvConnector" class="bare">http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-csv/com.evolveum.polygon.connector.csv.CsvConnector</a></p>
+<p><strong>Namespace:</strong></p>
 </li>
 </ul>
 </div>
-<h5 id="_connector_configuration_8" class="discrete">Connector Configuration</h5>
+<h5 id="_connector_configuration_9" class="discrete">Connector Configuration</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -4756,16 +5203,6 @@ Include null inputs:</pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">multivalueDelimiter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">;</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">fieldDelimiter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">,</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">filePath</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">/opt/midpoint/var/mailing-lists.csv</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -4776,81 +5213,25 @@ Include null inputs:</pre>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fieldDelimiter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">,</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">multivalueDelimiter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uniqueAttribute</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uid</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
-<h5 id="_capabilities_8" class="discrete">Capabilities</h5>
-<h6 id="_native_8" class="discrete">Native</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Capability</th>
-<th class="tableblock halign-left valign-top">Options</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schema</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">liveSync</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>addRemoveAttributeValues: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@2fe7ff8d[language=&lt;null&gt;,type=RESOURCE], com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@395bba0d[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect3">
-<h4 id="_object_types_8"><a class="link" href="#_object_types_8">2.8.2. Object Types</a></h4>
+<h4 id="_object_types_9"><a class="link" href="#_object_types_9">2.9.2. Object Types</a></h4>
 <div class="sect4">
 <h5 id="_default_account_3"><a class="link" href="#_default_account_3">Default Account</a></h5>
 <table class="tableblock frame-all grid-all stretch">
@@ -4885,7 +5266,7 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect5">
-<h6 id="_attribute_details_9"><a class="link" href="#_attribute_details_9">Attribute Details</a></h6>
+<h6 id="_attribute_details_12"><a class="link" href="#_attribute_details_12">Attribute Details</a></h6>
 <div class="paragraph">
 <p><strong>lists</strong></p>
 </div>
@@ -4961,7 +5342,7 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_synchronization_8"><a class="link" href="#_synchronization_8">2.8.3. Synchronization</a></h4>
+<h4 id="_synchronization_8"><a class="link" href="#_synchronization_8">2.9.3. Synchronization</a></h4>
 <div class="sect4">
 <h5 id="_account_6"><a class="link" href="#_account_6">ACCOUNT</a></h5>
 
@@ -4969,33 +5350,33 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_target_wordpress"><a class="link" href="#_target_wordpress">2.9. Target: Wordpress</a></h3>
+<h3 id="_target_wordpress"><a class="link" href="#_target_wordpress">2.10. Target: Wordpress</a></h3>
 <div class="paragraph">
 <p>Wordpress system</p>
 </div>
 <div class="sect3">
-<h4 id="_basic_information_9"><a class="link" href="#_basic_information_9">2.9.1. Basic Information</a></h4>
-<h5 id="_connector_9" class="discrete">Connector</h5>
+<h4 id="_basic_information_10"><a class="link" href="#_basic_information_10">2.10.1. Basic Information</a></h4>
+<h5 id="_connector_10" class="discrete">Connector</h5>
 <div class="paragraph">
-<p>Resource uses WordpressRestConnector connector. Artifact details:</p>
+<p>Resource uses  connector. Artifact details:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Connector type:</strong> edu.unc.polygon.connector.wordpress.WordpressRestConnector</p>
+<p><strong>Connector type:</strong></p>
 </li>
 <li>
-<p><strong>Connector version:</strong> .23-SNAPSHOT</p>
+<p><strong>Connector version:</strong></p>
 </li>
 <li>
-<p><strong>Connector bundle:</strong> edu.unc.polygon.connector-rest-wordpress</p>
+<p><strong>Connector bundle:</strong></p>
 </li>
 <li>
-<p><strong>Namespace:</strong> <a href="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/edu.unc.polygon.connector-rest-wordpress/edu.unc.polygon.connector.wordpress.WordpressRestConnector" class="bare">http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/edu.unc.polygon.connector-rest-wordpress/edu.unc.polygon.connector.wordpress.WordpressRestConnector</a></p>
+<p><strong>Namespace:</strong></p>
 </li>
 </ul>
 </div>
-<h5 id="_connector_configuration_9" class="discrete">Connector Configuration</h5>
+<h5 id="_connector_configuration_10" class="discrete">Connector Configuration</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -5057,8 +5438,8 @@ Include null inputs:</pre>
 </tr>
 </tbody>
 </table>
-<h5 id="_capabilities_9" class="discrete">Capabilities</h5>
-<h6 id="_native_9" class="discrete">Native</h6>
+<h5 id="_capabilities_4" class="discrete">Capabilities</h5>
+<h6 id="_native_3" class="discrete">Native</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -5070,52 +5451,6 @@ Include null inputs:</pre>
 <th class="tableblock halign-left valign-top">Options</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">schema</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@6a45d911[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">addRemoveAttributeValues</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>false</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
 </table>
 <h6 id="_configured_2" class="discrete">Configured</h6>
 <table class="tableblock frame-all grid-all stretch">
@@ -5129,98 +5464,10 @@ Include null inputs:</pre>
 <th class="tableblock halign-left valign-top">Options</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testConnection</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>enabled: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>enabled: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>enabled: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>enabled: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">script</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>host:[com.evolveum.midpoint.xml.ns._public.resource.capabilities_3.ScriptCapabilityHostType@2d865602[language=&lt;null&gt;,type=CONNECTOR]]</p>
-</li>
-<li>
-<p>enabled: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">addRemoveAttributeValues</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>enabled: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>returnDefaultAttributesOption: <strong>false</strong></p>
-</li>
-<li>
-<p>enabled: <strong>true</strong></p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">activation</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
-<ul>
-<li>
-<p>status</p>
-</li>
-</ul>
-</div></div></td>
-</tr>
-</tbody>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_object_types_9"><a class="link" href="#_object_types_9">2.9.2. Object Types</a></h4>
+<h4 id="_object_types_10"><a class="link" href="#_object_types_10">2.10.2. Object Types</a></h4>
 <div class="sect4">
 <h5 id="_accountdefault"><a class="link" href="#_accountdefault">ACCOUNT/default</a></h5>
 <table class="tableblock frame-all grid-all stretch">
@@ -5270,7 +5517,7 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect5">
-<h6 id="_attribute_details_10"><a class="link" href="#_attribute_details_10">Attribute Details</a></h6>
+<h6 id="_attribute_details_13"><a class="link" href="#_attribute_details_13">Attribute Details</a></h6>
 <div class="paragraph">
 <p><strong>email</strong></p>
 </div>
@@ -5570,17 +5817,17 @@ Include null inputs:</pre>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_credentials_3"><a class="link" href="#_credentials_3">Credentials</a></h6>
+<h6 id="_credentials_4"><a class="link" href="#_credentials_4">Credentials</a></h6>
 
 </div>
 <div class="sect5">
-<h6 id="_activation"><a class="link" href="#_activation">Activation</a></h6>
+<h6 id="_activation_2"><a class="link" href="#_activation_2">Activation</a></h6>
 
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_synchronization_9"><a class="link" href="#_synchronization_9">2.9.3. Synchronization</a></h4>
+<h4 id="_synchronization_9"><a class="link" href="#_synchronization_9">2.10.3. Synchronization</a></h4>
 <div class="sect4">
 <h5 id="_account_sync_policy_accountdefault"><a class="link" href="#_account_sync_policy_accountdefault">Account sync policy, ACCOUNT/default</a></h5>
 
@@ -5785,12 +6032,12 @@ Include null inputs:</pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Direct Wordpress Admin Role</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">9d31d997-c300-497a-86fc-5c90a96e7f95</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$object.oid</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Direct Wordpress Editor Role</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">eb97c854-b7d1-43ce-81f2-551bbcf18c7d</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$object.oid</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Metarole Wordpress Admin</p></td>
@@ -5811,6 +6058,11 @@ Include null inputs:</pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">metarole-ldap-group</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">A metarole for archetyped LDAP groups</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">8da46694-bd71-4e1e-bfd7-73865ae2ea9a</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">role-ad-basic</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">94a5b1b1-b7be-4ee5-a231-3f044d953448</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">role-ldap-basic</p></td>
@@ -5848,7 +6100,11 @@ Include null inputs:</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_role_ldap_basic"><a class="link" href="#_role_ldap_basic">5.7. role-ldap-basic</a></h3>
+<h3 id="_role_ad_basic"><a class="link" href="#_role_ad_basic">5.7. role-ad-basic</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_role_ldap_basic"><a class="link" href="#_role_ldap_basic">5.8. role-ldap-basic</a></h3>
 
 </div>
 </div>
@@ -5871,19 +6127,19 @@ Include null inputs:</pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Groups: Full Reconciliation</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">605a0127-a313-442a-9d5e-151eac8b0745</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Grouper Livesync</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Grouper live synchronization task for groups and users. It will poll changelog and pull in changes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">552112fc-9546-4e63-a170-339d99a3455e</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Groups: Group Scavenger</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Groups: Reconcile groups/entitlements</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1d7bef40-953e-443e-8e9a-ec6e313668c4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22625b6c-e9a7-4151-88f8-013abb1cc158</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Groups: Live updates</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Groups: Reconcile Users/accounts</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">47fc57bd-8c34-4555-9b9f-7087ff179860</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">95539396-14ce-4787-aaa8-c93e2aacfbc0</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Guests: Full Import</p></td>
@@ -5906,11 +6162,6 @@ Include null inputs:</pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">22c2a3d0-0961-4255-9eec-c550a79aeaaa</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Trigger Scanner</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">A system task that executes triggers attached to objects.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">00000000-0000-0000-0000-000000000007</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">User recomputation</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">83a737ea-5eb7-4e78-b431-331cccf02354</p></td>
@@ -5918,15 +6169,17 @@ Include null inputs:</pre>
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="_groups_full_reconciliation"><a class="link" href="#_groups_full_reconciliation">6.1. Groups: Full Reconciliation</a></h3>
+<h3 id="_grouper_livesync"><a class="link" href="#_grouper_livesync">6.1. Grouper Livesync</a></h3>
+<div class="paragraph">
+<p>Grouper live synchronization task for groups and users. It will poll changelog and pull in changes</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_groups_reconcile_groupsentitlements"><a class="link" href="#_groups_reconcile_groupsentitlements">6.2. Groups: Reconcile groups/entitlements</a></h3>
 
 </div>
 <div class="sect2">
-<h3 id="_groups_group_scavenger"><a class="link" href="#_groups_group_scavenger">6.2. Groups: Group Scavenger</a></h3>
-
-</div>
-<div class="sect2">
-<h3 id="_groups_live_updates"><a class="link" href="#_groups_live_updates">6.3. Groups: Live updates</a></h3>
+<h3 id="_groups_reconcile_usersaccounts"><a class="link" href="#_groups_reconcile_usersaccounts">6.3. Groups: Reconcile Users/accounts</a></h3>
 
 </div>
 <div class="sect2">
@@ -5948,13 +6201,37 @@ Include null inputs:</pre>
 
 </div>
 <div class="sect2">
-<h3 id="_trigger_scanner"><a class="link" href="#_trigger_scanner">6.8. Trigger Scanner</a></h3>
-<div class="paragraph">
-<p>A system task that executes triggers attached to objects.</p>
+<h3 id="_user_recomputation"><a class="link" href="#_user_recomputation">6.8. User recomputation</a></h3>
+
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_users"><a class="link" href="#_users">7. Users</a></h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Oid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">banderson</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">e897468f-20bd-419c-8fc5-1fe60e2600de</p></td>
+</tr>
+</tbody>
+</table>
 <div class="sect2">
-<h3 id="_user_recomputation"><a class="link" href="#_user_recomputation">6.9. User recomputation</a></h3>
+<h3 id="_banderson"><a class="link" href="#_banderson">7.1. banderson</a></h3>
 
 </div>
 </div>
@@ -5963,7 +6240,7 @@ Include null inputs:</pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.1<br>
-Last updated 2022-10-04 16:03:53 -0500
+Last updated 2023-09-16 10:33:58 -0500
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
