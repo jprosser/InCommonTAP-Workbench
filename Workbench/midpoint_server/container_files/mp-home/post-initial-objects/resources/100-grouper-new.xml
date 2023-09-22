@@ -40,13 +40,13 @@
                 </q:equal>
                 <q:equal>
                     <q:path>connectorVersion</q:path>
-                    <q:value>1.0-SNAPSHOT</q:value>
+                    <q:value>1.0.0.0</q:value>
                 </q:equal>
             </q:and>
         </filter>
     </connectorRef>
     <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
-        <icfc:configurationProperties xmlns:grpconf="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector.connector-grouper/com.evolveum.polygon.connector.grouper.GrouperConnector">
+    <icfc:configurationProperties xmlns:grpconf="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.evolveum.polygon.connector-grouper/com.evolveum.polygon.connector.grouper.GrouperConnector">
             <grpconf:host>grouper_data</grpconf:host>
             <grpconf:port>5432</grpconf:port>
             <grpconf:userName>grouper</grpconf:userName>
