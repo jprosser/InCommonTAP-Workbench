@@ -1,6 +1,6 @@
 CREATE DATABASE grouper_to_midpoint;
 GRANT ALL PRIVILEGES ON DATABASE grouper_to_midpoint TO grouper;
-
+ 
 \connect grouper_to_midpoint;
 set role grouper;
 
@@ -49,8 +49,8 @@ CREATE TABLE gr_mp_group_attributes (
     attribute_value varchar(4000) NULL, -- Attribute value could be null
     last_modified int8 NOT NULL, -- Millis since 1970, will be sequential and unique
     deleted varchar(1) NOT NULL, -- T or F.  Deleted rows will be removed after they have had time to be processed
-    CONSTRAINT gr_mp_group_attributes_fk FOREIGN KEY (group_id_index) REFERENCES gr_mp_groups(id_index)
-);
+    CONSTRAINT gr_mp_group_attributes_fk FOREIGN KEY (group_id_index) REFERENCES gr_mp_groups(id_index) ON DELETE CASCADE
+ );
 CREATE UNIQUE INDEX gr_mp_group_attributes_idx ON gr_mp_group_attributes(group_id_index, attribute_name, attribute_value);
 CREATE UNIQUE INDEX gr_mp_group_attributes_ldx ON gr_mp_group_attributes(last_modified);
 COMMENT ON TABLE gr_mp_group_attributes IS 'This table holds group attributes which are one to one or one to many to the groups table';
@@ -66,9 +66,9 @@ CREATE TABLE gr_mp_memberships (
     subject_id_index int8 NOT NULL, -- This is the foreign key to subjects
     last_modified int8 NOT NULL, -- Millis since 1970, will be sequential and unique
     deleted varchar(1) NOT NULL, -- T or F.  Deleted rows will be removed after they have had time to be processed
-    CONSTRAINT gr_mp_memberships_gfk FOREIGN KEY (group_id_index) REFERENCES gr_mp_groups(id_index),
-    CONSTRAINT gr_mp_memberships_sfk FOREIGN KEY (subject_id_index) REFERENCES gr_mp_subjects(subject_id_index)
-);
+    CONSTRAINT gr_mp_memberships_gfk FOREIGN KEY (group_id_index) REFERENCES gr_mp_groups(id_index) ON DELETE CASCADE,
+    CONSTRAINT gr_mp_memberships_sfk FOREIGN KEY (subject_id_index) REFERENCES gr_mp_subjects(subject_id_index) ON DELETE CASCADE
+ );
 CREATE UNIQUE INDEX gr_mp_memberships_idx ON gr_mp_memberships(group_id_index, subject_id_index);
 CREATE UNIQUE INDEX gr_mp_memberships_ldx ON gr_mp_memberships(last_modified);
 COMMENT ON TABLE gr_mp_memberships IS 'This table holds memberships.  The primary key is group_id_index and subject_id_index';
@@ -84,8 +84,8 @@ CREATE TABLE gr_mp_subject_attributes (
     attribute_value varchar(4000) NULL, -- Attribute value could be null
     last_modified int8 NOT NULL, -- Millis since 1970, will be sequential and unique
     deleted varchar(1) NOT NULL, -- T or F.  Deleted rows will be removed after they have had time to be processed
-    CONSTRAINT gr_mp_subject_attributes_fk FOREIGN KEY (subject_id_index) REFERENCES gr_mp_subjects(subject_id_index)
-);
+    CONSTRAINT gr_mp_subject_attributes_fk FOREIGN KEY (subject_id_index) REFERENCES gr_mp_subjects(subject_id_index) ON DELETE CASCADE
+ );
 CREATE UNIQUE INDEX gr_mp_subject_attributes_idx ON gr_mp_subject_attributes(subject_id_index, attribute_name, attribute_value);
 CREATE UNIQUE INDEX gr_mp_subject_attributes_ldx ON gr_mp_subject_attributes(last_modified);
 COMMENT ON TABLE gr_mp_subject_attributes IS 'This table holds subject attributes which are one to one or one to many to the subjects table';
