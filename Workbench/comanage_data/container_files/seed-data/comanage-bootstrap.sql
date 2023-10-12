@@ -6411,7 +6411,7 @@ COPY public.cm_servers (id, co_id, description, server_type, status, created, mo
 --
 
 COPY public.cm_sql_servers (id, server_id, type, hostname, username, password, databas, created, modified) FROM stdin;
-1	1	PG	comanage-midpoint-data	comanage_midpoint_loader	123321	comanage_midpoint_loader	2022-09-23 17:44:37	2022-09-23 17:52:08
+1	1	PG	comanage-midpoint-data	comanage_midpoint_loader	Password1	comanage_midpoint_loader	2022-09-23 17:44:37	2022-09-23 17:52:08
 \.
 
 

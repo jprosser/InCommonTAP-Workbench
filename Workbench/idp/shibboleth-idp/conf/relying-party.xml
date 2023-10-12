@@ -33,18 +33,17 @@
             <list>
                 <!-- SAML 1.1 and SAML 2.0 AttributeQuery are disabled by default. -->
                 <!--
-                <bean parent="Shibboleth.SSO" />
+                <ref bean="Shibboleth.SSO" />
                 <ref bean="SAML1.AttributeQuery" />
                 <ref bean="SAML1.ArtifactResolution" />
                 -->
-                <bean parent="SAML2.SSO.MDDriven" />
+                <ref bean="SAML2.SSO.MDDriven" />
                 <ref bean="SAML2.ECP" />
                 <ref bean="SAML2.Logout" />
                 <!--
                 <ref bean="SAML2.AttributeQuery" />
                 -->
                 <ref bean="SAML2.ArtifactResolution" />
-                <ref bean="Liberty.SSOS" />
             </list>
         </property>
     </bean>
