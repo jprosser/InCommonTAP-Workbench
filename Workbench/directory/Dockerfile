@@ -2,11 +2,22 @@ FROM centos:centos7
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>"
 
-RUN yum install -y epel-release \
+RUN yum install -y epel-release yum-utils \
     && yum update -y \
-    && yum install -y 389-ds-base phpMyAdmin phpldapadmin mod_ssl net-tools \
+    && yum install -y 389-ds-base phpMyAdmin phpldapadmin mod_ssl net-tools wget \
     && yum clean all \
     && rm -rf /var/cache/yum
+
+RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm && yum-config-manager --enable remi-php73
+
+RUN yum -y install php php-common php-opcache php-mcrypt php-cli php-gd php-curl mod_php php-pgsql
+
+#wget https://github.com/phppgadmin/phppgadmin/releases/download/REL_7-13-0/phpPgAdmin-7.13.0.tar.gz
+
+RUN wget https://github.com/phppgadmin/phppgadmin/archive/refs/tags/REL_7-13-0.tar.gz \
+    && tar -xvf REL_7-13-0.tar.gz && mv phppgadmin-REL_7-13-0/ /usr/share/phpPgAdmin/ \
+    && chown -R apache:apache /usr/share/phpPgAdmin 
+COPY container_files/etc/phpPgAdmin/config.inc.php /usr/share/phpPgAdmin/conf/
 
 COPY container_files/seed-data/ /seed-data/
 COPY container_files/httpd/* /etc/httpd/conf.d/

@@ -17,7 +17,7 @@
             <gen605:port>5432</gen605:port>
             <gen605:user>comanage_midpoint_loader</gen605:user>
             <gen605:password>
-				<clearValue>123321</clearValue>
+				<clearValue>Password1</clearValue>
             </gen605:password>
             <gen605:database>comanage_midpoint_loader</gen605:database>
             <gen605:table>vwPersons</gen605:table>
