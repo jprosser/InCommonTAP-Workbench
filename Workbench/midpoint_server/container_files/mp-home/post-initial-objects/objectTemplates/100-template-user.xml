@@ -37,14 +37,14 @@
             </variable>
             <script>
                 <code>
-				    import com.evolveum.midpoint.xml.ns._public.common.common_3.*
+		    import com.evolveum.midpoint.xml.ns._public.common.common_3.*
                     import com.evolveum.midpoint.schema.constants.*
                     import com.evolveum.midpoint.schema.* 
                     import javax.xml.namespace.*
                     import com.evolveum.midpoint.util.*
                     import com.evolveum.midpoint.prism.path.*
-					import com.evolveum.midpoint.prism.polystring.*
-					import com.evolveum.midpoint.prism.PrismContainer.*
+		    import com.evolveum.midpoint.prism.polystring.*
+		    import com.evolveum.midpoint.prism.PrismContainer.*
 
 					def nameunique = false
 					def uidunique = false
@@ -126,4 +126,38 @@
 			</condition>
 		</mapping>
 	</item>
+
+    <mapping>
+        <description>
+          This mapping will remove assignments with grouper-grouper subtype for all users who don't have account linked on Grouper resource.
+          This is addressing the situation when a user account on Grouper resource is deleted and therefore is not logner synchronized.
+          Also, this will clean up all grouper-group assignments that shouldn't exist. We want such assignments exist only if they exists in Grouper resource.
+        </description>
+        <strength>strong</strength>
+        <expression>
+            <script>
+                <code>
+                  return null
+                </code>
+            </script>
+        </expression>
+        <target>
+            <path>assignment</path>
+            <set>
+                <condition>
+                    <script>
+                        <code>
+                           //OID points to Grouper resource
+                           if(!midpoint.hasLinkedAccount('fb0bbf07-e33f-4ddd-85a1-16a7edc237f2')) {
+                             return assignment?.subtype?.contains('grouper-group')
+                           } else {
+                              return false
+                           }
+                        </code>
+                    </script>
+                </condition>
+            </set>
+        </target>
+    </mapping>
+
 </objectTemplate>
