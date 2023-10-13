@@ -43,6 +43,9 @@ services:
      - type: bind
        source: ./configs-and-secrets/grouper/application/subject.properties
        target: /opt/grouper/grouperWebapp/WEB-INF/classes/subject.properties
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/grouper.text.en.us.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouperText/grouper.text.en.us.properties
   grouper_ui:
     build: 
       context: ./grouper_ui/
@@ -107,6 +110,9 @@ services:
      - type: bind
        source: ./configs-and-secrets/grouper/application/subject.properties
        target: /opt/grouper/grouperWebapp/WEB-INF/classes/subject.properties
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/grouper.text.en.us.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouperText/grouper.text.en.us.properties
   grouper_ws:
     build: ./grouper_ws/
     command: bash -c "while ! nc -z grouper_data 5432; do echo waiting for pgsql to start; sleep 3; done; while ! nc -z directory 389; do echo waiting for ldap to start; sleep 3; done; exec ws"
@@ -157,7 +163,9 @@ services:
      - type: bind
        source: ./configs-and-secrets/grouper/application/subject.properties
        target: /opt/grouper/grouperWebapp/WEB-INF/classes/subject.properties
-
+     - type: bind
+       source: ./configs-and-secrets/grouper/application/grouper.text.en.us.properties
+       target: /opt/grouper/grouperWebapp/WEB-INF/classes/grouperText/grouper.text.en.us.properties
   grouper_data:
     build: ./grouper_data/
     networks:
