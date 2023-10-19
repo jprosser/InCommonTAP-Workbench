@@ -40,7 +40,7 @@
                 </q:equal>
                 <q:equal>
                     <q:path>connectorVersion</q:path>
-                    <q:value>1.0.0.0</q:value>
+		    <q:value>1.0.1.0</q:value>
                 </q:equal>
             </q:and>
         </filter>
@@ -54,6 +54,7 @@
 	    <grpconf:databaseName>grouper_to_midpoint</grpconf:databaseName>
 	    <grpconf:attrsToHaveInAllSearch>members</grpconf:attrsToHaveInAllSearch>
 	    <grpconf:attrsToHaveInAllSearch>member_of</grpconf:attrsToHaveInAllSearch>
+            <grpconf:extendedGroupProperties>emailListName</grpconf:extendedGroupProperties>
         </icfc:configurationProperties>
         <icfc:resultsHandlerConfiguration>
             <icfc:enableNormalizingResultsHandler>false</icfc:enableNormalizingResultsHandler>
@@ -219,6 +220,17 @@
             <focus>
                 <type>c:OrgType</type>
             </focus>
+
+	    <attribute>
+	    	<ref>ri:emailListName</ref>
+		<fetchStrategy>explicit</fetchStrategy>
+                <inbound>
+                    <strength>strong</strength>
+                    <target>
+                        <path>emailAddress</path>
+                    </target>
+                </inbound>
+	    </attribute>
 
             <attribute>
                 <ref>icfs:uid</ref>
