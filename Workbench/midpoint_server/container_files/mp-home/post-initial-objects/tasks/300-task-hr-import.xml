@@ -1,37 +1,61 @@
-<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
-      xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3"
-      xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
-      xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3"
-      xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3"
-      xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3"
-      xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3"
-      oid="62b23d51-8b36-454a-af39-45e078a4563f">
-   <name>HR: Full Import</name>
-   <extension xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:type="c:ExtensionType">
-      <mext:kind>account</mext:kind>
-      <mext:objectclass>ri:AccountObjectClass</mext:objectclass>
-<!--
-      <mext:tracing>
-          <interval>500</interval>
-      </mext:tracing> -->
-   </extension>
-   <assignment>
-      <targetRef oid="00000000-0000-0000-0000-000000000503" type="ArchetypeType" /> <!--Import task-->
-   </assignment>
-   <taskIdentifier>bdd0fa20-4836-458a-8837-8983b6632ee5</taskIdentifier>
-   <ownerRef oid="00000000-0000-0000-0000-000000000002"
-             relation="org:default"
-             type="c:UserType"><!-- administrator --></ownerRef>
-   <executionStatus>runnable</executionStatus>
-   <category>ImportingAccounts</category>
-   <objectRef oid="10000000-9999-9999-0000-a000ff000001"
-              relation="org:default"
-              type="c:ResourceType"><!-- HR SOR Source --></objectRef>
-   <recurrence>recurring</recurrence>
-   <schedule>
-     <interval>300</interval>
-   </schedule>
-   <binding>loose</binding>
+<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="3cd224bf-8628-4054-8a0d-163d58aa4f91" version="0">
+    <name>HR: Full import</name>
+    <assignment id="1">
+        <targetRef oid="00000000-0000-0000-0000-000000000503" relation="org:default" type="c:ArchetypeType">
+            <!-- Import task -->
+        </targetRef>
+        <activation>
+            <effectiveStatus>enabled</effectiveStatus>
+        </activation>
+    </assignment>
+    <iteration>0</iteration>
+    <iterationToken/>
+    <archetypeRef oid="00000000-0000-0000-0000-000000000503" relation="org:default" type="c:ArchetypeType">
+        <!-- Import task -->
+    </archetypeRef>
+    <roleMembershipRef oid="00000000-0000-0000-0000-000000000503" relation="org:default" type="c:ArchetypeType">
+        <!-- Import task -->
+    </roleMembershipRef>
+    <taskIdentifier>1699914773015-55486-1</taskIdentifier>
+    <ownerRef oid="e897468f-20bd-419c-8fc5-1fe60e2600de" relation="org:default" type="c:UserType">
+        <!-- banderson -->
+    </ownerRef>
+    <executionState>runnable</executionState>
+    <objectRef oid="10000000-9999-9999-0000-a000ff000001" relation="org:default" type="c:ResourceType">
+        <!-- Source: HR System -->
+    </objectRef>
+    <binding>loose</binding>
+    <schedule>
+	<interval>300</interval>
+    </schedule>
+    <activity>
+        <work>
+            <import>
+                <resourceObjects>
+                    <resourceRef oid="10000000-9999-9999-0000-a000ff000001" relation="org:default" type="c:ResourceType">
+                        <!-- Source: HR System -->
+                    </resourceRef>
+                    <kind>account</kind>
+                    <intent>default</intent>
+                    <objectclass>ri:AccountObjectClass</objectclass>
+                </resourceObjects>
+            </import>
+        </work>
+    </activity>
+    <affectedObjects>
+        <activity id="2">
+            <activityType>c:import</activityType>
+            <resourceObjects>
+                <resourceRef oid="10000000-9999-9999-0000-a000ff000001" relation="org:default" type="c:ResourceType">
+                    <!-- Source: HR System -->
+                </resourceRef>
+                <kind>account</kind>
+                <intent>default</intent>
+                <objectclass>ri:AccountObjectClass</objectclass>
+            </resourceObjects>
+            <executionMode>full</executionMode>
+            <predefinedConfigurationToUse>production</predefinedConfigurationToUse>
+        </activity>
+    </affectedObjects>
 </task>
+

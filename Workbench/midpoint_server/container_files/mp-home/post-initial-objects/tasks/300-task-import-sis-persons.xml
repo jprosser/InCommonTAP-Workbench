@@ -1,35 +1,58 @@
-<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
-      xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3"
-      xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
-      xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3"
-      xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3"
-      xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3"
-      xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3"
-      oid="22c2a3d0-0961-4255-9eec-c550a79aeaaa">
-   <name>SIS: Full Import</name>
-   <extension xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:type="c:ExtensionType">
-      <mext:kind>account</mext:kind>
-      <mext:objectclass>ri:AccountObjectClass</mext:objectclass>
-<!--
-      <mext:tracing>
-          <interval>500</interval>
-      </mext:tracing> -->
-   </extension>
-   <assignment>
-      <targetRef oid="00000000-0000-0000-0000-000000000503" type="ArchetypeType" /> <!--Import task-->
-   </assignment>
-   <taskIdentifier>1535407239440-0-1</taskIdentifier>
-   <ownerRef oid="00000000-0000-0000-0000-000000000002"
-             relation="org:default"
-             type="c:UserType"><!-- administrator --></ownerRef>
-   <executionStatus>runnable</executionStatus>
-   <dependent>1494860531232132-0-1</dependent>
-   <category>ImportingAccounts</category>
-   <objectRef oid="4d70a0da-02dd-41cf-b0a1-00e75d3eaa15"
-              relation="org:default"
-              type="c:ResourceType"><!-- SQL SIS persons (sources) --></objectRef>
-   <recurrence>single</recurrence>
-   <binding>loose</binding>
+<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="05345d93-3cd8-4c16-9364-064938766b8a" version="0">
+    <name>SIS: Full import</name>
+    <assignment id="1">
+        <targetRef oid="00000000-0000-0000-0000-000000000503" relation="org:default" type="c:ArchetypeType">
+            <!-- Import task -->
+        </targetRef>
+        <activation>
+            <effectiveStatus>enabled</effectiveStatus>
+        </activation>
+    </assignment>
+    <iteration>0</iteration>
+    <iterationToken/>
+    <archetypeRef oid="00000000-0000-0000-0000-000000000503" relation="org:default" type="c:ArchetypeType">
+        <!-- Import task -->
+    </archetypeRef>
+    <roleMembershipRef oid="00000000-0000-0000-0000-000000000503" relation="org:default" type="c:ArchetypeType">
+        <!-- Import task -->
+    </roleMembershipRef>
+    <taskIdentifier>1699915517757-55486-1</taskIdentifier>
+    <ownerRef oid="e897468f-20bd-419c-8fc5-1fe60e2600de" relation="org:default" type="c:UserType">
+        <!-- banderson -->
+    </ownerRef>
+    <executionState>runnable</executionState>
+    <objectRef oid="4d70a0da-02dd-41cf-b0a1-00e75d3eaa15" relation="org:default" type="c:ResourceType">
+        <!-- Source: SIS DB -->
+    </objectRef>
+    <binding>loose</binding>
+    <activity>
+        <work>
+            <import>
+                <resourceObjects>
+                    <resourceRef oid="4d70a0da-02dd-41cf-b0a1-00e75d3eaa15" relation="org:default" type="c:ResourceType">
+                        <!-- Source: SIS DB -->
+                    </resourceRef>
+                    <kind>account</kind>
+                    <intent>default</intent>
+                    <objectclass>ri:AccountObjectClass</objectclass>
+                </resourceObjects>
+            </import>
+        </work>
+    </activity>
+    <affectedObjects>
+        <activity id="2">
+            <activityType>c:import</activityType>
+            <resourceObjects>
+                <resourceRef oid="4d70a0da-02dd-41cf-b0a1-00e75d3eaa15" relation="org:default" type="c:ResourceType">
+                    <!-- Source: SIS DB -->
+                </resourceRef>
+                <kind>account</kind>
+                <intent>default</intent>
+                <objectclass>ri:AccountObjectClass</objectclass>
+            </resourceObjects>
+            <executionMode>full</executionMode>
+            <predefinedConfigurationToUse>production</predefinedConfigurationToUse>
+        </activity>
+    </affectedObjects>
 </task>
+

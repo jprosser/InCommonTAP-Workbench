@@ -1,26 +1,48 @@
-<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
-      xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
-      xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3"
-      oid="83a737ea-5eb7-4e78-b431-331cccf02354">
-    <name>User recomputation</name>
-    <extension xmlns:mext="http://midpoint.evolveum.com/xml/ns/public/model/extension-3">
-        <mext:objectType>c:UserType</mext:objectType>
-        <!-- <mext:tracingInterval>200</mext:tracingInterval> -->
-    </extension>
-    <assignment>
-        <targetRef oid="00000000-0000-0000-0000-000000000502" type="ArchetypeType"/> <!--Recomputation task -->
+<task xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="f71bd7ce-2329-42da-a71e-b7c45ebed549" version="0">
+    <name>Recomputation task</name>
+    <assignment id="1">
+        <targetRef oid="00000000-0000-0000-0000-000000000502" relation="org:default" type="c:ArchetypeType">
+            <!-- Recomputation task -->
+        </targetRef>
+        <activation>
+            <effectiveStatus>enabled</effectiveStatus>
+        </activation>
     </assignment>
-    <ownerRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType">
-        <!-- administrator -->
+    <iteration>0</iteration>
+    <iterationToken/>
+    <archetypeRef oid="00000000-0000-0000-0000-000000000502" relation="org:default" type="c:ArchetypeType">
+        <!-- Recomputation task -->
+    </archetypeRef>
+    <roleMembershipRef oid="00000000-0000-0000-0000-000000000502" relation="org:default" type="c:ArchetypeType">
+        <!-- Recomputation task -->
+    </roleMembershipRef>
+    <taskIdentifier>1699916318518-55486-1</taskIdentifier>
+    <ownerRef oid="e897468f-20bd-419c-8fc5-1fe60e2600de" relation="org:default" type="c:UserType">
+        <!-- banderson -->
     </ownerRef>
-    <channel>http://midpoint.evolveum.com/xml/ns/public/provisioning/channels-3#recompute</channel>
-    <taskIdentifier>1494860531232132-0-2</taskIdentifier>
-   <executionStatus>waiting</executionStatus>
-   <waitingReason>otherTasks</waitingReason>
-    <category>Recomputation</category>
-      <recurrence>recurring</recurrence>
+    <executionState>runnable</executionState>
     <binding>loose</binding>
     <schedule>
         <interval>300</interval>
     </schedule>
+    <activity>
+        <work>
+            <recomputation>
+                <objects>
+                    <type>c:UserType</type>
+                </objects>
+            </recomputation>
+        </work>
+    </activity>
+    <affectedObjects>
+        <activity id="2">
+            <activityType>c:recomputation</activityType>
+            <objects>
+                <type>c:UserType</type>
+            </objects>
+            <executionMode>full</executionMode>
+            <predefinedConfigurationToUse>production</predefinedConfigurationToUse>
+        </activity>
+    </affectedObjects>
 </task>
+
