@@ -1,5 +1,5 @@
-FROM i2incommon/comanage-registry:4.1.0-20230117
-#FROM i2incommon/comanage-registry:4.0.2-20220223
+FROM i2incommon/comanage-registry:4.3.2-20231211
+#FROM i2incommon/comanage-registry:4.1.0-20230117
 
 ENV COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Anderson
 ENV COMANAGE_REGISTRY_ADMIN_USERNAME=banderson
@@ -33,7 +33,7 @@ RUN yum -y update && yum -y install --setopt=tsflags=nodocs epel-release python-
 
 ARG maintainer=my
 ARG imagename=comanage
-ARG version=4.0.2
+ARG version=4.3.2
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 ENV COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=$CSPHOSTNAME

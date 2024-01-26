@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.12 (Debian 12.12-1.pgdg110+1)
--- Dumped by pg_dump version 12.12 (Debian 12.12-1.pgdg110+1)
+-- Dumped from database version 12.17 (Debian 12.17-1.pgdg120+1)
+-- Dumped by pg_dump version 12.17 (Debian 12.17-1.pgdg120+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -134,7 +134,11 @@ CREATE TABLE public.cm_api_users (
     valid_through timestamp without time zone,
     remote_ip character varying(80),
     created timestamp without time zone,
-    modified timestamp without time zone
+    modified timestamp without time zone,
+    api_user_id integer,
+    revision integer,
+    deleted boolean,
+    actor_identifier character varying(256)
 );
 
 
@@ -952,7 +956,13 @@ CREATE TABLE public.cm_co_enrollment_flows (
     co_enrollment_flow_id integer,
     revision integer,
     deleted boolean,
-    actor_identifier character varying(256)
+    actor_identifier character varying(256),
+    sor_label character varying(40),
+    match_server_id integer,
+    regenerate_expired_verification boolean,
+    request_vetting boolean,
+    approver_template_id integer,
+    introduction_text_pa text
 );
 
 
@@ -1495,7 +1505,9 @@ CREATE TABLE public.cm_co_identifier_assignments (
     exclusions character varying(8),
     ordr integer,
     created timestamp without time zone,
-    modified timestamp without time zone
+    modified timestamp without time zone,
+    co_group_id integer,
+    plugin character varying(64)
 );
 
 
@@ -1677,7 +1689,9 @@ CREATE TABLE public.cm_co_jobs (
     complete_time timestamp without time zone,
     percent_complete integer,
     created timestamp without time zone,
-    modified timestamp without time zone
+    modified timestamp without time zone,
+    max_retry integer,
+    max_retry_count integer
 );
 
 
@@ -2216,7 +2230,8 @@ CREATE TABLE public.cm_co_person_roles (
     co_person_role_id integer,
     revision integer,
     deleted boolean,
-    actor_identifier character varying(256)
+    actor_identifier character varying(256),
+    manager_co_person_id integer
 );
 
 
@@ -2297,7 +2312,7 @@ CREATE TABLE public.cm_co_petition_history_records (
     co_petition_id integer NOT NULL,
     actor_co_person_id integer,
     action character varying(4),
-    comment character varying(160),
+    comment character varying(256),
     created timestamp without time zone,
     modified timestamp without time zone,
     co_petition_history_record_id integer,
@@ -2359,7 +2374,9 @@ CREATE TABLE public.cm_co_petitions (
     co_petition_id integer,
     revision integer,
     deleted boolean,
-    actor_identifier character varying(256)
+    actor_identifier character varying(256),
+    vetting_request_id integer,
+    reference_identifier character varying(40)
 );
 
 
@@ -2414,7 +2431,8 @@ CREATE TABLE public.cm_co_pipelines (
     co_pipeline_id integer,
     revision integer,
     deleted boolean,
-    actor_identifier character varying(256)
+    actor_identifier character varying(256),
+    sync_identifier_type character varying(32)
 );
 
 
@@ -2440,6 +2458,48 @@ ALTER TABLE public.cm_co_pipelines_id_seq OWNER TO registry_user;
 --
 
 ALTER SEQUENCE public.cm_co_pipelines_id_seq OWNED BY public.cm_co_pipelines.id;
+
+
+--
+-- Name: cm_co_provisioning_counts; Type: TABLE; Schema: public; Owner: registry_user
+--
+
+CREATE TABLE public.cm_co_provisioning_counts (
+    id integer NOT NULL,
+    co_provisioning_target_id integer NOT NULL,
+    co_job_id integer,
+    provisioning_count integer,
+    created timestamp without time zone,
+    modified timestamp without time zone,
+    co_provisioning_count_id integer,
+    revision integer,
+    deleted boolean,
+    actor_identifier character varying(256)
+);
+
+
+ALTER TABLE public.cm_co_provisioning_counts OWNER TO registry_user;
+
+--
+-- Name: cm_co_provisioning_counts_id_seq; Type: SEQUENCE; Schema: public; Owner: registry_user
+--
+
+CREATE SEQUENCE public.cm_co_provisioning_counts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cm_co_provisioning_counts_id_seq OWNER TO registry_user;
+
+--
+-- Name: cm_co_provisioning_counts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: registry_user
+--
+
+ALTER SEQUENCE public.cm_co_provisioning_counts_id_seq OWNED BY public.cm_co_provisioning_counts.id;
 
 
 --
@@ -2540,7 +2600,8 @@ CREATE TABLE public.cm_co_provisioning_targets (
     retry_interval integer,
     ordr integer,
     created timestamp without time zone,
-    modified timestamp without time zone
+    modified timestamp without time zone,
+    max_retry integer
 );
 
 
@@ -2728,7 +2789,11 @@ CREATE TABLE public.cm_co_settings (
     co_theme_id integer,
     global_search_limit integer,
     created timestamp without time zone,
-    modified timestamp without time zone
+    modified timestamp without time zone,
+    group_create_admin_only boolean,
+    person_picker_email_type character varying(160),
+    person_picker_identifier_type character varying(160),
+    person_picker_display_types boolean
 );
 
 
@@ -2765,7 +2830,8 @@ CREATE TABLE public.cm_co_sql_provisioner_targets (
     co_provisioning_target_id integer,
     server_id integer,
     created timestamp without time zone,
-    modified timestamp without time zone
+    modified timestamp without time zone,
+    table_prefix character varying(32)
 );
 
 
@@ -2940,7 +3006,9 @@ CREATE TABLE public.cm_core_apis (
     core_api_id integer,
     revision integer,
     deleted boolean,
-    actor_identifier character varying(256)
+    actor_identifier character varying(256),
+    index_response_type character varying(2),
+    expunge_on_delete boolean
 );
 
 
@@ -3066,7 +3134,8 @@ CREATE TABLE public.cm_data_filters (
     data_filter_id integer,
     revision integer,
     deleted boolean,
-    actor_identifier character varying(256)
+    actor_identifier character varying(256),
+    context character varying(2)
 );
 
 
@@ -3269,7 +3338,10 @@ CREATE TABLE public.cm_env_sources (
     env_identifier_network character varying(80),
     env_identifier_network_login boolean,
     created timestamp without time zone,
-    modified timestamp without time zone
+    modified timestamp without time zone,
+    duplicate_mode character varying(2),
+    redirect_on_duplicate character varying(1024),
+    sp_type character varying(2)
 );
 
 
@@ -3317,7 +3389,8 @@ CREATE TABLE public.cm_history_records (
     history_record_id integer,
     revision integer,
     deleted boolean,
-    actor_identifier character varying(256)
+    actor_identifier character varying(256),
+    actor_api_user_id integer
 );
 
 
@@ -3358,7 +3431,8 @@ CREATE TABLE public.cm_http_servers (
     ssl_verify_peer boolean,
     ssl_verify_host boolean,
     created timestamp without time zone,
-    modified timestamp without time zone
+    modified timestamp without time zone,
+    auth_type character varying(2)
 );
 
 
@@ -3493,13 +3567,18 @@ ALTER SEQUENCE public.cm_identity_documents_id_seq OWNED BY public.cm_identity_d
 CREATE TABLE public.cm_kafka_servers (
     id integer NOT NULL,
     server_id integer,
-    brokers character varying(256),
+    brokers text,
     security_protocol character varying(24),
     sasl_mechanism character varying(24),
     username character varying(128),
     password character varying(400),
     created timestamp without time zone,
-    modified timestamp without time zone
+    modified timestamp without time zone,
+    groupid character varying(80),
+    topic character varying(80),
+    batch_size integer,
+    partition integer,
+    timeout integer
 );
 
 
@@ -3654,7 +3733,6 @@ CREATE TABLE public.cm_match_servers (
     serverurl character varying(256),
     username character varying(128),
     password character varying(80),
-    sor_label character varying(40),
     created timestamp without time zone,
     modified timestamp without time zone
 );
@@ -3886,7 +3964,9 @@ CREATE TABLE public.cm_org_identities (
     org_identity_id integer,
     revision integer,
     deleted boolean,
-    actor_identifier character varying(256)
+    actor_identifier character varying(256),
+    manager_identifier character varying(512),
+    sponsor_identifier character varying(512)
 );
 
 
@@ -3912,6 +3992,48 @@ ALTER TABLE public.cm_org_identities_id_seq OWNER TO registry_user;
 --
 
 ALTER SEQUENCE public.cm_org_identities_id_seq OWNED BY public.cm_org_identities.id;
+
+
+--
+-- Name: cm_org_identity_source_filters; Type: TABLE; Schema: public; Owner: registry_user
+--
+
+CREATE TABLE public.cm_org_identity_source_filters (
+    id integer NOT NULL,
+    org_identity_source_id integer NOT NULL,
+    data_filter_id integer NOT NULL,
+    ordr integer,
+    created timestamp without time zone,
+    modified timestamp without time zone,
+    org_identity_source_filter_id integer,
+    revision integer,
+    deleted boolean,
+    actor_identifier character varying(256)
+);
+
+
+ALTER TABLE public.cm_org_identity_source_filters OWNER TO registry_user;
+
+--
+-- Name: cm_org_identity_source_filters_id_seq; Type: SEQUENCE; Schema: public; Owner: registry_user
+--
+
+CREATE SEQUENCE public.cm_org_identity_source_filters_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cm_org_identity_source_filters_id_seq OWNER TO registry_user;
+
+--
+-- Name: cm_org_identity_source_filters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: registry_user
+--
+
+ALTER SEQUENCE public.cm_org_identity_source_filters_id_seq OWNED BY public.cm_org_identity_source_filters.id;
 
 
 --
@@ -3983,7 +4105,8 @@ CREATE TABLE public.cm_org_identity_sources (
     org_identity_source_id integer,
     revision integer,
     deleted boolean,
-    actor_identifier character varying(256)
+    actor_identifier character varying(256),
+    sor_label character varying(40)
 );
 
 
@@ -4309,6 +4432,140 @@ ALTER TABLE public.cm_urls_id_seq OWNER TO registry_user;
 --
 
 ALTER SEQUENCE public.cm_urls_id_seq OWNED BY public.cm_urls.id;
+
+
+--
+-- Name: cm_vetting_requests; Type: TABLE; Schema: public; Owner: registry_user
+--
+
+CREATE TABLE public.cm_vetting_requests (
+    id integer NOT NULL,
+    co_person_id integer NOT NULL,
+    vetting_step_id integer,
+    co_job_id integer,
+    status character varying(2),
+    created timestamp without time zone,
+    modified timestamp without time zone,
+    vetting_request_id integer,
+    revision integer,
+    deleted boolean,
+    actor_identifier character varying(256)
+);
+
+
+ALTER TABLE public.cm_vetting_requests OWNER TO registry_user;
+
+--
+-- Name: cm_vetting_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: registry_user
+--
+
+CREATE SEQUENCE public.cm_vetting_requests_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cm_vetting_requests_id_seq OWNER TO registry_user;
+
+--
+-- Name: cm_vetting_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: registry_user
+--
+
+ALTER SEQUENCE public.cm_vetting_requests_id_seq OWNED BY public.cm_vetting_requests.id;
+
+
+--
+-- Name: cm_vetting_results; Type: TABLE; Schema: public; Owner: registry_user
+--
+
+CREATE TABLE public.cm_vetting_results (
+    id integer NOT NULL,
+    vetting_request_id integer NOT NULL,
+    vetting_step_id integer NOT NULL,
+    vetter_co_person_id integer,
+    status character varying(2),
+    comment character varying(256),
+    raw text,
+    created timestamp without time zone,
+    modified timestamp without time zone,
+    vetting_result_id integer,
+    revision integer,
+    deleted boolean,
+    actor_identifier character varying(256)
+);
+
+
+ALTER TABLE public.cm_vetting_results OWNER TO registry_user;
+
+--
+-- Name: cm_vetting_results_id_seq; Type: SEQUENCE; Schema: public; Owner: registry_user
+--
+
+CREATE SEQUENCE public.cm_vetting_results_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cm_vetting_results_id_seq OWNER TO registry_user;
+
+--
+-- Name: cm_vetting_results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: registry_user
+--
+
+ALTER SEQUENCE public.cm_vetting_results_id_seq OWNED BY public.cm_vetting_results.id;
+
+
+--
+-- Name: cm_vetting_steps; Type: TABLE; Schema: public; Owner: registry_user
+--
+
+CREATE TABLE public.cm_vetting_steps (
+    id integer NOT NULL,
+    co_id integer NOT NULL,
+    description character varying(256),
+    plugin character varying(32),
+    status character varying(2),
+    ordr integer,
+    vetter_co_group_id integer,
+    review_on_result character varying(2),
+    created timestamp without time zone,
+    modified timestamp without time zone,
+    vetting_step_id integer,
+    revision integer,
+    deleted boolean,
+    actor_identifier character varying(256)
+);
+
+
+ALTER TABLE public.cm_vetting_steps OWNER TO registry_user;
+
+--
+-- Name: cm_vetting_steps_id_seq; Type: SEQUENCE; Schema: public; Owner: registry_user
+--
+
+CREATE SEQUENCE public.cm_vetting_steps_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cm_vetting_steps_id_seq OWNER TO registry_user;
+
+--
+-- Name: cm_vetting_steps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: registry_user
+--
+
+ALTER SEQUENCE public.cm_vetting_steps_id_seq OWNED BY public.cm_vetting_steps.id;
 
 
 --
@@ -4683,6 +4940,13 @@ ALTER TABLE ONLY public.cm_co_pipelines ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
+-- Name: cm_co_provisioning_counts id; Type: DEFAULT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_provisioning_counts ALTER COLUMN id SET DEFAULT nextval('public.cm_co_provisioning_counts_id_seq'::regclass);
+
+
+--
 -- Name: cm_co_provisioning_exports id; Type: DEFAULT; Schema: public; Owner: registry_user
 --
 
@@ -4914,6 +5178,13 @@ ALTER TABLE ONLY public.cm_org_identities ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: cm_org_identity_source_filters id; Type: DEFAULT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_org_identity_source_filters ALTER COLUMN id SET DEFAULT nextval('public.cm_org_identity_source_filters_id_seq'::regclass);
+
+
+--
 -- Name: cm_org_identity_source_records id; Type: DEFAULT; Schema: public; Owner: registry_user
 --
 
@@ -4977,6 +5248,27 @@ ALTER TABLE ONLY public.cm_urls ALTER COLUMN id SET DEFAULT nextval('public.cm_u
 
 
 --
+-- Name: cm_vetting_requests id; Type: DEFAULT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_requests ALTER COLUMN id SET DEFAULT nextval('public.cm_vetting_requests_id_seq'::regclass);
+
+
+--
+-- Name: cm_vetting_results id; Type: DEFAULT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_results ALTER COLUMN id SET DEFAULT nextval('public.cm_vetting_results_id_seq'::regclass);
+
+
+--
+-- Name: cm_vetting_steps id; Type: DEFAULT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_steps ALTER COLUMN id SET DEFAULT nextval('public.cm_vetting_steps_id_seq'::regclass);
+
+
+--
 -- Data for Name: cm_ad_hoc_attributes; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
@@ -4996,8 +5288,8 @@ COPY public.cm_addresses (id, street, room, locality, state, postal_code, countr
 -- Data for Name: cm_api_users; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_api_users (id, co_id, privileged, status, username, password, valid_from, valid_through, remote_ip, created, modified) FROM stdin;
-1	2	t	A	co_2.apiuser	5c11618acd751adef0479a25d222fe416acca41a	\N	\N		2022-09-23 17:38:41	2022-09-23 18:46:03
+COPY public.cm_api_users (id, co_id, privileged, status, username, password, valid_from, valid_through, remote_ip, created, modified, api_user_id, revision, deleted, actor_identifier) FROM stdin;
+1	2	t	A	co_2.apiuser	5c11618acd751adef0479a25d222fe416acca41a	\N	\N		2022-09-23 17:38:41	2022-09-23 18:46:03	\N	\N	\N	\N
 \.
 
 
@@ -5157,6 +5449,7 @@ COPY public.cm_authentication_events (id, authenticated_identifier, authenticati
 132	co_2.apiuser	AI	172.21.0.8	2022-09-23 18:50:24	2022-09-23 18:50:24
 133	co_2.apiuser	AI	172.21.0.8	2022-09-23 18:50:25	2022-09-23 18:50:25
 134	co_2.apiuser	AI	172.21.0.8	2022-09-23 18:50:25	2022-09-23 18:50:25
+135	banderson	IN	192.168.112.3	2024-01-26 17:47:42	2024-01-26 17:47:42
 \.
 
 
@@ -5197,7 +5490,7 @@ COPY public.cm_cmp_enrollment_attributes (id, cmp_enrollment_configuration_id, a
 --
 
 COPY public.cm_cmp_enrollment_configurations (id, name, attrs_from_ldap, attrs_from_saml, attrs_from_env, attrs_from_coef, pool_org_identities, eds_help_url, eds_preferred_idps, eds_hidden_idps, redirect_on_logout, app_base, status, created, modified) FROM stdin;
-1	CMP Enrollment Configuration	f	f	f	t	f	\N	\N	\N	\N	/registry/	A	2022-09-23 17:29:26	2022-09-23 18:44:51
+1	CMP Enrollment Configuration	f	f	f	t	f	\N	\N	\N	\N	/registry/	A	2022-09-23 17:29:26	2024-01-26 17:47:42
 \.
 
 
@@ -5309,15 +5602,15 @@ COPY public.cm_co_enrollment_flow_wedges (id, co_enrollment_flow_id, description
 -- Data for Name: cm_co_enrollment_flows; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_co_enrollment_flows (id, name, co_id, authz_level, authz_cou_id, authz_co_group_id, my_identity_shortcut, match_policy, enable_person_find, approval_required, approver_co_group_id, verify_email, email_verification_mode, invitation_validity, require_authn, notification_co_group_id, status, notify_from, verification_subject, verification_body, verification_template_id, notify_on_approval, approval_subject, approval_body, approval_template_id, denial_template_id, notify_on_finalize, finalization_template_id, introduction_text, conclusion_text, t_and_c_mode, redirect_on_submit, redirect_on_confirm, redirect_on_finalize, return_url_allowlist, ignore_authoritative, duplicate_mode, co_theme_id, theme_stacking, establish_authenticators, establish_cluster_accounts, created, modified, co_enrollment_flow_id, revision, deleted, actor_identifier) FROM stdin;
-1	Additional Role (Template)	2	A	\N	\N	\N	P	\N	f	\N	\N	X	\N	\N	\N	T	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	\N	X	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson
-2	Conscription With Approval (Template)	2	A	\N	\N	\N	A	\N	t	\N	\N	X	\N	\N	\N	T	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	\N	X	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson
-3	Invitation (Template)	2	A	\N	\N	\N	N	\N	f	\N	\N	R	\N	\N	\N	T	\N	\N	\N	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	X	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson
-4	Self Signup With Approval (Template)	2	N	\N	\N	\N	N	\N	t	\N	\N	R	\N	\N	\N	T	\N	\N	\N	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	IC	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson
-5	Account Linking (Template)	2	CP	\N	\N	\N	S	\N	f	\N	\N	R	\N	t	\N	T	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	\N	X	\N	\N	\N	\N	t	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson
-7	Copy of Self Signup With Approval (Template)	2	N	\N	\N	\N	N	\N	t	\N	\N	R	\N	\N	\N	T	\N	\N	\N	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	IC	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:52	2022-09-23 17:40:52	6	0	f	banderson
-8	Self Signup (CSP Use Case)	2	N	\N	\N	f	N	f	f	\N	\N	R	1440	f	\N	A	noreply@workbench.incommon.org	Invitation to join (@CO_NAME)	You have been invited to join (@CO_NAME).\r\nPlease click the link below to accept or decline.\r\n\r\n(@INVITE_URL)	\N	t	Petition to join (@CO_NAME) has been approved	Your petition to join (@CO_NAME) as been approved. You may now log in to the platform.	\N	\N	f	\N			IC					\N	D	\N	A	\N	\N	2022-09-23 17:40:52	2022-09-23 17:41:39	6	1	f	banderson
-6	Self Signup (CSP Use Case)	2	N	\N	\N	f	N	f	f	\N	\N	R	1440	f	\N	A	noreply@workbench.incommon.org	Invitation to join (@CO_NAME)	You have been invited to join (@CO_NAME).\r\nPlease click the link below to accept or decline.\r\n\r\n(@INVITE_URL)	\N	t	Petition to join (@CO_NAME) has been approved	Your petition to join (@CO_NAME) as been approved. You may now log in to the platform.	\N	\N	f	\N			IC					\N	D	\N	A	\N	\N	2022-09-23 17:40:52	2022-09-23 17:41:54	\N	2	f	banderson
+COPY public.cm_co_enrollment_flows (id, name, co_id, authz_level, authz_cou_id, authz_co_group_id, my_identity_shortcut, match_policy, enable_person_find, approval_required, approver_co_group_id, verify_email, email_verification_mode, invitation_validity, require_authn, notification_co_group_id, status, notify_from, verification_subject, verification_body, verification_template_id, notify_on_approval, approval_subject, approval_body, approval_template_id, denial_template_id, notify_on_finalize, finalization_template_id, introduction_text, conclusion_text, t_and_c_mode, redirect_on_submit, redirect_on_confirm, redirect_on_finalize, return_url_allowlist, ignore_authoritative, duplicate_mode, co_theme_id, theme_stacking, establish_authenticators, establish_cluster_accounts, created, modified, co_enrollment_flow_id, revision, deleted, actor_identifier, sor_label, match_server_id, regenerate_expired_verification, request_vetting, approver_template_id, introduction_text_pa) FROM stdin;
+1	Additional Role (Template)	2	A	\N	\N	\N	P	\N	f	\N	\N	X	\N	\N	\N	T	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	\N	X	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson	\N	\N	\N	\N	\N	\N
+2	Conscription With Approval (Template)	2	A	\N	\N	\N	A	\N	t	\N	\N	X	\N	\N	\N	T	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	\N	X	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson	\N	\N	\N	\N	\N	\N
+3	Invitation (Template)	2	A	\N	\N	\N	N	\N	f	\N	\N	R	\N	\N	\N	T	\N	\N	\N	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	X	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson	\N	\N	\N	\N	\N	\N
+4	Self Signup With Approval (Template)	2	N	\N	\N	\N	N	\N	t	\N	\N	R	\N	\N	\N	T	\N	\N	\N	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	IC	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson	\N	\N	\N	\N	\N	\N
+5	Account Linking (Template)	2	CP	\N	\N	\N	S	\N	f	\N	\N	R	\N	t	\N	T	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	\N	X	\N	\N	\N	\N	t	\N	\N	\N	\N	\N	2022-09-23 17:40:47	2022-09-23 17:40:47	\N	0	f	banderson	\N	\N	\N	\N	\N	\N
+7	Copy of Self Signup With Approval (Template)	2	N	\N	\N	\N	N	\N	t	\N	\N	R	\N	\N	\N	T	\N	\N	\N	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	IC	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-23 17:40:52	2022-09-23 17:40:52	6	0	f	banderson	\N	\N	\N	\N	\N	\N
+8	Self Signup (CSP Use Case)	2	N	\N	\N	f	N	f	f	\N	\N	R	1440	f	\N	A	noreply@workbench.incommon.org	Invitation to join (@CO_NAME)	You have been invited to join (@CO_NAME).\r\nPlease click the link below to accept or decline.\r\n\r\n(@INVITE_URL)	\N	t	Petition to join (@CO_NAME) has been approved	Your petition to join (@CO_NAME) as been approved. You may now log in to the platform.	\N	\N	f	\N			IC					\N	D	\N	A	\N	\N	2022-09-23 17:40:52	2022-09-23 17:41:39	6	1	f	banderson	\N	\N	\N	\N	\N	\N
+6	Self Signup (CSP Use Case)	2	N	\N	\N	f	N	f	f	\N	\N	R	1440	f	\N	A	noreply@workbench.incommon.org	Invitation to join (@CO_NAME)	You have been invited to join (@CO_NAME).\r\nPlease click the link below to accept or decline.\r\n\r\n(@INVITE_URL)	\N	t	Petition to join (@CO_NAME) has been approved	Your petition to join (@CO_NAME) as been approved. You may now log in to the platform.	\N	\N	f	\N			IC					\N	D	\N	A	\N	\N	2022-09-23 17:40:52	2022-09-23 17:41:54	\N	2	f	banderson	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -5551,6 +5844,8 @@ COPY public.cm_co_groups (id, co_id, cou_id, name, description, open, status, gr
 4	2	\N	CO:admins	Guests/Sponsored Accounts Administrators	f	A	A	f	\N	2022-09-23 17:37:31	2022-09-23 17:37:31	\N	0	f	banderson
 5	2	\N	CO:members:active	Guests/Sponsored Accounts Active Members	f	A	MA	t	\N	2022-09-23 17:37:31	2022-09-23 17:37:31	\N	0	f	banderson
 6	2	\N	CO:members:all	Guests/Sponsored Accounts Members	f	A	M	t	\N	2022-09-23 17:37:31	2022-09-23 17:37:31	\N	0	f	banderson
+7	1	\N	CO:approvers	COmanage Approvers	f	A	AP	f	\N	2024-01-26 17:43:25	2024-01-26 17:43:25	\N	0	f	Shell user "root"
+8	2	\N	CO:approvers	Guests/Sponsored Accounts Approvers	f	A	AP	f	\N	2024-01-26 17:43:25	2024-01-26 17:43:25	\N	0	f	Shell user "root"
 \.
 
 
@@ -5558,8 +5853,8 @@ COPY public.cm_co_groups (id, co_id, cou_id, name, description, open, status, gr
 -- Data for Name: cm_co_identifier_assignments; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_co_identifier_assignments (id, co_id, status, context, identifier_type, email_type, description, login, algorithm, format, minimum, maximum, permitted, collision_resolution, exclusions, ordr, created, modified) FROM stdin;
-1	2	A	CP	GuestID		Guest Identifier	t	S	G(#:8)	1	\N	AN	\N	\N	1	2022-09-23 17:40:37	2022-09-23 17:40:37
+COPY public.cm_co_identifier_assignments (id, co_id, status, context, identifier_type, email_type, description, login, algorithm, format, minimum, maximum, permitted, collision_resolution, exclusions, ordr, created, modified, co_group_id, plugin) FROM stdin;
+1	2	A	CP	GuestID		Guest Identifier	t	S	G(#:8)	1	\N	AN	\N	\N	1	2022-09-23 17:40:37	2022-09-23 17:40:37	\N	\N
 \.
 
 
@@ -5591,8 +5886,8 @@ COPY public.cm_co_job_history_records (id, co_job_id, record_key, co_person_id, 
 -- Data for Name: cm_co_jobs; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_co_jobs (id, co_id, job_type, job_type_fk, job_mode, job_params, requeue_interval, retry_interval, requeued_from_co_job_id, status, register_summary, start_summary, finish_summary, queue_time, start_after_time, start_time, complete_time, percent_complete, created, modified) FROM stdin;
-1	1	CoreJob.GarbageCollector	\N		{"object_type":"Co"}	1440	0	\N	Q	Started via JobShell by setup (CoPerson ID -1)	\N	\N	2022-09-23 17:29:25	\N	\N	\N	\N	2022-09-23 17:29:25	2022-09-23 17:29:25
+COPY public.cm_co_jobs (id, co_id, job_type, job_type_fk, job_mode, job_params, requeue_interval, retry_interval, requeued_from_co_job_id, status, register_summary, start_summary, finish_summary, queue_time, start_after_time, start_time, complete_time, percent_complete, created, modified, max_retry, max_retry_count) FROM stdin;
+1	1	CoreJob.GarbageCollector	\N		{"object_type":"Co"}	1440	0	\N	Q	Started via JobShell by setup (CoPerson ID -1)	\N	\N	2022-09-23 17:29:25	\N	\N	\N	\N	2022-09-23 17:29:25	2022-09-23 17:29:25	\N	\N
 \.
 
 
@@ -5710,18 +6005,18 @@ COPY public.cm_co_people (id, co_id, status, date_of_birth, timezone, created, m
 -- Data for Name: cm_co_person_roles; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_co_person_roles (id, co_person_id, sponsor_co_person_id, cou_id, affiliation, title, o, ou, valid_from, valid_through, ordr, status, source_org_identity_id, created, modified, co_person_role_id, revision, deleted, actor_identifier) FROM stdin;
-1	1	\N	\N	staff	Administrator	\N	\N	\N	\N	\N	A	\N	2022-09-23 17:29:26	2022-09-23 17:29:26	\N	0	f	Shell user "root"
-2	2	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser
-3	3	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser
-4	4	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser
-5	5	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser
-6	6	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser
-7	7	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser
-8	8	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:50:04	2022-09-23 18:50:04	\N	0	f	co_2.apiuser
-9	9	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:50:11	2022-09-23 18:50:11	\N	0	f	co_2.apiuser
-10	10	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser
-11	11	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser
+COPY public.cm_co_person_roles (id, co_person_id, sponsor_co_person_id, cou_id, affiliation, title, o, ou, valid_from, valid_through, ordr, status, source_org_identity_id, created, modified, co_person_role_id, revision, deleted, actor_identifier, manager_co_person_id) FROM stdin;
+1	1	\N	\N	staff	Administrator	\N	\N	\N	\N	\N	A	\N	2022-09-23 17:29:26	2022-09-23 17:29:26	\N	0	f	Shell user "root"	\N
+2	2	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser	\N
+3	3	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser	\N
+4	4	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser	\N
+5	5	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser	\N
+6	6	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser	\N
+7	7	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser	\N
+8	8	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:50:04	2022-09-23 18:50:04	\N	0	f	co_2.apiuser	\N
+9	9	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:50:11	2022-09-23 18:50:11	\N	0	f	co_2.apiuser	\N
+10	10	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser	\N
+11	11	\N	\N	member	\N	\N	\N	\N	\N	\N	A	\N	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser	\N
 \.
 
 
@@ -5745,7 +6040,7 @@ COPY public.cm_co_petition_history_records (id, co_petition_id, actor_co_person_
 -- Data for Name: cm_co_petitions; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_co_petitions (id, co_enrollment_flow_id, co_id, cou_id, enrollee_org_identity_id, archived_org_identity_id, enrollee_co_person_id, enrollee_co_person_role_id, petitioner_co_person_id, sponsor_co_person_id, approver_co_person_id, co_invite_id, authenticated_identifier, petitioner_token, enrollee_token, return_url, approver_comment, status, created, modified, co_petition_id, revision, deleted, actor_identifier) FROM stdin;
+COPY public.cm_co_petitions (id, co_enrollment_flow_id, co_id, cou_id, enrollee_org_identity_id, archived_org_identity_id, enrollee_co_person_id, enrollee_co_person_role_id, petitioner_co_person_id, sponsor_co_person_id, approver_co_person_id, co_invite_id, authenticated_identifier, petitioner_token, enrollee_token, return_url, approver_comment, status, created, modified, co_petition_id, revision, deleted, actor_identifier, vetting_request_id, reference_identifier) FROM stdin;
 \.
 
 
@@ -5753,7 +6048,15 @@ COPY public.cm_co_petitions (id, co_enrollment_flow_id, co_id, cou_id, enrollee_
 -- Data for Name: cm_co_pipelines; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_co_pipelines (id, co_id, name, status, match_strategy, match_type, match_server_id, sync_on_add, sync_on_update, sync_on_delete, sync_coperson_status, create_role, sync_cou_id, sync_affiliation, sync_replace_cou_id, sync_status_on_delete, co_enrollment_flow_id, created, modified, co_pipeline_id, revision, deleted, actor_identifier) FROM stdin;
+COPY public.cm_co_pipelines (id, co_id, name, status, match_strategy, match_type, match_server_id, sync_on_add, sync_on_update, sync_on_delete, sync_coperson_status, create_role, sync_cou_id, sync_affiliation, sync_replace_cou_id, sync_status_on_delete, co_enrollment_flow_id, created, modified, co_pipeline_id, revision, deleted, actor_identifier, sync_identifier_type) FROM stdin;
+\.
+
+
+--
+-- Data for Name: cm_co_provisioning_counts; Type: TABLE DATA; Schema: public; Owner: registry_user
+--
+
+COPY public.cm_co_provisioning_counts (id, co_provisioning_target_id, co_job_id, provisioning_count, created, modified, co_provisioning_count_id, revision, deleted, actor_identifier) FROM stdin;
 \.
 
 
@@ -5774,6 +6077,7 @@ COPY public.cm_co_provisioning_exports (id, co_provisioning_target_id, co_person
 7	1	6	\N	\N	\N	2022-09-23 18:49:51	2022-09-23 18:49:47	2022-09-23 18:49:51
 8	1	7	\N	\N	\N	2022-09-23 18:49:58	2022-09-23 18:49:53	2022-09-23 18:49:58
 9	1	8	\N	\N	\N	2022-09-23 18:50:05	2022-09-23 18:50:00	2022-09-23 18:50:05
+13	1	\N	8	\N	\N	2024-01-26 17:43:25	2024-01-26 17:43:25	2024-01-26 17:43:25
 \.
 
 
@@ -5789,8 +6093,8 @@ COPY public.cm_co_provisioning_target_filters (id, co_provisioning_target_id, da
 -- Data for Name: cm_co_provisioning_targets; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_co_provisioning_targets (id, co_id, description, plugin, provision_co_group_id, skip_org_identity_source_id, status, retry_interval, ordr, created, modified) FROM stdin;
-1	2	COmanage data export	SqlProvisioner	\N	\N	A	\N	1	2022-09-23 17:57:44	2022-09-23 17:57:44
+COPY public.cm_co_provisioning_targets (id, co_id, description, plugin, provision_co_group_id, skip_org_identity_source_id, status, retry_interval, ordr, created, modified, max_retry) FROM stdin;
+1	2	COmanage data export	SqlProvisioner	\N	\N	A	\N	1	2022-09-23 17:57:44	2022-09-23 17:57:44	\N
 \.
 
 
@@ -5823,7 +6127,7 @@ COPY public.cm_co_services (id, co_id, cou_id, name, description, short_label, c
 -- Data for Name: cm_co_settings; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_co_settings (id, co_id, enable_nsf_demo, disable_expiration, disable_ois_sync, group_validity_sync_window, garbage_collection_interval, enable_normalization, enable_empty_cou, invitation_validity, permitted_fields_name, required_fields_addr, required_fields_name, t_and_c_login_mode, sponsor_eligibility, theme_stacking, sponsor_co_group_id, default_co_pipeline_id, elect_strategy_primary_name, co_dashboard_id, co_theme_id, global_search_limit, created, modified) FROM stdin;
+COPY public.cm_co_settings (id, co_id, enable_nsf_demo, disable_expiration, disable_ois_sync, group_validity_sync_window, garbage_collection_interval, enable_normalization, enable_empty_cou, invitation_validity, permitted_fields_name, required_fields_addr, required_fields_name, t_and_c_login_mode, sponsor_eligibility, theme_stacking, sponsor_co_group_id, default_co_pipeline_id, elect_strategy_primary_name, co_dashboard_id, co_theme_id, global_search_limit, created, modified, group_create_admin_only, person_picker_email_type, person_picker_identifier_type, person_picker_display_types) FROM stdin;
 \.
 
 
@@ -5831,8 +6135,8 @@ COPY public.cm_co_settings (id, co_id, enable_nsf_demo, disable_expiration, disa
 -- Data for Name: cm_co_sql_provisioner_targets; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_co_sql_provisioner_targets (id, co_provisioning_target_id, server_id, created, modified) FROM stdin;
-1	1	1	2022-09-23 17:57:44	2022-09-23 17:57:55
+COPY public.cm_co_sql_provisioner_targets (id, co_provisioning_target_id, server_id, created, modified, table_prefix) FROM stdin;
+1	1	1	2022-09-23 17:57:44	2022-09-23 17:57:55	\N
 \.
 
 
@@ -5864,7 +6168,7 @@ COPY public.cm_co_themes (id, co_id, name, hide_title, hide_footer_logo, css, he
 -- Data for Name: cm_core_apis; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_core_apis (id, co_id, status, api_user_id, identifier_type, api, created, modified, core_api_id, revision, deleted, actor_identifier) FROM stdin;
+COPY public.cm_core_apis (id, co_id, status, api_user_id, identifier_type, api, created, modified, core_api_id, revision, deleted, actor_identifier, index_response_type, expunge_on_delete) FROM stdin;
 \.
 
 
@@ -5890,7 +6194,7 @@ COPY public.cm_cous (id, co_id, name, description, parent_id, lft, rght, created
 -- Data for Name: cm_data_filters; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_data_filters (id, co_id, description, plugin, status, created, modified, data_filter_id, revision, deleted, actor_identifier) FROM stdin;
+COPY public.cm_data_filters (id, co_id, description, plugin, status, created, modified, data_filter_id, revision, deleted, actor_identifier, context) FROM stdin;
 \.
 
 
@@ -5932,7 +6236,7 @@ COPY public.cm_email_addresses (id, mail, description, type, verified, co_person
 -- Data for Name: cm_env_sources; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_env_sources (id, org_identity_source_id, env_name_honorific, env_name_given, env_name_middle, env_name_family, env_name_suffix, env_affiliation, env_title, env_o, env_ou, env_mail, env_telephone_number, env_address_street, env_address_locality, env_address_state, env_address_postalcode, env_address_country, env_identifier_eppn, env_identifier_eppn_login, env_identifier_eptid, env_identifier_eptid_login, env_identifier_epuid, env_identifier_epuid_login, env_identifier_oidcsub, env_identifier_oidcsub_login, env_identifier_orcid, env_identifier_orcid_login, env_identifier_samlpairwiseid, env_identifier_samlpairwiseid_login, env_identifier_samlsubjectid, env_identifier_samlsubjectid_login, env_identifier_sorid, env_identifier_sorid_login, env_identifier_network, env_identifier_network_login, created, modified) FROM stdin;
+COPY public.cm_env_sources (id, org_identity_source_id, env_name_honorific, env_name_given, env_name_middle, env_name_family, env_name_suffix, env_affiliation, env_title, env_o, env_ou, env_mail, env_telephone_number, env_address_street, env_address_locality, env_address_state, env_address_postalcode, env_address_country, env_identifier_eppn, env_identifier_eppn_login, env_identifier_eptid, env_identifier_eptid_login, env_identifier_epuid, env_identifier_epuid_login, env_identifier_oidcsub, env_identifier_oidcsub_login, env_identifier_orcid, env_identifier_orcid_login, env_identifier_samlpairwiseid, env_identifier_samlpairwiseid_login, env_identifier_samlsubjectid, env_identifier_samlsubjectid_login, env_identifier_sorid, env_identifier_sorid_login, env_identifier_network, env_identifier_network_login, created, modified, duplicate_mode, redirect_on_duplicate, sp_type) FROM stdin;
 \.
 
 
@@ -5940,259 +6244,260 @@ COPY public.cm_env_sources (id, org_identity_source_id, env_name_honorific, env_
 -- Data for Name: cm_history_records; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_history_records (id, co_person_id, co_person_role_id, org_identity_id, co_group_id, co_email_list_id, co_service_id, actor_co_person_id, action, comment, created, modified, history_record_id, revision, deleted, actor_identifier) FROM stdin;
-1	1	\N	\N	2	\N	\N	\N	ACGM	Added to CO Group CO:members:active (2) (member=Yes, owner=No)	2022-09-23 17:29:25	2022-09-23 17:29:25	\N	0	f	Shell user "root"
-2	1	\N	\N	3	\N	\N	\N	ACGM	Added to CO Group CO:members:all (3) (member=Yes, owner=No)	2022-09-23 17:29:26	2022-09-23 17:29:26	\N	0	f	Shell user "root"
-3	\N	\N	2	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:46:09	2022-09-23 18:46:09	\N	0	f	co_2.apiuser
-4	\N	\N	2	\N	\N	\N	\N	ANAM	Name "Gusto Guest" Added	2022-09-23 18:46:10	2022-09-23 18:46:10	\N	0	f	co_2.apiuser
-5	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:10	2022-09-23 18:46:10	\N	0	f	co_2.apiuser
-6	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser
-7	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser
-8	2	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser
-9	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser
-10	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser
-11	2	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser
-12	2	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser
-13	2	\N	2	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser
-14	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:12	2022-09-23 18:46:12	\N	0	f	co_2.apiuser
-15	2	\N	\N	\N	\N	\N	\N	ANAM	Name "Gusto Guest" Added	2022-09-23 18:46:12	2022-09-23 18:46:12	\N	0	f	co_2.apiuser
-16	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:13	2022-09-23 18:46:13	\N	0	f	co_2.apiuser
-17	2	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest1@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:46:13	2022-09-23 18:46:13	\N	0	f	co_2.apiuser
-18	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:13	2022-09-23 18:46:13	\N	0	f	co_2.apiuser
-19	\N	\N	2	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest1@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:13	2022-09-23 18:46:13	\N	0	f	co_2.apiuser
-20	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:14	2022-09-23 18:46:14	\N	0	f	co_2.apiuser
-21	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:14	2022-09-23 18:46:14	\N	0	f	co_2.apiuser
-22	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:14	2022-09-23 18:46:14	\N	0	f	co_2.apiuser
-23	2	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest1@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:14	2022-09-23 18:46:14	\N	0	f	co_2.apiuser
-24	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser
-25	2	2	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser
-26	2	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000001 (GuestID)	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser
-27	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser
-28	\N	\N	3	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:46:17	2022-09-23 18:46:17	\N	0	f	co_2.apiuser
-29	\N	\N	3	\N	\N	\N	\N	ANAM	Name "Philipe Invitado" Added	2022-09-23 18:46:17	2022-09-23 18:46:17	\N	0	f	co_2.apiuser
-30	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser
-31	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser
-32	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser
-33	3	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser
-34	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser
-35	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser
-36	3	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser
-37	3	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser
-38	3	\N	3	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser
-39	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:19	2022-09-23 18:46:19	\N	0	f	co_2.apiuser
-40	3	\N	\N	\N	\N	\N	\N	ANAM	Name "Philipe Invitado" Added	2022-09-23 18:46:19	2022-09-23 18:46:19	\N	0	f	co_2.apiuser
-41	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:20	2022-09-23 18:46:20	\N	0	f	co_2.apiuser
-42	3	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest2@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:46:20	2022-09-23 18:46:20	\N	0	f	co_2.apiuser
-43	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:20	2022-09-23 18:46:20	\N	0	f	co_2.apiuser
-44	\N	\N	3	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest2@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:20	2022-09-23 18:46:20	\N	0	f	co_2.apiuser
-45	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser
-46	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser
-47	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser
-48	3	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest2@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser
-49	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser
-50	3	3	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:46:22	2022-09-23 18:46:22	\N	0	f	co_2.apiuser
-51	3	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000002 (GuestID)	2022-09-23 18:46:22	2022-09-23 18:46:22	\N	0	f	co_2.apiuser
-52	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:22	2022-09-23 18:46:22	\N	0	f	co_2.apiuser
-53	\N	\N	4	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:46:23	2022-09-23 18:46:23	\N	0	f	co_2.apiuser
-54	\N	\N	4	\N	\N	\N	\N	ANAM	Name "Christie Walken" Added	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser
-55	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser
-56	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser
-57	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser
-58	4	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser
-59	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser
-60	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser
-61	4	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser
-62	4	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser
-63	4	\N	4	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser
-64	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:26	2022-09-23 18:46:26	\N	0	f	co_2.apiuser
-65	4	\N	\N	\N	\N	\N	\N	ANAM	Name "Christie Walken" Added	2022-09-23 18:46:26	2022-09-23 18:46:26	\N	0	f	co_2.apiuser
-66	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:26	2022-09-23 18:46:26	\N	0	f	co_2.apiuser
-67	4	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest3@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:46:26	2022-09-23 18:46:26	\N	0	f	co_2.apiuser
-68	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:27	2022-09-23 18:46:27	\N	0	f	co_2.apiuser
-69	\N	\N	4	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest3@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:27	2022-09-23 18:46:27	\N	0	f	co_2.apiuser
-70	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:27	2022-09-23 18:46:27	\N	0	f	co_2.apiuser
-71	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:27	2022-09-23 18:46:27	\N	0	f	co_2.apiuser
-72	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser
-73	4	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest3@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser
-74	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser
-75	4	4	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser
-76	4	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000003 (GuestID)	2022-09-23 18:46:29	2022-09-23 18:46:29	\N	0	f	co_2.apiuser
-77	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:29	2022-09-23 18:46:29	\N	0	f	co_2.apiuser
-78	\N	\N	5	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:49:39	2022-09-23 18:49:39	\N	0	f	co_2.apiuser
-79	\N	\N	5	\N	\N	\N	\N	ANAM	Name "Luke Skywalker" Added	2022-09-23 18:49:40	2022-09-23 18:49:40	\N	0	f	co_2.apiuser
-80	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:40	2022-09-23 18:49:40	\N	0	f	co_2.apiuser
-81	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser
-82	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser
-83	5	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser
-84	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser
-85	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser
-86	5	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser
-87	5	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser
-88	5	\N	5	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser
-89	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:42	2022-09-23 18:49:42	\N	0	f	co_2.apiuser
-90	5	\N	\N	\N	\N	\N	\N	ANAM	Name "Luke Skywalker" Added	2022-09-23 18:49:42	2022-09-23 18:49:42	\N	0	f	co_2.apiuser
-91	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:42	2022-09-23 18:49:42	\N	0	f	co_2.apiuser
-92	5	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest4@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:49:42	2022-09-23 18:49:42	\N	0	f	co_2.apiuser
-93	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:43	2022-09-23 18:49:43	\N	0	f	co_2.apiuser
-94	\N	\N	5	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest4@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:43	2022-09-23 18:49:43	\N	0	f	co_2.apiuser
-95	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser
-96	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser
-97	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser
-98	5	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest4@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser
-99	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser
-100	5	5	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser
-101	5	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000004 (GuestID)	2022-09-23 18:49:45	2022-09-23 18:49:45	\N	0	f	co_2.apiuser
-102	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:45	2022-09-23 18:49:45	\N	0	f	co_2.apiuser
-103	\N	\N	6	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:49:46	2022-09-23 18:49:46	\N	0	f	co_2.apiuser
-104	\N	\N	6	\N	\N	\N	\N	ANAM	Name "Chew Baca" Added	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser
-105	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser
-106	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser
-107	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser
-108	6	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser
-109	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser
-110	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser
-111	6	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser
-112	6	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser
-113	6	\N	6	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:49:48	2022-09-23 18:49:48	\N	0	f	co_2.apiuser
-114	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:48	2022-09-23 18:49:48	\N	0	f	co_2.apiuser
-115	6	\N	\N	\N	\N	\N	\N	ANAM	Name "Chew Baca" Added	2022-09-23 18:49:48	2022-09-23 18:49:48	\N	0	f	co_2.apiuser
-116	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:49	2022-09-23 18:49:49	\N	0	f	co_2.apiuser
-117	6	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest5@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:49:49	2022-09-23 18:49:49	\N	0	f	co_2.apiuser
-118	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser
-119	\N	\N	6	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest5@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser
-120	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser
-121	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser
-122	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser
-123	6	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest5@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser
-124	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser
-125	6	6	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser
-126	6	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000005 (GuestID)	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser
-127	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser
-128	\N	\N	7	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:49:53	2022-09-23 18:49:53	\N	0	f	co_2.apiuser
-129	\N	\N	7	\N	\N	\N	\N	ANAM	Name "Han Solo" Added	2022-09-23 18:49:53	2022-09-23 18:49:53	\N	0	f	co_2.apiuser
-130	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:53	2022-09-23 18:49:53	\N	0	f	co_2.apiuser
-131	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser
-132	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser
-133	7	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser
-134	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser
-135	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser
-136	7	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser
-137	7	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser
-138	7	\N	7	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser
-139	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:55	2022-09-23 18:49:55	\N	0	f	co_2.apiuser
-140	7	\N	\N	\N	\N	\N	\N	ANAM	Name "Han Solo" Added	2022-09-23 18:49:55	2022-09-23 18:49:55	\N	0	f	co_2.apiuser
-141	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:55	2022-09-23 18:49:55	\N	0	f	co_2.apiuser
-142	7	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest6@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:49:55	2022-09-23 18:49:55	\N	0	f	co_2.apiuser
-143	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:56	2022-09-23 18:49:56	\N	0	f	co_2.apiuser
-144	\N	\N	7	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest6@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:56	2022-09-23 18:49:56	\N	0	f	co_2.apiuser
-145	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:56	2022-09-23 18:49:56	\N	0	f	co_2.apiuser
-146	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser
-147	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser
-148	7	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest6@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser
-149	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser
-150	7	7	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser
-151	7	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000006 (GuestID)	2022-09-23 18:49:58	2022-09-23 18:49:58	\N	0	f	co_2.apiuser
-152	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:58	2022-09-23 18:49:58	\N	0	f	co_2.apiuser
-153	\N	\N	8	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:49:59	2022-09-23 18:49:59	\N	0	f	co_2.apiuser
-154	\N	\N	8	\N	\N	\N	\N	ANAM	Name "Obi-Wan Kenobi" Added	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser
-155	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser
-156	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser
-157	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser
-158	8	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser
-159	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser
-160	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser
-161	8	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser
-162	8	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:50:01	2022-09-23 18:50:01	\N	0	f	co_2.apiuser
-163	8	\N	8	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:50:01	2022-09-23 18:50:01	\N	0	f	co_2.apiuser
-164	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:02	2022-09-23 18:50:02	\N	0	f	co_2.apiuser
-165	8	\N	\N	\N	\N	\N	\N	ANAM	Name "Obi-Wan Kenobi" Added	2022-09-23 18:50:02	2022-09-23 18:50:02	\N	0	f	co_2.apiuser
-166	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:02	2022-09-23 18:50:02	\N	0	f	co_2.apiuser
-167	8	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest7@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:50:02	2022-09-23 18:50:02	\N	0	f	co_2.apiuser
-168	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser
-169	\N	\N	8	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest7@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser
-170	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser
-171	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser
-172	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser
-173	8	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest7@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser
-174	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:04	2022-09-23 18:50:04	\N	0	f	co_2.apiuser
-175	8	8	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:50:04	2022-09-23 18:50:04	\N	0	f	co_2.apiuser
-176	8	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000007 (GuestID)	2022-09-23 18:50:05	2022-09-23 18:50:05	\N	0	f	co_2.apiuser
-177	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:05	2022-09-23 18:50:05	\N	0	f	co_2.apiuser
-178	\N	\N	9	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:50:06	2022-09-23 18:50:06	\N	0	f	co_2.apiuser
-179	\N	\N	9	\N	\N	\N	\N	ANAM	Name "Donald Duck" Added	2022-09-23 18:50:06	2022-09-23 18:50:06	\N	0	f	co_2.apiuser
-180	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser
-181	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser
-182	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser
-183	9	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser
-184	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser
-185	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser
-186	9	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser
-187	9	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser
-188	9	\N	9	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:50:08	2022-09-23 18:50:08	\N	0	f	co_2.apiuser
-189	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:08	2022-09-23 18:50:08	\N	0	f	co_2.apiuser
-190	9	\N	\N	\N	\N	\N	\N	ANAM	Name "Donald Duck" Added	2022-09-23 18:50:08	2022-09-23 18:50:08	\N	0	f	co_2.apiuser
-191	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:09	2022-09-23 18:50:09	\N	0	f	co_2.apiuser
-192	9	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest8@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:50:09	2022-09-23 18:50:09	\N	0	f	co_2.apiuser
-193	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser
-194	\N	\N	9	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest8@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser
-195	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser
-196	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser
-197	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser
-198	9	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest8@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser
-199	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:11	2022-09-23 18:50:11	\N	0	f	co_2.apiuser
-200	9	9	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:50:11	2022-09-23 18:50:11	\N	0	f	co_2.apiuser
-201	9	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000008 (GuestID)	2022-09-23 18:50:11	2022-09-23 18:50:11	\N	0	f	co_2.apiuser
-202	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:12	2022-09-23 18:50:12	\N	0	f	co_2.apiuser
-203	\N	\N	10	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:50:13	2022-09-23 18:50:13	\N	0	f	co_2.apiuser
-204	\N	\N	10	\N	\N	\N	\N	ANAM	Name "Bugs Bunny" Added	2022-09-23 18:50:13	2022-09-23 18:50:13	\N	0	f	co_2.apiuser
-205	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser
-206	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser
-207	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser
-208	10	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser
-209	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser
-210	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser
-211	10	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser
-212	10	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser
-213	10	\N	10	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:50:15	2022-09-23 18:50:15	\N	0	f	co_2.apiuser
-214	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:15	2022-09-23 18:50:15	\N	0	f	co_2.apiuser
-215	10	\N	\N	\N	\N	\N	\N	ANAM	Name "Bugs Bunny" Added	2022-09-23 18:50:15	2022-09-23 18:50:15	\N	0	f	co_2.apiuser
-216	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:16	2022-09-23 18:50:16	\N	0	f	co_2.apiuser
-217	10	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest9@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:50:16	2022-09-23 18:50:16	\N	0	f	co_2.apiuser
-218	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:16	2022-09-23 18:50:16	\N	0	f	co_2.apiuser
-219	\N	\N	10	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest9@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:16	2022-09-23 18:50:16	\N	0	f	co_2.apiuser
-220	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser
-221	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser
-222	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser
-223	10	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest9@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser
-224	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser
-225	10	10	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:50:18	2022-09-23 18:50:18	\N	0	f	co_2.apiuser
-226	10	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000009 (GuestID)	2022-09-23 18:50:18	2022-09-23 18:50:18	\N	0	f	co_2.apiuser
-227	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:18	2022-09-23 18:50:18	\N	0	f	co_2.apiuser
-228	\N	\N	11	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:50:20	2022-09-23 18:50:20	\N	0	f	co_2.apiuser
-229	\N	\N	11	\N	\N	\N	\N	ANAM	Name "Mickey Mouse" Added	2022-09-23 18:50:20	2022-09-23 18:50:20	\N	0	f	co_2.apiuser
-230	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser
-231	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser
-232	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser
-233	11	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser
-234	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser
-235	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser
-236	11	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser
-237	11	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser
-238	11	\N	11	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser
-239	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:22	2022-09-23 18:50:22	\N	0	f	co_2.apiuser
-240	11	\N	\N	\N	\N	\N	\N	ANAM	Name "Mickey Mouse" Added	2022-09-23 18:50:22	2022-09-23 18:50:22	\N	0	f	co_2.apiuser
-241	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:22	2022-09-23 18:50:22	\N	0	f	co_2.apiuser
-242	11	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest10@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:50:22	2022-09-23 18:50:22	\N	0	f	co_2.apiuser
-243	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:23	2022-09-23 18:50:23	\N	0	f	co_2.apiuser
-244	\N	\N	11	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest10@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:23	2022-09-23 18:50:23	\N	0	f	co_2.apiuser
-245	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:23	2022-09-23 18:50:23	\N	0	f	co_2.apiuser
-246	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser
-247	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser
-248	11	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest10@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser
-249	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser
-250	11	11	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser
-251	11	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000010 (GuestID)	2022-09-23 18:50:25	2022-09-23 18:50:25	\N	0	f	co_2.apiuser
-252	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:25	2022-09-23 18:50:25	\N	0	f	co_2.apiuser
+COPY public.cm_history_records (id, co_person_id, co_person_role_id, org_identity_id, co_group_id, co_email_list_id, co_service_id, actor_co_person_id, action, comment, created, modified, history_record_id, revision, deleted, actor_identifier, actor_api_user_id) FROM stdin;
+1	1	\N	\N	2	\N	\N	\N	ACGM	Added to CO Group CO:members:active (2) (member=Yes, owner=No)	2022-09-23 17:29:25	2022-09-23 17:29:25	\N	0	f	Shell user "root"	\N
+2	1	\N	\N	3	\N	\N	\N	ACGM	Added to CO Group CO:members:all (3) (member=Yes, owner=No)	2022-09-23 17:29:26	2022-09-23 17:29:26	\N	0	f	Shell user "root"	\N
+3	\N	\N	2	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:46:09	2022-09-23 18:46:09	\N	0	f	co_2.apiuser	\N
+4	\N	\N	2	\N	\N	\N	\N	ANAM	Name "Gusto Guest" Added	2022-09-23 18:46:10	2022-09-23 18:46:10	\N	0	f	co_2.apiuser	\N
+5	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:10	2022-09-23 18:46:10	\N	0	f	co_2.apiuser	\N
+6	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser	\N
+7	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser	\N
+8	2	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser	\N
+9	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser	\N
+10	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser	\N
+11	2	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser	\N
+12	2	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser	\N
+13	2	\N	2	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:46:11	2022-09-23 18:46:11	\N	0	f	co_2.apiuser	\N
+14	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:12	2022-09-23 18:46:12	\N	0	f	co_2.apiuser	\N
+15	2	\N	\N	\N	\N	\N	\N	ANAM	Name "Gusto Guest" Added	2022-09-23 18:46:12	2022-09-23 18:46:12	\N	0	f	co_2.apiuser	\N
+16	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:13	2022-09-23 18:46:13	\N	0	f	co_2.apiuser	\N
+17	2	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest1@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:46:13	2022-09-23 18:46:13	\N	0	f	co_2.apiuser	\N
+18	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:13	2022-09-23 18:46:13	\N	0	f	co_2.apiuser	\N
+19	\N	\N	2	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest1@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:13	2022-09-23 18:46:13	\N	0	f	co_2.apiuser	\N
+20	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:14	2022-09-23 18:46:14	\N	0	f	co_2.apiuser	\N
+21	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:14	2022-09-23 18:46:14	\N	0	f	co_2.apiuser	\N
+22	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:14	2022-09-23 18:46:14	\N	0	f	co_2.apiuser	\N
+23	2	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest1@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:14	2022-09-23 18:46:14	\N	0	f	co_2.apiuser	\N
+24	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser	\N
+25	2	2	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser	\N
+26	2	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000001 (GuestID)	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser	\N
+27	2	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:15	2022-09-23 18:46:15	\N	0	f	co_2.apiuser	\N
+28	\N	\N	3	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:46:17	2022-09-23 18:46:17	\N	0	f	co_2.apiuser	\N
+29	\N	\N	3	\N	\N	\N	\N	ANAM	Name "Philipe Invitado" Added	2022-09-23 18:46:17	2022-09-23 18:46:17	\N	0	f	co_2.apiuser	\N
+30	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser	\N
+31	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser	\N
+32	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser	\N
+33	3	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser	\N
+34	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser	\N
+35	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser	\N
+36	3	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser	\N
+37	3	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser	\N
+38	3	\N	3	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:46:18	2022-09-23 18:46:18	\N	0	f	co_2.apiuser	\N
+39	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:19	2022-09-23 18:46:19	\N	0	f	co_2.apiuser	\N
+40	3	\N	\N	\N	\N	\N	\N	ANAM	Name "Philipe Invitado" Added	2022-09-23 18:46:19	2022-09-23 18:46:19	\N	0	f	co_2.apiuser	\N
+41	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:20	2022-09-23 18:46:20	\N	0	f	co_2.apiuser	\N
+42	3	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest2@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:46:20	2022-09-23 18:46:20	\N	0	f	co_2.apiuser	\N
+43	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:20	2022-09-23 18:46:20	\N	0	f	co_2.apiuser	\N
+44	\N	\N	3	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest2@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:20	2022-09-23 18:46:20	\N	0	f	co_2.apiuser	\N
+45	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser	\N
+46	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser	\N
+47	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser	\N
+48	3	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest2@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser	\N
+49	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:21	2022-09-23 18:46:21	\N	0	f	co_2.apiuser	\N
+50	3	3	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:46:22	2022-09-23 18:46:22	\N	0	f	co_2.apiuser	\N
+51	3	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000002 (GuestID)	2022-09-23 18:46:22	2022-09-23 18:46:22	\N	0	f	co_2.apiuser	\N
+52	3	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:22	2022-09-23 18:46:22	\N	0	f	co_2.apiuser	\N
+53	\N	\N	4	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:46:23	2022-09-23 18:46:23	\N	0	f	co_2.apiuser	\N
+54	\N	\N	4	\N	\N	\N	\N	ANAM	Name "Christie Walken" Added	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser	\N
+55	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser	\N
+56	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser	\N
+57	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser	\N
+58	4	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:46:24	2022-09-23 18:46:24	\N	0	f	co_2.apiuser	\N
+59	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser	\N
+60	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser	\N
+61	4	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser	\N
+62	4	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser	\N
+63	4	\N	4	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:46:25	2022-09-23 18:46:25	\N	0	f	co_2.apiuser	\N
+64	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:26	2022-09-23 18:46:26	\N	0	f	co_2.apiuser	\N
+65	4	\N	\N	\N	\N	\N	\N	ANAM	Name "Christie Walken" Added	2022-09-23 18:46:26	2022-09-23 18:46:26	\N	0	f	co_2.apiuser	\N
+66	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:26	2022-09-23 18:46:26	\N	0	f	co_2.apiuser	\N
+67	4	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest3@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:46:26	2022-09-23 18:46:26	\N	0	f	co_2.apiuser	\N
+68	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:27	2022-09-23 18:46:27	\N	0	f	co_2.apiuser	\N
+69	\N	\N	4	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest3@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:27	2022-09-23 18:46:27	\N	0	f	co_2.apiuser	\N
+70	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:27	2022-09-23 18:46:27	\N	0	f	co_2.apiuser	\N
+71	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:27	2022-09-23 18:46:27	\N	0	f	co_2.apiuser	\N
+72	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser	\N
+73	4	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest3@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser	\N
+74	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser	\N
+75	4	4	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:46:28	2022-09-23 18:46:28	\N	0	f	co_2.apiuser	\N
+76	4	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000003 (GuestID)	2022-09-23 18:46:29	2022-09-23 18:46:29	\N	0	f	co_2.apiuser	\N
+77	4	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:46:29	2022-09-23 18:46:29	\N	0	f	co_2.apiuser	\N
+78	\N	\N	5	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:49:39	2022-09-23 18:49:39	\N	0	f	co_2.apiuser	\N
+79	\N	\N	5	\N	\N	\N	\N	ANAM	Name "Luke Skywalker" Added	2022-09-23 18:49:40	2022-09-23 18:49:40	\N	0	f	co_2.apiuser	\N
+80	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:40	2022-09-23 18:49:40	\N	0	f	co_2.apiuser	\N
+81	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser	\N
+82	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser	\N
+83	5	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser	\N
+84	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser	\N
+85	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser	\N
+86	5	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser	\N
+87	5	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser	\N
+88	5	\N	5	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:49:41	2022-09-23 18:49:41	\N	0	f	co_2.apiuser	\N
+89	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:42	2022-09-23 18:49:42	\N	0	f	co_2.apiuser	\N
+90	5	\N	\N	\N	\N	\N	\N	ANAM	Name "Luke Skywalker" Added	2022-09-23 18:49:42	2022-09-23 18:49:42	\N	0	f	co_2.apiuser	\N
+91	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:42	2022-09-23 18:49:42	\N	0	f	co_2.apiuser	\N
+92	5	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest4@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:49:42	2022-09-23 18:49:42	\N	0	f	co_2.apiuser	\N
+93	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:43	2022-09-23 18:49:43	\N	0	f	co_2.apiuser	\N
+94	\N	\N	5	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest4@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:43	2022-09-23 18:49:43	\N	0	f	co_2.apiuser	\N
+95	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser	\N
+96	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser	\N
+97	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser	\N
+98	5	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest4@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser	\N
+99	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser	\N
+100	5	5	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:49:44	2022-09-23 18:49:44	\N	0	f	co_2.apiuser	\N
+101	5	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000004 (GuestID)	2022-09-23 18:49:45	2022-09-23 18:49:45	\N	0	f	co_2.apiuser	\N
+102	5	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:45	2022-09-23 18:49:45	\N	0	f	co_2.apiuser	\N
+103	\N	\N	6	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:49:46	2022-09-23 18:49:46	\N	0	f	co_2.apiuser	\N
+104	\N	\N	6	\N	\N	\N	\N	ANAM	Name "Chew Baca" Added	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser	\N
+105	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser	\N
+106	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser	\N
+107	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser	\N
+108	6	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser	\N
+109	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser	\N
+110	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser	\N
+111	6	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser	\N
+112	6	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:49:47	2022-09-23 18:49:47	\N	0	f	co_2.apiuser	\N
+113	6	\N	6	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:49:48	2022-09-23 18:49:48	\N	0	f	co_2.apiuser	\N
+114	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:48	2022-09-23 18:49:48	\N	0	f	co_2.apiuser	\N
+115	6	\N	\N	\N	\N	\N	\N	ANAM	Name "Chew Baca" Added	2022-09-23 18:49:48	2022-09-23 18:49:48	\N	0	f	co_2.apiuser	\N
+116	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:49	2022-09-23 18:49:49	\N	0	f	co_2.apiuser	\N
+117	6	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest5@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:49:49	2022-09-23 18:49:49	\N	0	f	co_2.apiuser	\N
+118	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser	\N
+119	\N	\N	6	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest5@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser	\N
+120	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser	\N
+121	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser	\N
+122	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser	\N
+123	6	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest5@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:50	2022-09-23 18:49:50	\N	0	f	co_2.apiuser	\N
+124	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser	\N
+125	6	6	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser	\N
+126	6	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000005 (GuestID)	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser	\N
+127	6	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:51	2022-09-23 18:49:51	\N	0	f	co_2.apiuser	\N
+128	\N	\N	7	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:49:53	2022-09-23 18:49:53	\N	0	f	co_2.apiuser	\N
+129	\N	\N	7	\N	\N	\N	\N	ANAM	Name "Han Solo" Added	2022-09-23 18:49:53	2022-09-23 18:49:53	\N	0	f	co_2.apiuser	\N
+130	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:53	2022-09-23 18:49:53	\N	0	f	co_2.apiuser	\N
+131	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser	\N
+132	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser	\N
+133	7	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser	\N
+134	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser	\N
+135	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser	\N
+136	7	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser	\N
+137	7	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser	\N
+138	7	\N	7	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:49:54	2022-09-23 18:49:54	\N	0	f	co_2.apiuser	\N
+139	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:55	2022-09-23 18:49:55	\N	0	f	co_2.apiuser	\N
+140	7	\N	\N	\N	\N	\N	\N	ANAM	Name "Han Solo" Added	2022-09-23 18:49:55	2022-09-23 18:49:55	\N	0	f	co_2.apiuser	\N
+141	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:55	2022-09-23 18:49:55	\N	0	f	co_2.apiuser	\N
+142	7	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest6@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:49:55	2022-09-23 18:49:55	\N	0	f	co_2.apiuser	\N
+143	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:56	2022-09-23 18:49:56	\N	0	f	co_2.apiuser	\N
+144	\N	\N	7	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest6@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:56	2022-09-23 18:49:56	\N	0	f	co_2.apiuser	\N
+145	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:56	2022-09-23 18:49:56	\N	0	f	co_2.apiuser	\N
+146	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser	\N
+147	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser	\N
+148	7	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest6@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser	\N
+149	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser	\N
+150	7	7	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:49:57	2022-09-23 18:49:57	\N	0	f	co_2.apiuser	\N
+151	7	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000006 (GuestID)	2022-09-23 18:49:58	2022-09-23 18:49:58	\N	0	f	co_2.apiuser	\N
+152	7	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:49:58	2022-09-23 18:49:58	\N	0	f	co_2.apiuser	\N
+153	\N	\N	8	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:49:59	2022-09-23 18:49:59	\N	0	f	co_2.apiuser	\N
+154	\N	\N	8	\N	\N	\N	\N	ANAM	Name "Obi-Wan Kenobi" Added	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser	\N
+155	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser	\N
+156	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser	\N
+157	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser	\N
+158	8	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser	\N
+159	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser	\N
+160	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser	\N
+161	8	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:50:00	2022-09-23 18:50:00	\N	0	f	co_2.apiuser	\N
+162	8	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:50:01	2022-09-23 18:50:01	\N	0	f	co_2.apiuser	\N
+163	8	\N	8	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:50:01	2022-09-23 18:50:01	\N	0	f	co_2.apiuser	\N
+164	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:02	2022-09-23 18:50:02	\N	0	f	co_2.apiuser	\N
+165	8	\N	\N	\N	\N	\N	\N	ANAM	Name "Obi-Wan Kenobi" Added	2022-09-23 18:50:02	2022-09-23 18:50:02	\N	0	f	co_2.apiuser	\N
+166	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:02	2022-09-23 18:50:02	\N	0	f	co_2.apiuser	\N
+167	8	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest7@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:50:02	2022-09-23 18:50:02	\N	0	f	co_2.apiuser	\N
+168	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser	\N
+169	\N	\N	8	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest7@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser	\N
+170	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser	\N
+171	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser	\N
+172	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser	\N
+173	8	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest7@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:03	2022-09-23 18:50:03	\N	0	f	co_2.apiuser	\N
+174	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:04	2022-09-23 18:50:04	\N	0	f	co_2.apiuser	\N
+175	8	8	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:50:04	2022-09-23 18:50:04	\N	0	f	co_2.apiuser	\N
+176	8	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000007 (GuestID)	2022-09-23 18:50:05	2022-09-23 18:50:05	\N	0	f	co_2.apiuser	\N
+177	8	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:05	2022-09-23 18:50:05	\N	0	f	co_2.apiuser	\N
+178	\N	\N	9	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:50:06	2022-09-23 18:50:06	\N	0	f	co_2.apiuser	\N
+179	\N	\N	9	\N	\N	\N	\N	ANAM	Name "Donald Duck" Added	2022-09-23 18:50:06	2022-09-23 18:50:06	\N	0	f	co_2.apiuser	\N
+180	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser	\N
+181	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser	\N
+182	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser	\N
+183	9	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser	\N
+184	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser	\N
+185	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser	\N
+186	9	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser	\N
+187	9	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:50:07	2022-09-23 18:50:07	\N	0	f	co_2.apiuser	\N
+188	9	\N	9	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:50:08	2022-09-23 18:50:08	\N	0	f	co_2.apiuser	\N
+189	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:08	2022-09-23 18:50:08	\N	0	f	co_2.apiuser	\N
+190	9	\N	\N	\N	\N	\N	\N	ANAM	Name "Donald Duck" Added	2022-09-23 18:50:08	2022-09-23 18:50:08	\N	0	f	co_2.apiuser	\N
+191	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:09	2022-09-23 18:50:09	\N	0	f	co_2.apiuser	\N
+192	9	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest8@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:50:09	2022-09-23 18:50:09	\N	0	f	co_2.apiuser	\N
+193	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser	\N
+194	\N	\N	9	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest8@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser	\N
+195	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser	\N
+196	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser	\N
+197	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser	\N
+198	9	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest8@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:10	2022-09-23 18:50:10	\N	0	f	co_2.apiuser	\N
+199	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:11	2022-09-23 18:50:11	\N	0	f	co_2.apiuser	\N
+200	9	9	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:50:11	2022-09-23 18:50:11	\N	0	f	co_2.apiuser	\N
+201	9	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000008 (GuestID)	2022-09-23 18:50:11	2022-09-23 18:50:11	\N	0	f	co_2.apiuser	\N
+202	9	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:12	2022-09-23 18:50:12	\N	0	f	co_2.apiuser	\N
+203	\N	\N	10	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:50:13	2022-09-23 18:50:13	\N	0	f	co_2.apiuser	\N
+204	\N	\N	10	\N	\N	\N	\N	ANAM	Name "Bugs Bunny" Added	2022-09-23 18:50:13	2022-09-23 18:50:13	\N	0	f	co_2.apiuser	\N
+205	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser	\N
+206	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser	\N
+207	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser	\N
+208	10	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser	\N
+209	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser	\N
+210	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser	\N
+211	10	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser	\N
+212	10	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:50:14	2022-09-23 18:50:14	\N	0	f	co_2.apiuser	\N
+213	10	\N	10	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:50:15	2022-09-23 18:50:15	\N	0	f	co_2.apiuser	\N
+214	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:15	2022-09-23 18:50:15	\N	0	f	co_2.apiuser	\N
+215	10	\N	\N	\N	\N	\N	\N	ANAM	Name "Bugs Bunny" Added	2022-09-23 18:50:15	2022-09-23 18:50:15	\N	0	f	co_2.apiuser	\N
+216	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:16	2022-09-23 18:50:16	\N	0	f	co_2.apiuser	\N
+217	10	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest9@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:50:16	2022-09-23 18:50:16	\N	0	f	co_2.apiuser	\N
+218	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:16	2022-09-23 18:50:16	\N	0	f	co_2.apiuser	\N
+219	\N	\N	10	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest9@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:16	2022-09-23 18:50:16	\N	0	f	co_2.apiuser	\N
+220	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser	\N
+221	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser	\N
+222	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser	\N
+223	10	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest9@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser	\N
+224	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:17	2022-09-23 18:50:17	\N	0	f	co_2.apiuser	\N
+225	10	10	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:50:18	2022-09-23 18:50:18	\N	0	f	co_2.apiuser	\N
+226	10	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000009 (GuestID)	2022-09-23 18:50:18	2022-09-23 18:50:18	\N	0	f	co_2.apiuser	\N
+227	10	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:18	2022-09-23 18:50:18	\N	0	f	co_2.apiuser	\N
+228	\N	\N	11	\N	\N	\N	\N	AOIM	Org Identity Created (Manual)	2022-09-23 18:50:20	2022-09-23 18:50:20	\N	0	f	co_2.apiuser	\N
+229	\N	\N	11	\N	\N	\N	\N	ANAM	Name "Mickey Mouse" Added	2022-09-23 18:50:20	2022-09-23 18:50:20	\N	0	f	co_2.apiuser	\N
+230	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser	\N
+231	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser	\N
+232	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser	\N
+233	11	\N	\N	5	\N	\N	\N	ACGM	Added to CO Group CO:members:active (5) (member=Yes, owner=No)	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser	\N
+234	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser	\N
+235	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser	\N
+236	11	\N	\N	6	\N	\N	\N	ACGM	Added to CO Group CO:members:all (6) (member=Yes, owner=No)	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser	\N
+237	11	\N	\N	\N	\N	\N	\N	ACPM	CO Person Created (Manual)	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser	\N
+238	11	\N	11	\N	\N	\N	\N	LOCP	CO Person and Org Identity Linked	2022-09-23 18:50:21	2022-09-23 18:50:21	\N	0	f	co_2.apiuser	\N
+239	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:22	2022-09-23 18:50:22	\N	0	f	co_2.apiuser	\N
+240	11	\N	\N	\N	\N	\N	\N	ANAM	Name "Mickey Mouse" Added	2022-09-23 18:50:22	2022-09-23 18:50:22	\N	0	f	co_2.apiuser	\N
+241	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:22	2022-09-23 18:50:22	\N	0	f	co_2.apiuser	\N
+242	11	\N	\N	\N	\N	\N	\N	ECPM	Email Address Added: Email: Null > guest10@workbench.incommon.org;Type: Null > Official (official)	2022-09-23 18:50:22	2022-09-23 18:50:22	\N	0	f	co_2.apiuser	\N
+243	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:23	2022-09-23 18:50:23	\N	0	f	co_2.apiuser	\N
+244	\N	\N	11	\N	\N	\N	\N	EOIM	Identifier Added: Identifier: Null > guest10@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:23	2022-09-23 18:50:23	\N	0	f	co_2.apiuser	\N
+245	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:23	2022-09-23 18:50:23	\N	0	f	co_2.apiuser	\N
+246	\N	\N	\N	5	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser	\N
+247	\N	\N	\N	6	\N	\N	\N	PCGA	Provisioned COmanage data export	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser	\N
+248	11	\N	\N	\N	\N	\N	\N	ECPM	Identifier Added: Identifier: Null > guest10@workbench.incommon.org;Type: Null > ePPN (eppn);Login: Null > 1;Status: Null > A	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser	\N
+249	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser	\N
+250	11	11	\N	\N	\N	\N	\N	ACRM	CO Person Role Created (Manual)	2022-09-23 18:50:24	2022-09-23 18:50:24	\N	0	f	co_2.apiuser	\N
+251	11	\N	\N	\N	\N	\N	\N	AIDA	Identifier Auto Assigned: G00000010 (GuestID)	2022-09-23 18:50:25	2022-09-23 18:50:25	\N	0	f	co_2.apiuser	\N
+252	11	\N	\N	\N	\N	\N	\N	PCPA	Provisioned COmanage data export	2022-09-23 18:50:25	2022-09-23 18:50:25	\N	0	f	co_2.apiuser	\N
+253	\N	\N	\N	8	\N	\N	\N	PCGA	Provisioned COmanage data export	2024-01-26 17:43:25	2024-01-26 17:43:25	\N	0	f	Shell user "root"	\N
 \.
 
 
@@ -6200,7 +6505,7 @@ COPY public.cm_history_records (id, co_person_id, co_person_role_id, org_identit
 -- Data for Name: cm_http_servers; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_http_servers (id, server_id, serverurl, username, password, ssl_verify_peer, ssl_verify_host, created, modified) FROM stdin;
+COPY public.cm_http_servers (id, server_id, serverurl, username, password, ssl_verify_peer, ssl_verify_host, created, modified, auth_type) FROM stdin;
 \.
 
 
@@ -6255,7 +6560,7 @@ COPY public.cm_identity_documents (id, co_person_id, document_type, document_sub
 -- Data for Name: cm_kafka_servers; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_kafka_servers (id, server_id, brokers, security_protocol, sasl_mechanism, username, password, created, modified) FROM stdin;
+COPY public.cm_kafka_servers (id, server_id, brokers, security_protocol, sasl_mechanism, username, password, created, modified, groupid, topic, batch_size, partition, timeout) FROM stdin;
 \.
 
 
@@ -6287,7 +6592,7 @@ COPY public.cm_match_server_attributes (id, match_server_id, attribute, type, re
 -- Data for Name: cm_match_servers; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_match_servers (id, server_id, serverurl, username, password, sor_label, created, modified) FROM stdin;
+COPY public.cm_match_servers (id, server_id, serverurl, username, password, created, modified) FROM stdin;
 \.
 
 
@@ -6296,7 +6601,7 @@ COPY public.cm_match_servers (id, server_id, serverurl, username, password, sor_
 --
 
 COPY public.cm_meta (upgrade_version) FROM stdin;
-4.0.2
+4.3.2
 \.
 
 
@@ -6358,18 +6663,26 @@ COPY public.cm_orcid_sources (id, org_identity_source_id, server_id, created, mo
 -- Data for Name: cm_org_identities; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_org_identities (id, status, date_of_birth, affiliation, title, o, ou, co_id, valid_from, valid_through, created, modified, org_identity_id, revision, deleted, actor_identifier) FROM stdin;
-1	\N	\N	member	\N	\N	\N	1	\N	\N	2022-09-23 17:29:25	2022-09-23 17:29:25	\N	0	f	Shell user "root"
-2	\N	\N					2	\N	\N	2022-09-23 18:46:09	2022-09-23 18:46:09	\N	0	f	co_2.apiuser
-3	\N	\N					2	\N	\N	2022-09-23 18:46:17	2022-09-23 18:46:17	\N	0	f	co_2.apiuser
-4	\N	\N					2	\N	\N	2022-09-23 18:46:23	2022-09-23 18:46:23	\N	0	f	co_2.apiuser
-5	\N	\N					2	\N	\N	2022-09-23 18:49:39	2022-09-23 18:49:39	\N	0	f	co_2.apiuser
-6	\N	\N					2	\N	\N	2022-09-23 18:49:46	2022-09-23 18:49:46	\N	0	f	co_2.apiuser
-7	\N	\N					2	\N	\N	2022-09-23 18:49:52	2022-09-23 18:49:52	\N	0	f	co_2.apiuser
-8	\N	\N					2	\N	\N	2022-09-23 18:49:59	2022-09-23 18:49:59	\N	0	f	co_2.apiuser
-9	\N	\N					2	\N	\N	2022-09-23 18:50:06	2022-09-23 18:50:06	\N	0	f	co_2.apiuser
-10	\N	\N					2	\N	\N	2022-09-23 18:50:13	2022-09-23 18:50:13	\N	0	f	co_2.apiuser
-11	\N	\N					2	\N	\N	2022-09-23 18:50:19	2022-09-23 18:50:19	\N	0	f	co_2.apiuser
+COPY public.cm_org_identities (id, status, date_of_birth, affiliation, title, o, ou, co_id, valid_from, valid_through, created, modified, org_identity_id, revision, deleted, actor_identifier, manager_identifier, sponsor_identifier) FROM stdin;
+1	\N	\N	member	\N	\N	\N	1	\N	\N	2022-09-23 17:29:25	2022-09-23 17:29:25	\N	0	f	Shell user "root"	\N	\N
+2	\N	\N					2	\N	\N	2022-09-23 18:46:09	2022-09-23 18:46:09	\N	0	f	co_2.apiuser	\N	\N
+3	\N	\N					2	\N	\N	2022-09-23 18:46:17	2022-09-23 18:46:17	\N	0	f	co_2.apiuser	\N	\N
+4	\N	\N					2	\N	\N	2022-09-23 18:46:23	2022-09-23 18:46:23	\N	0	f	co_2.apiuser	\N	\N
+5	\N	\N					2	\N	\N	2022-09-23 18:49:39	2022-09-23 18:49:39	\N	0	f	co_2.apiuser	\N	\N
+6	\N	\N					2	\N	\N	2022-09-23 18:49:46	2022-09-23 18:49:46	\N	0	f	co_2.apiuser	\N	\N
+7	\N	\N					2	\N	\N	2022-09-23 18:49:52	2022-09-23 18:49:52	\N	0	f	co_2.apiuser	\N	\N
+8	\N	\N					2	\N	\N	2022-09-23 18:49:59	2022-09-23 18:49:59	\N	0	f	co_2.apiuser	\N	\N
+9	\N	\N					2	\N	\N	2022-09-23 18:50:06	2022-09-23 18:50:06	\N	0	f	co_2.apiuser	\N	\N
+10	\N	\N					2	\N	\N	2022-09-23 18:50:13	2022-09-23 18:50:13	\N	0	f	co_2.apiuser	\N	\N
+11	\N	\N					2	\N	\N	2022-09-23 18:50:19	2022-09-23 18:50:19	\N	0	f	co_2.apiuser	\N	\N
+\.
+
+
+--
+-- Data for Name: cm_org_identity_source_filters; Type: TABLE DATA; Schema: public; Owner: registry_user
+--
+
+COPY public.cm_org_identity_source_filters (id, org_identity_source_id, data_filter_id, ordr, created, modified, org_identity_source_filter_id, revision, deleted, actor_identifier) FROM stdin;
 \.
 
 
@@ -6385,7 +6698,7 @@ COPY public.cm_org_identity_source_records (id, org_identity_source_id, sorid, s
 -- Data for Name: cm_org_identity_sources; Type: TABLE DATA; Schema: public; Owner: registry_user
 --
 
-COPY public.cm_org_identity_sources (id, co_id, description, plugin, co_pipeline_id, status, sync_mode, sync_query_mismatch_mode, sync_query_skip_known, sync_on_user_login, eppn_identifier_type, eppn_suffix, hash_source_record, created, modified, org_identity_source_id, revision, deleted, actor_identifier) FROM stdin;
+COPY public.cm_org_identity_sources (id, co_id, description, plugin, co_pipeline_id, status, sync_mode, sync_query_mismatch_mode, sync_query_skip_known, sync_on_user_login, eppn_identifier_type, eppn_suffix, hash_source_record, created, modified, org_identity_source_id, revision, deleted, actor_identifier, sor_label) FROM stdin;
 \.
 
 
@@ -6448,6 +6761,30 @@ COPY public.cm_urls (id, url, description, type, co_person_id, org_identity_id, 
 
 
 --
+-- Data for Name: cm_vetting_requests; Type: TABLE DATA; Schema: public; Owner: registry_user
+--
+
+COPY public.cm_vetting_requests (id, co_person_id, vetting_step_id, co_job_id, status, created, modified, vetting_request_id, revision, deleted, actor_identifier) FROM stdin;
+\.
+
+
+--
+-- Data for Name: cm_vetting_results; Type: TABLE DATA; Schema: public; Owner: registry_user
+--
+
+COPY public.cm_vetting_results (id, vetting_request_id, vetting_step_id, vetter_co_person_id, status, comment, raw, created, modified, vetting_result_id, revision, deleted, actor_identifier) FROM stdin;
+\.
+
+
+--
+-- Data for Name: cm_vetting_steps; Type: TABLE DATA; Schema: public; Owner: registry_user
+--
+
+COPY public.cm_vetting_steps (id, co_id, description, plugin, status, ordr, vetter_co_group_id, review_on_result, created, modified, vetting_step_id, revision, deleted, actor_identifier) FROM stdin;
+\.
+
+
+--
 -- Name: cm_ad_hoc_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
 --
 
@@ -6486,7 +6823,7 @@ SELECT pg_catalog.setval('public.cm_attribute_enumerations_id_seq', 1, false);
 -- Name: cm_authentication_events_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
 --
 
-SELECT pg_catalog.setval('public.cm_authentication_events_id_seq', 134, true);
+SELECT pg_catalog.setval('public.cm_authentication_events_id_seq', 135, true);
 
 
 --
@@ -6668,7 +7005,7 @@ SELECT pg_catalog.setval('public.cm_co_grouper_provisioner_targets_id_seq', 1, f
 -- Name: cm_co_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
 --
 
-SELECT pg_catalog.setval('public.cm_co_groups_id_seq', 6, true);
+SELECT pg_catalog.setval('public.cm_co_groups_id_seq', 8, true);
 
 
 --
@@ -6819,10 +7156,17 @@ SELECT pg_catalog.setval('public.cm_co_pipelines_id_seq', 1, false);
 
 
 --
+-- Name: cm_co_provisioning_counts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
+--
+
+SELECT pg_catalog.setval('public.cm_co_provisioning_counts_id_seq', 1, false);
+
+
+--
 -- Name: cm_co_provisioning_exports_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
 --
 
-SELECT pg_catalog.setval('public.cm_co_provisioning_exports_id_seq', 12, true);
+SELECT pg_catalog.setval('public.cm_co_provisioning_exports_id_seq', 13, true);
 
 
 --
@@ -6955,7 +7299,7 @@ SELECT pg_catalog.setval('public.cm_env_sources_id_seq', 1, false);
 -- Name: cm_history_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
 --
 
-SELECT pg_catalog.setval('public.cm_history_records_id_seq', 252, true);
+SELECT pg_catalog.setval('public.cm_history_records_id_seq', 253, true);
 
 
 --
@@ -7050,6 +7394,13 @@ SELECT pg_catalog.setval('public.cm_org_identities_id_seq', 11, true);
 
 
 --
+-- Name: cm_org_identity_source_filters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
+--
+
+SELECT pg_catalog.setval('public.cm_org_identity_source_filters_id_seq', 1, false);
+
+
+--
 -- Name: cm_org_identity_source_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
 --
 
@@ -7110,6 +7461,27 @@ SELECT pg_catalog.setval('public.cm_telephone_numbers_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.cm_urls_id_seq', 1, false);
+
+
+--
+-- Name: cm_vetting_requests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
+--
+
+SELECT pg_catalog.setval('public.cm_vetting_requests_id_seq', 1, false);
+
+
+--
+-- Name: cm_vetting_results_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
+--
+
+SELECT pg_catalog.setval('public.cm_vetting_results_id_seq', 1, false);
+
+
+--
+-- Name: cm_vetting_steps_id_seq; Type: SEQUENCE SET; Schema: public; Owner: registry_user
+--
+
+SELECT pg_catalog.setval('public.cm_vetting_steps_id_seq', 1, false);
 
 
 --
@@ -7537,6 +7909,14 @@ ALTER TABLE ONLY public.cm_co_pipelines
 
 
 --
+-- Name: cm_co_provisioning_counts cm_co_provisioning_counts_pkey; Type: CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_provisioning_counts
+    ADD CONSTRAINT cm_co_provisioning_counts_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: cm_co_provisioning_exports cm_co_provisioning_exports_pkey; Type: CONSTRAINT; Schema: public; Owner: registry_user
 --
 
@@ -7801,6 +8181,14 @@ ALTER TABLE ONLY public.cm_org_identities
 
 
 --
+-- Name: cm_org_identity_source_filters cm_org_identity_source_filters_pkey; Type: CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_org_identity_source_filters
+    ADD CONSTRAINT cm_org_identity_source_filters_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: cm_org_identity_source_records cm_org_identity_source_records_pkey; Type: CONSTRAINT; Schema: public; Owner: registry_user
 --
 
@@ -7870,6 +8258,30 @@ ALTER TABLE ONLY public.cm_telephone_numbers
 
 ALTER TABLE ONLY public.cm_urls
     ADD CONSTRAINT cm_urls_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cm_vetting_requests cm_vetting_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_requests
+    ADD CONSTRAINT cm_vetting_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cm_vetting_results cm_vetting_results_pkey; Type: CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_results
+    ADD CONSTRAINT cm_vetting_results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cm_vetting_steps cm_vetting_steps_pkey; Type: CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_steps
+    ADD CONSTRAINT cm_vetting_steps_pkey PRIMARY KEY (id);
 
 
 --
@@ -7953,7 +8365,14 @@ CREATE INDEX cm_addresses_i6 ON public.cm_addresses USING btree (organization_id
 -- Name: cm_api_users_i1; Type: INDEX; Schema: public; Owner: registry_user
 --
 
-CREATE UNIQUE INDEX cm_api_users_i1 ON public.cm_api_users USING btree (username);
+CREATE INDEX cm_api_users_i1 ON public.cm_api_users USING btree (username);
+
+
+--
+-- Name: cm_api_users_i2; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_api_users_i2 ON public.cm_api_users USING btree (api_user_id);
 
 
 --
@@ -8734,6 +9153,13 @@ CREATE INDEX cm_co_petitions_i1 ON public.cm_co_petitions USING btree (co_id);
 
 
 --
+-- Name: cm_co_petitions_i10; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_co_petitions_i10 ON public.cm_co_petitions USING btree (vetting_request_id);
+
+
+--
 -- Name: cm_co_petitions_i2; Type: INDEX; Schema: public; Owner: registry_user
 --
 
@@ -8776,6 +9202,20 @@ CREATE INDEX cm_co_petitions_i7 ON public.cm_co_petitions USING btree (enrollee_
 
 
 --
+-- Name: cm_co_petitions_i8; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_co_petitions_i8 ON public.cm_co_petitions USING btree (archived_org_identity_id);
+
+
+--
+-- Name: cm_co_petitions_i9; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_co_petitions_i9 ON public.cm_co_petitions USING btree (authenticated_identifier);
+
+
+--
 -- Name: cm_co_pipelines_i1; Type: INDEX; Schema: public; Owner: registry_user
 --
 
@@ -8787,6 +9227,27 @@ CREATE INDEX cm_co_pipelines_i1 ON public.cm_co_pipelines USING btree (co_id);
 --
 
 CREATE INDEX cm_co_pipelines_i2 ON public.cm_co_pipelines USING btree (co_pipeline_id);
+
+
+--
+-- Name: cm_co_provisioning_counts_i1; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_co_provisioning_counts_i1 ON public.cm_co_provisioning_counts USING btree (co_provisioning_target_id);
+
+
+--
+-- Name: cm_co_provisioning_counts_i2; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_co_provisioning_counts_i2 ON public.cm_co_provisioning_counts USING btree (co_provisioning_count_id);
+
+
+--
+-- Name: cm_co_provisioning_counts_i3; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_co_provisioning_counts_i3 ON public.cm_co_provisioning_counts USING btree (co_job_id);
 
 
 --
@@ -9294,6 +9755,20 @@ CREATE INDEX cm_org_identities_i2 ON public.cm_org_identities USING btree (org_i
 
 
 --
+-- Name: cm_org_identity_source_filters_i1; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_org_identity_source_filters_i1 ON public.cm_org_identity_source_filters USING btree (org_identity_source_id);
+
+
+--
+-- Name: cm_org_identity_source_filters_i2; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_org_identity_source_filters_i2 ON public.cm_org_identity_source_filters USING btree (data_filter_id);
+
+
+--
 -- Name: cm_org_identity_source_records_i1; Type: INDEX; Schema: public; Owner: registry_user
 --
 
@@ -9476,6 +9951,48 @@ CREATE INDEX cm_urls_i6 ON public.cm_urls USING btree (organization_id);
 
 
 --
+-- Name: cm_vetting_requests_i1; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_vetting_requests_i1 ON public.cm_vetting_requests USING btree (co_person_id);
+
+
+--
+-- Name: cm_vetting_requests_i2; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_vetting_requests_i2 ON public.cm_vetting_requests USING btree (vetting_step_id);
+
+
+--
+-- Name: cm_vetting_results_i1; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_vetting_results_i1 ON public.cm_vetting_results USING btree (vetting_request_id);
+
+
+--
+-- Name: cm_vetting_results_i2; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_vetting_results_i2 ON public.cm_vetting_results USING btree (vetting_result_id);
+
+
+--
+-- Name: cm_vetting_steps_i1; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_vetting_steps_i1 ON public.cm_vetting_steps USING btree (co_id);
+
+
+--
+-- Name: cm_vetting_steps_i2; Type: INDEX; Schema: public; Owner: registry_user
+--
+
+CREATE INDEX cm_vetting_steps_i2 ON public.cm_vetting_steps USING btree (vetting_step_id);
+
+
+--
 -- Name: cm_ad_hoc_attributes cm_ad_hoc_attributes_ad_hoc_attribute_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
 --
 
@@ -9569,6 +10086,14 @@ ALTER TABLE ONLY public.cm_addresses
 
 ALTER TABLE ONLY public.cm_addresses
     ADD CONSTRAINT cm_addresses_source_address_id_fkey FOREIGN KEY (source_address_id) REFERENCES public.cm_addresses(id);
+
+
+--
+-- Name: cm_api_users cm_api_users_api_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_api_users
+    ADD CONSTRAINT cm_api_users_api_user_id_fkey FOREIGN KEY (api_user_id) REFERENCES public.cm_api_users(id);
 
 
 --
@@ -9908,6 +10433,14 @@ ALTER TABLE ONLY public.cm_co_enrollment_flows
 
 
 --
+-- Name: cm_co_enrollment_flows cm_co_enrollment_flows_approver_template_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_enrollment_flows
+    ADD CONSTRAINT cm_co_enrollment_flows_approver_template_id_fkey FOREIGN KEY (approver_template_id) REFERENCES public.cm_co_message_templates(id);
+
+
+--
 -- Name: cm_co_enrollment_flows cm_co_enrollment_flows_authz_co_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
 --
 
@@ -9961,6 +10494,14 @@ ALTER TABLE ONLY public.cm_co_enrollment_flows
 
 ALTER TABLE ONLY public.cm_co_enrollment_flows
     ADD CONSTRAINT cm_co_enrollment_flows_finalization_template_id_fkey FOREIGN KEY (finalization_template_id) REFERENCES public.cm_co_message_templates(id);
+
+
+--
+-- Name: cm_co_enrollment_flows cm_co_enrollment_flows_match_server_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_enrollment_flows
+    ADD CONSTRAINT cm_co_enrollment_flows_match_server_id_fkey FOREIGN KEY (match_server_id) REFERENCES public.cm_servers(id);
 
 
 --
@@ -10225,6 +10766,14 @@ ALTER TABLE ONLY public.cm_co_groups
 
 ALTER TABLE ONLY public.cm_co_groups
     ADD CONSTRAINT cm_co_groups_cou_id_fkey FOREIGN KEY (cou_id) REFERENCES public.cm_cous(id);
+
+
+--
+-- Name: cm_co_identifier_assignments cm_co_identifier_assignments_co_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_identifier_assignments
+    ADD CONSTRAINT cm_co_identifier_assignments_co_group_id_fkey FOREIGN KEY (co_group_id) REFERENCES public.cm_co_groups(id);
 
 
 --
@@ -10540,6 +11089,14 @@ ALTER TABLE ONLY public.cm_co_person_roles
 
 
 --
+-- Name: cm_co_person_roles cm_co_person_roles_manager_co_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_person_roles
+    ADD CONSTRAINT cm_co_person_roles_manager_co_person_id_fkey FOREIGN KEY (manager_co_person_id) REFERENCES public.cm_co_people(id);
+
+
+--
 -- Name: cm_co_person_roles cm_co_person_roles_source_org_identity_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
 --
 
@@ -10700,6 +11257,14 @@ ALTER TABLE ONLY public.cm_co_petitions
 
 
 --
+-- Name: cm_co_petitions cm_co_petitions_vetting_request_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_petitions
+    ADD CONSTRAINT cm_co_petitions_vetting_request_id_fkey FOREIGN KEY (vetting_request_id) REFERENCES public.cm_vetting_requests(id);
+
+
+--
 -- Name: cm_co_pipelines cm_co_pipelines_co_enrollment_flow_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
 --
 
@@ -10745,6 +11310,30 @@ ALTER TABLE ONLY public.cm_co_pipelines
 
 ALTER TABLE ONLY public.cm_co_pipelines
     ADD CONSTRAINT cm_co_pipelines_sync_replace_cou_id_fkey FOREIGN KEY (sync_replace_cou_id) REFERENCES public.cm_cous(id);
+
+
+--
+-- Name: cm_co_provisioning_counts cm_co_provisioning_counts_co_job_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_provisioning_counts
+    ADD CONSTRAINT cm_co_provisioning_counts_co_job_id_fkey FOREIGN KEY (co_job_id) REFERENCES public.cm_co_jobs(id);
+
+
+--
+-- Name: cm_co_provisioning_counts cm_co_provisioning_counts_co_provisioning_count_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_provisioning_counts
+    ADD CONSTRAINT cm_co_provisioning_counts_co_provisioning_count_id_fkey FOREIGN KEY (co_provisioning_count_id) REFERENCES public.cm_co_provisioning_counts(id);
+
+
+--
+-- Name: cm_co_provisioning_counts cm_co_provisioning_counts_co_provisioning_target_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_co_provisioning_counts
+    ADD CONSTRAINT cm_co_provisioning_counts_co_provisioning_target_id_fkey FOREIGN KEY (co_provisioning_target_id) REFERENCES public.cm_co_provisioning_targets(id);
 
 
 --
@@ -11156,6 +11745,14 @@ ALTER TABLE ONLY public.cm_env_sources
 
 
 --
+-- Name: cm_history_records cm_history_records_actor_api_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_history_records
+    ADD CONSTRAINT cm_history_records_actor_api_user_id_fkey FOREIGN KEY (actor_api_user_id) REFERENCES public.cm_api_users(id);
+
+
+--
 -- Name: cm_history_records cm_history_records_actor_co_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
 --
 
@@ -11420,6 +12017,30 @@ ALTER TABLE ONLY public.cm_org_identities
 
 
 --
+-- Name: cm_org_identity_source_filters cm_org_identity_source_filter_org_identity_source_filter_i_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_org_identity_source_filters
+    ADD CONSTRAINT cm_org_identity_source_filter_org_identity_source_filter_i_fkey FOREIGN KEY (org_identity_source_filter_id) REFERENCES public.cm_org_identity_source_filters(id);
+
+
+--
+-- Name: cm_org_identity_source_filters cm_org_identity_source_filters_data_filter_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_org_identity_source_filters
+    ADD CONSTRAINT cm_org_identity_source_filters_data_filter_id_fkey FOREIGN KEY (data_filter_id) REFERENCES public.cm_data_filters(id);
+
+
+--
+-- Name: cm_org_identity_source_filters cm_org_identity_source_filters_org_identity_source_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_org_identity_source_filters
+    ADD CONSTRAINT cm_org_identity_source_filters_org_identity_source_id_fkey FOREIGN KEY (org_identity_source_id) REFERENCES public.cm_org_identity_sources(id);
+
+
+--
 -- Name: cm_org_identity_source_records cm_org_identity_source_record_org_identity_source_record_i_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
 --
 
@@ -11633,6 +12254,94 @@ ALTER TABLE ONLY public.cm_urls
 
 ALTER TABLE ONLY public.cm_urls
     ADD CONSTRAINT cm_urls_url_id_fkey FOREIGN KEY (url_id) REFERENCES public.cm_urls(id);
+
+
+--
+-- Name: cm_vetting_requests cm_vetting_requests_co_job_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_requests
+    ADD CONSTRAINT cm_vetting_requests_co_job_id_fkey FOREIGN KEY (co_job_id) REFERENCES public.cm_co_jobs(id);
+
+
+--
+-- Name: cm_vetting_requests cm_vetting_requests_co_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_requests
+    ADD CONSTRAINT cm_vetting_requests_co_person_id_fkey FOREIGN KEY (co_person_id) REFERENCES public.cm_co_people(id);
+
+
+--
+-- Name: cm_vetting_requests cm_vetting_requests_vetting_request_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_requests
+    ADD CONSTRAINT cm_vetting_requests_vetting_request_id_fkey FOREIGN KEY (vetting_request_id) REFERENCES public.cm_vetting_requests(id);
+
+
+--
+-- Name: cm_vetting_requests cm_vetting_requests_vetting_step_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_requests
+    ADD CONSTRAINT cm_vetting_requests_vetting_step_id_fkey FOREIGN KEY (vetting_step_id) REFERENCES public.cm_vetting_steps(id);
+
+
+--
+-- Name: cm_vetting_results cm_vetting_results_vetter_co_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_results
+    ADD CONSTRAINT cm_vetting_results_vetter_co_person_id_fkey FOREIGN KEY (vetter_co_person_id) REFERENCES public.cm_co_people(id);
+
+
+--
+-- Name: cm_vetting_results cm_vetting_results_vetting_request_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_results
+    ADD CONSTRAINT cm_vetting_results_vetting_request_id_fkey FOREIGN KEY (vetting_request_id) REFERENCES public.cm_vetting_requests(id);
+
+
+--
+-- Name: cm_vetting_results cm_vetting_results_vetting_result_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_results
+    ADD CONSTRAINT cm_vetting_results_vetting_result_id_fkey FOREIGN KEY (vetting_result_id) REFERENCES public.cm_vetting_results(id);
+
+
+--
+-- Name: cm_vetting_results cm_vetting_results_vetting_step_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_results
+    ADD CONSTRAINT cm_vetting_results_vetting_step_id_fkey FOREIGN KEY (vetting_step_id) REFERENCES public.cm_vetting_steps(id);
+
+
+--
+-- Name: cm_vetting_steps cm_vetting_steps_co_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_steps
+    ADD CONSTRAINT cm_vetting_steps_co_id_fkey FOREIGN KEY (co_id) REFERENCES public.cm_cos(id);
+
+
+--
+-- Name: cm_vetting_steps cm_vetting_steps_vetter_co_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_steps
+    ADD CONSTRAINT cm_vetting_steps_vetter_co_group_id_fkey FOREIGN KEY (vetter_co_group_id) REFERENCES public.cm_co_groups(id);
+
+
+--
+-- Name: cm_vetting_steps cm_vetting_steps_vetting_step_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: registry_user
+--
+
+ALTER TABLE ONLY public.cm_vetting_steps
+    ADD CONSTRAINT cm_vetting_steps_vetting_step_id_fkey FOREIGN KEY (vetting_step_id) REFERENCES public.cm_vetting_steps(id);
 
 
 --
