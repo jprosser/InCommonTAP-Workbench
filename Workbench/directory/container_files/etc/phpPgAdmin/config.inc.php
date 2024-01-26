@@ -53,6 +53,24 @@
         $conf['servers'][2]['pg_dump_path'] = '/usr/bin/pg_dump';
         $conf['servers'][2]['pg_dumpall_path'] = '/usr/bin/pg_dumpall';
 
+        // COmanage-midPoint DB
+        $conf['servers'][3]['desc'] = 'COmanage-midPoint DB (comanage_midpoint_loader)';
+        $conf['servers'][3]['host'] = 'comanage-midpoint-data';
+        $conf['servers'][3]['port'] = 5432;
+        //$conf['servers'][3]['sslmode'] = 'allow';
+        $conf['servers'][3]['defaultdb'] = 'comanage_midpoint_loader';
+        $conf['servers'][3]['pg_dump_path'] = '/usr/bin/pg_dump';
+        $conf['servers'][3]['pg_dumpall_path'] = '/usr/bin/pg_dumpall';
+
+        // Grouper-midPoint DB
+        $conf['servers'][4]['desc'] = 'Grouper-midPoint DB (grouper)';
+        $conf['servers'][4]['host'] = 'grouper-data';
+        $conf['servers'][4]['port'] = 5432;
+        //$conf['servers'][4]['sslmode'] = 'allow';
+        $conf['servers'][4]['defaultdb'] = 'grouper_to_midpoint';
+        $conf['servers'][4]['pg_dump_path'] = '/usr/bin/pg_dump';
+        $conf['servers'][4]['pg_dumpall_path'] = '/usr/bin/pg_dumpall';
+
 	/* Groups definition */
 	/* Groups allow administrators to logicaly group servers together under
 	 * group nodes in the left browser tree
