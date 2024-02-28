@@ -37,7 +37,7 @@ RUN chmod 755 /usr/local/bin/startWithMDLoad.sh && chmod 755 /mdload/*.sh
 #install updated curl (for --data-raw)
 # see http://www.city-fan.org/ftp/contrib/yum-repo/ for more info and for correct version numbers
 #RUN rpm -Uvh http://www.city-fan.org/ftp/contrib/yum-repo/rhel7/x86_64/city-fan.org-release-3-10.rhel7.noarch.rpm
-RUN rpm -Uvh https://mirror.city-fan.org/ftp/contrib/yum-repo/city-fan.org-release-3-10.rhel7.noarch.rpm
+RUN rpm -Uvh https://mirror.city-fan.org/ftp/contrib/yum-repo/city-fan.org-release-3-11.rhel7.noarch.rpm
 RUN yum-config-manager --enable city-fan.org
 RUN yum update curl -y
 
