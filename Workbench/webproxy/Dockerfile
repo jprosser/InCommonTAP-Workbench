@@ -1,13 +1,14 @@
-FROM tier/shibboleth_sp:latest
+FROM i2incommon/shibboleth_sp:3.4.1_06122023_rocky8_multiarch
 
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 
-RUN yum -y install cronie php composer php-bcmath jq
-RUN composer require php-amqplib/php-amqplib
-RUN composer install
-RUN mkdir -p /var/www/html/refresh
+RUN yum -y install cronie php php-json wget php-bcmath jq yum-utils
 
+RUN wget https://getcomposer.org/installer -O composer-installer.php
+RUN php composer-installer.php --filename=composer --install-dir=/usr/local/bin
+RUN composer require php-amqplib/php-amqplib && composer install
+RUN mkdir -p /var/www/html/refresh
 
 COPY container_files/httpd/refresh/index.php /var/www/html/refresh/
 COPY container_files/httpd/proxy.conf /etc/httpd/conf.d/
@@ -28,19 +29,10 @@ COPY container_files/system/setservername.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/setservername.sh
 
 RUN mkdir -p /signalreload
-
 RUN mkdir -p /mdload
 COPY container_files/system/startWithMDLoad.sh /usr/local/bin/
 COPY container_files/mdload/ /mdload/
 RUN chmod 755 /usr/local/bin/startWithMDLoad.sh && chmod 755 /mdload/*.sh
-
-#install updated curl (for --data-raw)
-# see http://www.city-fan.org/ftp/contrib/yum-repo/ for more info and for correct version numbers
-#RUN rpm -Uvh http://www.city-fan.org/ftp/contrib/yum-repo/rhel7/x86_64/city-fan.org-release-3-10.rhel7.noarch.rpm
-RUN rpm -Uvh https://mirror.city-fan.org/ftp/contrib/yum-repo/city-fan.org-release-3-11.rhel7.noarch.rpm
-RUN yum-config-manager --enable city-fan.org
-RUN yum update curl -y
-
 
 # fix httpd logging for ssl logs
 RUN sed -i 's/TransferLog logs\/ssl_access_log/TransferLog \/tmp\/logpipe/g' /etc/httpd/conf.d/ssl.conf \

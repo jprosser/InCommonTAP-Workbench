@@ -1,18 +1,19 @@
-FROM centos:centos7
+FROM rockylinux:8.9
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>"
 
-RUN yum install -y epel-release yum-utils \
+RUN dnf module enable -y php:7.4
+RUN yum install -y epel-release \
     && yum update -y \
-    && yum install -y 389-ds-base phpMyAdmin phpldapadmin mod_ssl net-tools wget \
+    && yum install -y phpldapadmin mod_ssl net-tools wget epel-release yum-utils php php-common php-opcache php-cli php-gd mod_php php-pgsql php-curl php-zip php-mbstring \
     && yum clean all \
     && rm -rf /var/cache/yum
-
-RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm && yum-config-manager --enable remi-php73
-
-RUN yum -y install php php-common php-opcache php-mcrypt php-cli php-gd php-curl mod_php php-pgsql
-
-#wget https://github.com/phppgadmin/phppgadmin/releases/download/REL_7-13-0/phpPgAdmin-7.13.0.tar.gz
+RUN yum module enable -y 389-ds:1.4
+RUN yum install -y 389-ds-base 389-ds-base-devel 389-ds-base-legacy-tools
+RUN yum install --allowerasing -y curl-full libcurl-full
+RUN rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+RUN yum --enablerepo=remi,remi-test  install -y phpMyAdmin
+RUN yum install -y php71-php-mcrypt
 
 RUN wget https://github.com/phppgadmin/phppgadmin/archive/refs/tags/REL_7-13-0.tar.gz \
     && tar -xvf REL_7-13-0.tar.gz && mv phppgadmin-REL_7-13-0/ /usr/share/phpPgAdmin/ \
@@ -38,8 +39,15 @@ RUN useradd ldapadmin \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     ldapadd -H ldap:/// -f /seed-data/data.ldif -x -D "cn=Directory Manager" -w password \
     && ldapmodify -H ldap:/// -f /seed-data/incwbperson-obj.ldif -x -D "cn=Directory Manager" -w password \
-	&& ldapmodify -H ldap:/// -f /seed-data/edumember-obj.ldif -x -D "cn=Directory Manager" -w password
+    && ldapmodify -H ldap:/// -f /seed-data/edumember-obj.ldif -x -D "cn=Directory Manager" -w password \
+    && ldapmodify -H ldap:/// -f /seed-data/ldappublickey-obj.ldif -x -D "cn=Directory Manager" -w password \
+    && ldapmodify -H ldap:/// -f /seed-data/voperson-obj.ldif -x -D "cn=Directory Manager" -w password \
+    && ldapmodify -H ldap:/// -f /seed-data/voposixaccount-obj.ldif -x -D "cn=Directory Manager" -w password
+
+RUN openssl req -new -nodes -newkey rsa:2048 -subj "/commonName=localhost.localdomain" -batch -keyout /etc/pki/tls/private/localhost.key -out localhost.csr
+RUN openssl x509 -req -days 1825 -in localhost.csr -signkey /etc/pki/tls/private/localhost.key -out /etc/pki/tls/certs/localhost.crt
+RUN mkdir -p /run/php-fpm/
 
 EXPOSE 389 443
 
-CMD rm -rf /var/lock/dirsrv/slapd-dir/server/* && /usr/sbin/ns-slapd -D /etc/dirsrv/slapd-dir && httpd -DFOREGROUND && sleep infinity
+CMD rm -rf /var/lock/dirsrv/slapd-dir/server/* && /usr/sbin/ns-slapd -D /etc/dirsrv/slapd-dir && php-fpm -D && httpd -DFOREGROUND && sleep infinity

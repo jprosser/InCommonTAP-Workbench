@@ -1,31 +1,25 @@
-FROM tier/shibboleth_sp:latest
+FROM i2incommon/shibboleth_sp:3.4.1_06122023_rocky8_multiarch
 
 VOLUME /var/www/html
 
-#RUN mkdir /opt/tier/.wp-cli
-RUN mkdir /tmp/rpm
-#COPY container_files/wordpress/000-default.conf /etc/apache2/sites-available/
 COPY container_files/wordpress/sed.sh /root
 COPY container_files/wordpress/config-shibb.sql /root
 COPY container_files/wordpress/wp /root
 COPY container_files/wordpress/config.yml /root/.wp-cli
 COPY container_files/wordpress/wp-cli.yml /var/www/html
 COPY container_files/shibboleth/* /etc/shibboleth/
-COPY container_files/rpm/* /tmp/rpm/
 COPY container_files/system/setservername.sh /usr/local/bin/
 RUN chmod +x /root/wp
+RUN dnf module enable -y php:7.4
 RUN yum update -y 
-#RUN yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
-#    && yum install yum-utils \
-#    && yum-config-manager --enable remi-php72 \
-RUN yum install -y /tmp/rpm/*
-RUN yum install -y mariadb wget postfix nc
+RUN yum install -y php php-cli php-common php-gd php-curl php-json php-mysqlnd php-pdo php-zip php-mbstring libwebp mariadb wget postfix nc
+RUN rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+RUN yum --enablerepo=remi,remi-test  install -y gd3php gd3php-devel php74-php-sodium
+
 RUN echo 'date.timezone="UTC"' >> /etc/php.ini
 
-RUN cat /etc/resolv.conf
 WORKDIR /var/www/html
 
-#RUN ln -sf /run/secrets/shib_sp-key.pem /etc/shibboleth/sp-key.pem
 RUN chown -R apache:apache /var/www/html
 COPY container_files/system/setservername.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/setservername.sh #&& rm -f /etc/httpd/conf.d/ssl.conf
@@ -35,7 +29,7 @@ ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 
 RUN /usr/local/bin/setservername.sh
-
+RUN mkdir -p /run/php-fpm/
 
 ENV LD_LIBRARY_PATH=/opt/shibboleth/lib64
 
