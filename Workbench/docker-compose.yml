@@ -581,6 +581,11 @@ services:
       context: ./ad/
     cap_add:
       - CAP_SYS_ADMIN
+    healthcheck:
+      test: netstat -an | grep :3268 | grep LISTEN
+      interval: 30s
+      timeout: 30s
+      retries: 3
     environment:
      - DOMAIN=ad.example.edu
      - DOMAINPASS=Password1
