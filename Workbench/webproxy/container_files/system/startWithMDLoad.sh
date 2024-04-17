@@ -1,5 +1,6 @@
 #!/bin/sh
 /usr/local/bin/startup.sh &
+php-fpm -D &
 
 #wait for IdPUI's API, then load metadata into it
 pushd /mdload

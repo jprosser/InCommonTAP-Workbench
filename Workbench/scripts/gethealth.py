@@ -5,7 +5,7 @@ containers = ["idp", "idp_ui", "idp_ui_data", "idp_ui_api", "grouper_ui", "group
 print("<table><tr><th style='text-align:left;width:150px'>Container</th><th style='text-align:left'>Health Status</th></tr>")
 for container in containers:
     from subprocess import Popen, PIPE
-    dcmd = "docker ps -f name=workbench_" + container + "_1 --format '{{ .Status }} '"
+    dcmd = "docker ps -f name=workbench-" + container + "-1 --format '{{ .Status }} '"
     pipe = Popen(dcmd, shell=True, stdout=PIPE)
     healthstatus = '<font color="grey">unknown</font>'
     for line in pipe.stdout:
