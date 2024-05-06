@@ -1,0 +1,2 @@
+#update CSP container status
+*/3 * * * * /csp-tap/InCommonTAP-Examples/Workbench/scripts/update-health-status.sh
