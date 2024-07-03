@@ -1,4 +1,4 @@
-FROM i2incommon/comanage-registry:4.3.3-20240430
+FROM i2incommon/comanage-registry:4.3.4-rocky9.3
 
 ENV COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Anderson
 ENV COMANAGE_REGISTRY_ADMIN_USERNAME=banderson
@@ -25,9 +25,6 @@ ENV COMANAGE_REGISTRY_EMAIL_ACCOUNT_PASSWORD=BNAp6WlvsI4iXK3ush8pwPD2QKHDYQ09ti+
 #ENV SHIBBOLETH_SP_METADATA_PROVIDER_XML=sdf
 #ENV SHIBBOLETH_SP_SAMLDS_URL=thing
 
-#temp - override upstream shib SP repo
-COPY container_files/shibboleth/shibboleth.repo /etc/yum.repos.d/security:shibboleth.repo
-
 RUN yum -y update && yum -y install --setopt=tsflags=nodocs epel-release python-pip && pip install awscli && pip install --upgrade pip
 
 ARG maintainer=my
@@ -41,6 +38,8 @@ LABEL Version=$version
 ENV VERSION=$version
 
 COPY container_files/shibboleth/* /etc/shibboleth/
+RUN chown shibd:shibd /etc/shibboleth/sp-*.pem && chmod 600 /etc/shibboleth/sp-*.pem
+
 
 # activate SQL plugin
 RUN mkdir -p /srv/comanage-registry/local/Plugin/

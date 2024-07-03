@@ -1,9 +1,9 @@
-FROM i2incommon/shibboleth_sp:3.4.1_06122023_rocky8_multiarch
+FROM i2incommon/shibboleth_sp:3.4.1_05152024_rocky9_multiarch
 
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 
-RUN yum -y install cronie php php-json wget php-bcmath jq yum-utils
+RUN dnf -y install cronie php php-json wget php-bcmath jq yum-utils
 
 RUN wget https://getcomposer.org/installer -O composer-installer.php
 RUN php composer-installer.php --filename=composer --install-dir=/usr/local/bin
