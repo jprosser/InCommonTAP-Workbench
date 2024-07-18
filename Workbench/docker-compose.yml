@@ -213,6 +213,10 @@ services:
      - source_data:/var/lib/mysqlmounted
     environment:
      - CREATE_NEW_DATABASE=if_needed
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
 
   comanage_data:
     build: ./comanage_data/
@@ -517,6 +521,10 @@ services:
       - wordpress_data:/var/lib/mysql
     ports:
       - 3306
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
 
   comanage:
     build: 
