@@ -3,6 +3,7 @@ FROM i2incommon/shibboleth_sp:3.4.1_05152024_rocky9_multiarch
 ARG CSPHOSTNAME=localhost
 ENV CSPHOSTNAME=$CSPHOSTNAME
 
+#RUN dnf -y install cronie php php-json wget php-bcmath jq yum-utils mod_proxy_ajp
 RUN dnf -y install cronie php php-json wget php-bcmath jq yum-utils
 
 RUN wget https://getcomposer.org/installer -O composer-installer.php

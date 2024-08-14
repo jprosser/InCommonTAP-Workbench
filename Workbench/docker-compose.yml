@@ -259,47 +259,55 @@ services:
      - comanage_midpoint_data:/var/lib/postgresql/data
 
   data_init:
-    image: i2incommon/midpoint:4.8.2
+    image: evolveum/midpoint:${MP_VER:-4.8.3}-rockylinux
+    depends_on:
+      midpoint_data:
+        condition: service_healthy
     command: >
-        bash -c "
-        chmod 777 /opt/mp-pw/ ;
-        touch /opt/mp-pw/db_init_in_progress ;
-        echo -e '#!/bin/sh\ntouch /opt/mp-pw/db_init' >/opt/db-init/000-start.sh ;
-        echo -e '#!/bin/sh\necho DB structure init process has finished...\nrm -f /opt/mp-pw/db_init_in_progress /opt/mp-pw/db_init' > /opt/db-init/999-finish.sh ;
-        /opt/midpoint/bin/midpoint.sh init-native
-        "
+      bash -c "
+      cd /opt/midpoint ;
+      bin/midpoint.sh init-native ;
+      echo ' - - - - - - ' ;
+      bin/ninja.sh -B info >/dev/null 2>/tmp/ninja.log ;
+      grep -q \"ERROR\" /tmp/ninja.log && (
+      bin/ninja.sh run-sql --create --mode REPOSITORY  ;
+      bin/ninja.sh run-sql --create --mode AUDIT
+      ) ||
+      echo -e '\\n Repository init is not needed...' ;
+      if [ $$(keytool -list -keystore /opt/midpoint/var/keystore.jceks -storetype jceks -storepass:file /run/secrets/m_keystore_password.txt | grep -c 'local_gen_cert') -eq 0 ] ;
+      then
+      keytool -importcert -keystore /opt/midpoint/var/keystore.jceks -storetype jceks -storepass:file /run/secrets/m_keystore_password.txt -trustcacerts -alias 'local_gen_cert' -file /run/secrets/mp_host-cert.pem -noprompt ;
+      else
+        echo 'Certificate exists in the cert store' ;
+      fi ;
+      cp /opt/midpoint/csv_in/cs-portal.csv /opt/midpoint/var/ ;
+      cp /opt/midpoint/csv_in/faculty-portal.csv /opt/midpoint/var/ ;
+      cp /opt/midpoint/csv_in/mailing-lists.csv /opt/midpoint/var/ ;
+      cp -R /opt/midpoint/mp-home-in/* /opt/midpoint/var/ ;
+      "
     environment:
-     - MP_INIT_DB_CONCAT=/opt/db-init/init.sql
-     - MP_DB_PW=/run/secrets/m_database_password.txt
-     - MP_PW_DEF=/opt/mp-pw/keystorepw
+     - MP_SET_midpoint_repository_jdbcUsername=midpoint
+     - MP_SET_midpoint_repository_jdbcPassword_FILE=/run/secrets/m_database_password.txt
+     - MP_SET_midpoint_repository_jdbcUrl=jdbc:postgresql://midpoint_data:5432/midpoint
+     - MP_SET_midpoint_repository_database=postgresql
+     - MP_INIT_CFG=/opt/midpoint/var
+     - MP_PW_DEF=/run/secrets/m_keystore_password.txt
+     - MP_KEYSTORE=/opt/midpoint/var/keystore.jceks
+    networks:
+     - net
     secrets:
      - m_database_password.txt
+     - m_keystore_password.txt
+     - mp_host-cert.pem
     volumes:
-     - db_init:/opt/db-init
-     - mp_pw:/opt/mp-pw
+     - midpoint_home:/opt/midpoint/var
+     - ./midpoint_server/container_files/mp-home/:/opt/midpoint/mp-home-in/
+     - ./midpoint_server/container_files/mp-home/cs-portal.csv:/opt/midpoint/csv_in/cs-portal.csv
+     - ./midpoint_server/container_files/mp-home/faculty-portal.csv:/opt/midpoint/csv_in/faculty-portal.csv
+     - ./midpoint_server/container_files/mp-home/mailing-lists.csv:/opt/midpoint/csv_in/mailing-lists.csv
 
   midpoint_data:
-    image: postgres:13-alpine
-    command: >
-        bash -c "
-        rm -f /var/lib/postgresql/data/postmaster.pid ;
-        while [ ! -s /run/secrets/m_database_password.txt -o -e /opt/mp-pw/init_in_progress ] ; do
-         echo 'Waiting to the end of the init process...';
-         sleep 1;
-        done ;
-        {
-         sleep 2 ;
-         if [ ! -e /opt/mp-pw/db_init -a -e /opt/mp-pw/db_init_in_progress ] ;
-          then echo 'DB init did not start...' ;
-          rm -f /opt/mp-pw/db_ini*;
-          echo 'The lock files has been removed...';
-         fi ;
-        } &
-        docker-entrypoint.sh postgres
-        "
-    user: "70:70"
-    depends_on:
-     - data_init
+    image: postgres:16-alpine
     environment:
      - POSTGRES_PASSWORD_FILE=/run/secrets/m_database_password.txt
      - POSTGRES_USER=midpoint
@@ -309,66 +317,54 @@ services:
     ports:
      - 5432:5432 
     healthcheck:
-      test: /usr/local/bin/pg_isready
-      interval: 30s
-      timeout: 30s
-      retries: 3
+      test: [ "CMD-SHELL", "pg_isready -d midpoint -U midpoint" ]
+      interval: 5s
+      timeout: 10s
+      retries: 4
     networks:
      - net
     volumes:
      - midpoint_data:/var/lib/postgresql/data
-     - db_init:/docker-entrypoint-initdb.d/
-     - mp_pw:/opt/mp-pw
 
   midpoint_server:
-    build:
-      context: ./midpoint_server/
-      args:
-        - CSPHOSTNAME
+    image: evolveum/midpoint:${MP_VER:-4.8.3}-rockylinux
+    container_name: midpoint_server
+    hostname: midpoint-container
     depends_on:
-     - data_init
-     - midpoint_data
-    ports:
-     - 10443:443
+      data_init:
+        condition: service_completed_successfully
+      midpoint_data:
+        condition: service_healthy
+    command: [ "/opt/midpoint/bin/midpoint.sh", "container" ]
+    expose:
+     - 8080
     environment:
-     - ENV
-     - USERTOKEN
-     - REPO_DATABASE_TYPE=postgresql
      - MP_SET_midpoint_repository_jdbcUsername=midpoint
      - MP_SET_midpoint_repository_jdbcPassword_FILE=/run/secrets/m_database_password.txt
      - MP_SET_midpoint_repository_jdbcUrl=jdbc:postgresql://midpoint_data:5432/midpoint
-     - MP_SET_midpoint_keystore_keyStorePassword_FILE=/opt/mp-pw/keystorepw
+     - MP_SET_midpoint_repository_database=postgresql
+     - MP_SET_midpoint_keystore_keyStorePassword_FILE=/run/secrets/m_keystore_password.txt
+     - MP_SET_server_port=8080
      - MP_SET_server_tomcat_ajp_enabled=true
+     - MP_SET_server_tomcat_ajp_address="0.0.0.0"
      - MP_SET_server_tomcat_ajp_port=9090
      - MP_SET_server_tomcat_ajp_secret=s3cr3t
-     - MP_SET_logging_path=/tmp/logtomcat
+     - MP_SET_midpoint_administrator_initialPassword=Test5ecr3t
      - MP_UNSET_midpoint_repository_hibernateHbm2ddl=1
      - MP_NO_ENV_COMPAT=1
-     - MP_MEM_MAX
-     - MP_MEM_INIT
-     - MP_JAVA_OPTS
-     - TIER_BEACON_OPT_OUT
-     - TIMEZONE
+     - MP_ENTRY_POINT=/opt/midpoint-dirs-docker-entrypoint
     networks:
-      net:
-        aliases:
-         - midpoint-server
+     - net
     secrets:
      - m_database_password.txt
+     - m_keystore_password.txt
      - mp_host-key.pem
      - mp_shibboleth_sp_keys.jks
     volumes:
      - midpoint_home:/opt/midpoint/var
      - type: bind
-       source: ./configs-and-secrets/midpoint/httpd/host-cert.pem
-       target: /etc/pki/tls/certs/host-cert.pem
-     - type: bind
-       source: ./configs-and-secrets/midpoint/httpd/host-cert.pem
-       target: /etc/pki/tls/certs/cachain.pem
-     - type: bind
        source: ./midpoint_server/container_files/csv/source-hr.csv
        target: /opt/midpoint/csv/source-hr.csv
-     - mp_pw:/opt/mp-pw
 
   idp:
     build: 
@@ -475,7 +471,17 @@ services:
      - net
     ports:
      - 443:443
-     
+ 
+  mpproxy:
+    build:  
+      context: ./mpproxy/
+      args:
+        - CSPHOSTNAME
+    networks:
+     - net
+    ports:
+     - 7443:443
+ 
   wordpress_server:
     build: 
       context: ./wordpress_server/
@@ -638,8 +644,12 @@ secrets:
 # midPoint
   m_database_password.txt:
     file: ./configs-and-secrets/midpoint/application/database_password.txt
+  m_keystore_password.txt:
+    file: ./configs-and-secrets/midpoint/application/keystore_password.txt
   mp_host-key.pem:
     file: ./configs-and-secrets/midpoint/httpd/host-key.pem
+  mp_host-cert.pem:
+    file: ./configs-and-secrets/midpoint/httpd/host-cert.pem
   mp_shibboleth_sp_keys.jks:
     file: ./configs-and-secrets/midpoint/shibboleth/shibboleth_sp_keys.jks
 # COmanage
