@@ -259,13 +259,14 @@ services:
      - comanage_midpoint_data:/var/lib/postgresql/data
 
   data_init:
-    image: evolveum/midpoint:${MP_VER:-4.8.3}-rockylinux
+    image: evolveum/midpoint:${MP_VER:-4.8.4}-rockylinux
     depends_on:
       midpoint_data:
         condition: service_healthy
     command: >
       bash -c "
       cd /opt/midpoint ;
+      if [ ! -z "${CSPHOSTNAME}" ]; then sed -i 's|__SERVERNAME__|${CSPHOSTNAME}|g' /opt/midpoint/mp-home-in/post-initial-objects/securityPolicy/000-security-policy.xml ; else echo 'var not set' ; fi ;
       bin/midpoint.sh init-native ;
       echo ' - - - - - - ' ;
       bin/ninja.sh -B info >/dev/null 2>/tmp/ninja.log ;
@@ -284,6 +285,7 @@ services:
       cp /opt/midpoint/csv_in/faculty-portal.csv /opt/midpoint/var/ ;
       cp /opt/midpoint/csv_in/mailing-lists.csv /opt/midpoint/var/ ;
       cp -R /opt/midpoint/mp-home-in/* /opt/midpoint/var/ ;
+      echo "env var is:** $CSPHOSTNAME **"
       "
     environment:
      - MP_SET_midpoint_repository_jdbcUsername=midpoint
@@ -293,6 +295,7 @@ services:
      - MP_INIT_CFG=/opt/midpoint/var
      - MP_PW_DEF=/run/secrets/m_keystore_password.txt
      - MP_KEYSTORE=/opt/midpoint/var/keystore.jceks
+     - CSPHOSTNAME
     networks:
      - net
     secrets:
@@ -327,7 +330,7 @@ services:
      - midpoint_data:/var/lib/postgresql/data
 
   midpoint_server:
-    image: evolveum/midpoint:${MP_VER:-4.8.3}-rockylinux
+    image: evolveum/midpoint:${MP_VER:-4.8.4}-rockylinux
     container_name: midpoint_server
     hostname: midpoint-container
     depends_on:

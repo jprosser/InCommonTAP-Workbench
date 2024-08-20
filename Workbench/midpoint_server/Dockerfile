@@ -1,3 +1,4 @@
+#This file is no longer used.  As of midPoint version 4.8.3, we are using the native midpoint container from Evolveum.  See the docker-compose.yml file for additional clarity.
 FROM i2incommon/midpoint:4.8.2
 
 ARG CSPHOSTNAME=localhost
