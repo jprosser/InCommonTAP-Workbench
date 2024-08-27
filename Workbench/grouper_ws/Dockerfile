@@ -1,8 +1,8 @@
-FROM i2incommon/grouper:4.14.2
+FROM i2incommon/grouper:4.15.0
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>"
 
-RUN yum -y install netcat
+RUN dnf -y install netcat
 
 COPY container_files/web.xml /opt/grouper/grouperWebapp/WEB-INF/
 COPY container_files/tomcat-users.xml /opt/tomee/conf/

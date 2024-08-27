@@ -1,13 +1,11 @@
-FROM i2incommon/grouper:4.14.2
+FROM i2incommon/grouper:4.15.0
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>"
 
-RUN yum install -y epel-release \
-    && yum update -y \
-    && dnf module enable -y postgresql:12 \
-    && dnf install -y postgresql-server \
-    && yum clean all \
-    && rm -rf /var/cache/yum
+RUN dnf update -y \
+    && dnf install -y postgresql-server glibc-all-langpacks \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf
 
 COPY container_files/conf/ /opt/grouper/grouperWebapp/WEB-INF/classes/
 COPY container_files/bootstrap/ /tmp/
