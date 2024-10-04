@@ -11,7 +11,7 @@
 
     <RequestMapper type="XML">
         <RequestMap>
-            <Host name="test.workbench.incommon.org">
+            <Host name="__CSPHOSTNAME__">
                 <Path name="midpoint" authType="shibboleth" requireSession="true"/>
                 <Path name="test" authType="shibboleth" requireSession="true"/>
             </Host>
