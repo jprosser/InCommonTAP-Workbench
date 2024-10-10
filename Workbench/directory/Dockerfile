@@ -13,7 +13,7 @@ RUN yum install -y 389-ds-base 389-ds-base-devel 389-ds-base-legacy-tools
 RUN yum install --allowerasing -y curl-full libcurl-full
 RUN rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-8.9.rpm
 RUN yum --enablerepo=remi,remi-test  install -y phpMyAdmin
-RUN yum install -y php71-php-mcrypt
+RUN yum install -y php72-php-mcrypt
 
 RUN wget https://github.com/phppgadmin/phppgadmin/archive/refs/tags/REL_7-13-0.tar.gz \
     && tar -xvf REL_7-13-0.tar.gz && mv phppgadmin-REL_7-13-0/ /usr/share/phpPgAdmin/ \
